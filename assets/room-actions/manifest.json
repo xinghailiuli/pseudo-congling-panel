@@ -1,0 +1,383 @@
+{
+  "lounge": {
+    "url": "/plugins/dsh-whale-status/actions/lounge-v2.png",
+    "width": 1254,
+    "height": 1254,
+    "frames": [
+      [
+        0,
+        0,
+        1254,
+        1254
+      ]
+    ],
+    "frameMs": 1000
+  },
+  "write": {
+    "url": "/plugins/dsh-whale-status/actions/write-v2.png",
+    "width": 1774,
+    "height": 887,
+    "frames": [
+      [
+        0,
+        0,
+        887,
+        887
+      ],
+      [
+        887,
+        0,
+        887,
+        887
+      ]
+    ],
+    "frameMs": 420
+  },
+  "walk": {
+    "url": "/plugins/dsh-whale-status/actions/walk-v3.png",
+    "width": 1774,
+    "height": 887,
+    "frames": [
+      [
+        0,
+        0,
+        443.5,
+        443.5
+      ],
+      [
+        443.5,
+        0,
+        443.5,
+        443.5
+      ],
+      [
+        887,
+        0,
+        443.5,
+        443.5
+      ],
+      [
+        1330.5,
+        0,
+        443.5,
+        443.5
+      ],
+      [
+        0,
+        443.5,
+        443.5,
+        443.5
+      ],
+      [
+        443.5,
+        443.5,
+        443.5,
+        443.5
+      ],
+      [
+        887,
+        443.5,
+        443.5,
+        443.5
+      ],
+      [
+        1330.5,
+        443.5,
+        443.5,
+        443.5
+      ]
+    ],
+    "frameMs": 180
+  },
+  "house": {
+    "width": 1536,
+    "height": 1024,
+    "floors": {
+      "1": "/plugins/dsh-whale-status/actions/floor-one-v4.png",
+      "2": "/plugins/dsh-whale-status/actions/floor-two-v4.png"
+    },
+    "actions": {
+      "type": {
+        "frames": [
+          "/plugins/dsh-whale-status/actions/desk-type-a-v4.png",
+          "/plugins/dsh-whale-status/actions/desk-type-b-v4.png"
+        ],
+        "frameMs": 360,
+        "clip": [
+          772,
+          307,
+          213,
+          198
+        ],
+        "floor": 1,
+        "contact": "keyboard-on-desk; body-on-chair; foreground-chair-back",
+        "head": [
+          900,
+          340
+        ]
+      },
+      "write": {
+        "frames": [
+          "/plugins/dsh-whale-status/actions/desk-write-a-v4.png",
+          "/plugins/dsh-whale-status/actions/desk-write-b-v4.png"
+        ],
+        "frameMs": 650,
+        "clip": [
+          772,
+          307,
+          213,
+          198
+        ],
+        "floor": 1,
+        "contact": "pen-on-page; body-on-chair; foreground-chair-back",
+        "head": [
+          900,
+          340
+        ]
+      },
+      "sleep": {
+        "frames": [
+          "/plugins/dsh-whale-status/actions/bed-sleep-v4.png"
+        ],
+        "frameMs": 1200,
+        "clip": [
+          250,
+          547,
+          306,
+          209
+        ],
+        "floor": 2,
+        "contact": "head-on-pillow; body-under-quilt-to-neck",
+        "head": [
+          340,
+          610
+        ]
+      },
+      "lounge": {
+        "frames": [
+          "/plugins/dsh-whale-status/actions/sofa-lounge-v4.png"
+        ],
+        "frameMs": 1200,
+        "clip": [
+          667,
+          529,
+          194,
+          224
+        ],
+        "floor": 1,
+        "contact": "hips-on-cushion; back-on-sofa; feet-down",
+        "head": [
+          764,
+          590
+        ]
+      },
+      "read": {
+        "frames": [
+          "/plugins/dsh-whale-status/actions/upstairs-read-v5.png"
+        ],
+        "frameMs": 1200,
+        "floor": 2,
+        "clip": [
+          678,
+          353,
+          146,
+          198
+        ],
+        "head": [
+          702,
+          405
+        ],
+        "feet": [
+          704,
+          535
+        ],
+        "contact": "feet-on-floor; attached-hands-support-open-book",
+        "shape": "711,377 710,365 718,357 734,356 744,368 757,368 778,381 786,397 787,424 803,427 804,433 791,440 805,453 804,467 812,479 808,490 818,483 819,497 812,505 801,512 781,510 770,516 762,520 753,529 753,540 749,546 741,548 735,545 735,539 730,543 721,545 714,541 714,535 718,528 715,522 704,518 694,511 689,501 696,488 683,469 681,451 689,447 699,453 697,437 691,430 697,420 695,402 703,383",
+        "offset": [
+          -32,
+          -8
+        ]
+      },
+      "enchant": {
+        "frames": [
+          "/plugins/dsh-whale-status/actions/upstairs-enchant-v5.png"
+        ],
+        "frameMs": 1200,
+        "floor": 2,
+        "clip": [
+          451,
+          311,
+          150,
+          185
+        ],
+        "head": [
+          519,
+          366
+        ],
+        "feet": [
+          518,
+          481
+        ],
+        "contact": "feet-on-purple-mat; hand-and-crystal-over-book"
+      },
+      "garden": {
+        "frames": [
+          "/plugins/dsh-whale-status/actions/upstairs-garden-v7.png"
+        ],
+        "frameMs": 1200,
+        "floor": 2,
+        "clip": [
+          1027,
+          376,
+          159,
+          205
+        ],
+        "head": [
+          1125,
+          455
+        ],
+        "feet": [
+          1129,
+          569
+        ],
+        "contact": "both-shoes-on-open-terrace; attached-hands-support-watering-can"
+      },
+      "rest": {
+        "frames": [
+          "/plugins/dsh-whale-status/actions/upstairs-rest-v5.png"
+        ],
+        "frameMs": 1200,
+        "floor": 2,
+        "clip": [
+          1017,
+          578,
+          164,
+          211
+        ],
+        "head": [
+          1090,
+          651
+        ],
+        "feet": [
+          1102,
+          705
+        ],
+        "contact": "hips-supported-on-open-terrace-edge; original-resident-silhouette; no-old-rail-background",
+        "shape": "1080,583 1094,583 1104,593 1117,597 1127,610 1136,622 1139,642 1148,659 1153,668 1148,675 1161,690 1168,709 1161,725 1142,733 1126,733 1110,742 1115,757 1119,767 1113,777 1100,778 1090,766 1085,778 1074,781 1068,775 1068,758 1075,742 1061,739 1048,733 1036,724 1028,716 1035,698 1039,682 1033,670 1042,653 1040,637 1047,617 1059,604 1071,599 1073,589",
+        "offset": [
+          0,
+          -6
+        ]
+      }
+    },
+    "repairs": {
+      "1": {
+        "url": "/plugins/dsh-whale-status/actions/floor-one-v6.png",
+        "clip": [
+          1104,
+          385,
+          315,
+          432
+        ]
+      },
+      "2": {
+        "url": "/plugins/dsh-whale-status/actions/floor-two-v7.png",
+        "clip": [
+          760,
+          438,
+          710,
+          395
+        ]
+      }
+    }
+  },
+  "stairs": {
+    "url": "/plugins/dsh-whale-status/actions/stairs-v6.png",
+    "width": 1774,
+    "height": 887,
+    "frames": [
+      [
+        0,
+        0,
+        443.5,
+        443.5
+      ],
+      [
+        443.5,
+        0,
+        443.5,
+        443.5
+      ],
+      [
+        887,
+        0,
+        443.5,
+        443.5
+      ],
+      [
+        1330.5,
+        0,
+        443.5,
+        443.5
+      ],
+      [
+        0,
+        443.5,
+        443.5,
+        443.5
+      ],
+      [
+        443.5,
+        443.5,
+        443.5,
+        443.5
+      ],
+      [
+        887,
+        443.5,
+        443.5,
+        443.5
+      ],
+      [
+        1330.5,
+        443.5,
+        443.5,
+        443.5
+      ]
+    ],
+    "anchors": [
+      [
+        264,
+        435
+      ],
+      [
+        292,
+        441
+      ],
+      [
+        264,
+        435
+      ],
+      [
+        292,
+        442
+      ],
+      [
+        291,
+        431
+      ],
+      [
+        290,
+        433
+      ],
+      [
+        291,
+        433
+      ],
+      [
+        293,
+        439
+      ]
+    ]
+  }
+}

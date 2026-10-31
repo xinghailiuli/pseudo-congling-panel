@@ -1,0 +1,4 @@
+- insert:
+    - id: dsh-whale-status
+      name: dsh-whale-status
+      config: {}

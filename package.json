@@ -1,0 +1,54 @@
+{
+  "name": "dsh-whale-status",
+  "version": "1.0.0",
+  "private": true,
+  "description": "琉璃陪伴中心：完整状态面板、MC 风格双层小屋、大肥鱼动作交互及可选记忆/日记/QQ 服务适配。",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json",
+    "./companion-client": "./src/companion-client.mjs"
+  },
+  "files": [
+    "lib",
+    "src",
+    "assets",
+    "cordis.patch.yml",
+    "build.mjs",
+    "client.template.js",
+    "panel.html",
+    "panel.css",
+    "panel.js",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "docs"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test/*.test.mjs test-client.mjs",
+    "prepack": "node build.mjs",
+    "preview": "node test/fixture-server.mjs",
+    "preview:motion": "node test/motion-server.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "slots",
+        "layout"
+      ]
+    }
+  },
+  "displayName": "伪从绫开始的面板 1.0",
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "node": ">=24",
+    "dsh": ">=0.2.0-rc.2 <0.3.0-0"
+  }
+}

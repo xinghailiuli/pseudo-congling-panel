@@ -1,0 +1,108 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {createBlockRoom} from '../src/room-scene.mjs';
+const assets=JSON.parse(await readFile(new URL('../assets/room-actions/manifest.json',import.meta.url),'utf8'));
+const names=['床','书桌','台灯','窗','沙发','冰箱','电视','绿萝','旧相册','日记本','记事本','床头柜','书架','椅子','电脑','茶几','挂画','挂钟','盆栽'];
+const room=()=>({lamp:true,curtain:true,items:names.map((name,i)=>({id:String(i),name,state:'保留'}))});
+class Element{constructor(tag){this.tagName=tag;this.attributes={};this.children=[];this.events={};}setAttribute(k,v){this.attributes[k]=String(v);}append(...n){this.children.push(...n);}addEventListener(k,fn){this.events[k]=fn;}}
+const document={createElementNS(_,tag){return new Element(tag);}},nodes=n=>[n,...n.children.flatMap(nodes)];
+const make=(data=room(),extra={})=>createBlockRoom(data,{document,actionAssets:assets,petAssets:{idle:{frames:['idle0','idle1'],frameMs:40},head_pat:{frames:['pat0','pat1'],frameMs:40}},animation:{reducedMotion:true},...extra});
+
+test('incomplete upstairs art keeps the legacy resident visible and does not advertise unsupported actions',()=>{
+ const broken=structuredClone(assets);broken.house.actions.read.frames=[];
+ const svg=make(room(),{actionAssets:broken,preview:'read'});
+ assert.deepEqual(svg.roomActions,[]);
+ assert.equal(nodes(svg).filter(n=>n.attributes['data-room-hotspot']).length,0);
+ const visible=nodes(svg).filter(n=>n.attributes['data-room-pose']&&n.attributes.display==='inline');
+ assert.equal(visible.length,1);assert.notEqual(visible[0].attributes['data-room-pose'],'read');
+});
+
+test('failed upstairs image disables its contact and retains a visible resident and other activities',()=>{
+ let activity;const svg=make(room(),{preview:'read',onActivity:a=>{activity=a;}});
+ const pose=nodes(svg).find(n=>n.attributes['data-room-pose']==='read');
+ const picture=nodes(pose).find(n=>n.tagName==='image');
+ assert.equal(typeof picture.events.error,'function');picture.events.error();
+ assert.equal(svg.roomActions.some(([mode])=>mode==='read'),false);
+ assert.equal(svg.roomActions.some(([mode])=>mode==='garden'),true);
+ assert.equal(pose.attributes.display,'none');assert.equal(activity.preview,'auto');
+ assert.equal(nodes(svg).filter(n=>n.attributes['data-room-pose']&&n.attributes.display==='inline').length,1);
+ const hotspot=nodes(svg).find(n=>n.attributes['data-room-hotspot']==='read');
+ assert.equal(hotspot.attributes['aria-disabled'],'true');hotspot.events.click();
+ assert.notEqual(svg.attributes['data-room-activity'],'read');
+ svg.setRoomActivity({preview:'garden'});assert.equal(svg.attributes['data-room-activity'],'garden');
+});
+
+test('upstairs furniture clicks and keyboard actions select one resident pose without saved writes',()=>{
+ const r=room(),before=structuredClone(r);let selected;
+ const svg=make(r,{onActivity:a=>{selected=a;}});
+ assert.ok(Array.isArray(svg.roomActions));
+ for(const mode of ['read','enchant','garden','rest']){
+  const hotspot=nodes(svg).find(n=>n.attributes['data-room-hotspot']===mode);assert.ok(hotspot,mode);assert.equal(hotspot.attributes.role,'button');
+  if(mode==='read')hotspot.events.click();else hotspot.events.keydown({key:'Enter',preventDefault(){}});
+  assert.equal(svg.attributes['data-room-floor'],'2');assert.equal(selected.preview,mode);assert.equal(selected.mode,mode);
+  assert.equal(nodes(svg).filter(n=>n.attributes['data-room-pose']&&n.attributes.display==='inline').length,1);
+  assert.equal(nodes(svg).find(n=>n.attributes['data-room-pose']===mode).attributes.display,'inline');
+ }
+ assert.deepEqual(r,before);
+ svg.setRoomFloor('1');assert.equal(nodes(svg).find(n=>n.attributes['data-upstairs-controls']).attributes.display,'none');assert.equal(nodes(svg).find(n=>n.attributes['data-room-resident']).attributes.display,'none');
+});
+test('upstairs action travels before contact, repeated polling preserves travel, hidden floors stay hidden',()=>{
+ let tick;const svg=make(room(),{preview:'type',animation:{reducedMotion:false,requestFrame(fn){tick=fn;}}});const resident=nodes(svg).find(n=>n.attributes['data-room-resident']);resident.isConnected=true;tick(0);
+ svg.setRoomActivity({preview:'read'});assert.equal(svg.attributes['data-resident-travel'],'true');assert.equal(svg.attributes['data-room-floor'],'1');
+ assert.equal(nodes(svg).find(n=>n.attributes['data-room-pose']==='read').attributes.display,'none');
+ tick(1000);const walking=nodes(svg).find(n=>n.attributes['data-room-pose']==='walk'),before=walking.attributes.transform;
+ svg.setRoomActivity({jobs:[],night:{}});assert.equal(walking.attributes.transform,before);
+ svg.setRoomFloor('2');tick(1200);assert.equal(resident.attributes.display,'none');
+ svg.setRoomFloor('2');tick(40000);assert.equal(svg.attributes['data-resident-travel'],'false');assert.equal(nodes(svg).find(n=>n.attributes['data-room-pose']==='read').attributes.display,'inline');
+ svg.setRoomActivity({preview:'read'});assert.equal(svg.attributes['data-resident-travel'],'false');
+});
+test('detailed room uses calibrated contact layers, switching actions without a second resident or saved writes',()=>{
+ const r=room(),before=structuredClone(r),svg=make(r,{preview:'type'});
+ assert.equal(svg.attributes['data-room-art'],'reference-v4');
+ assert.equal(nodes(svg).filter(n=>n.attributes['data-room-resident']).length,1);
+ const pose=mode=>nodes(svg).find(n=>n.attributes['data-room-pose']===mode);
+ assert.match(nodes(pose('type')).find(n=>n.tagName==='image').attributes.href,/desk-type-a-v4/);
+ svg.setRoomActivity({preview:'sleep'});assert.equal(pose('type').attributes.display,'none');assert.equal(pose('sleep').attributes.display,'inline');
+ assert.match(nodes(pose('sleep')).find(n=>n.tagName==='image').attributes.href,/bed-sleep-v4/);
+ assert.deepEqual(r,before);assert.deepEqual(nodes(svg).filter(n=>n.attributes['data-room-item']).map(n=>n.attributes['data-room-item']).sort(),r.items.map(i=>i.id).sort());
+});
+test('manual floor choice hides the resident on the other floor, while selecting an action refocuses it',()=>{
+ const svg=make(room(),{preview:'type'}),resident=nodes(svg).find(n=>n.attributes['data-room-resident']);
+ svg.setRoomFloor('2');assert.equal(resident.attributes.display,'none');
+ svg.setRoomActivity({night:{sleeping:false},jobs:[]});assert.equal(resident.attributes.display,'none');
+ svg.setRoomActivity({preview:'type'});assert.equal(svg.attributes['data-room-floor'],'1');assert.equal(resident.attributes.display,'inline');
+ svg.setRoomActivity({preview:'sleep'});svg.setRoomFloor('1');assert.equal(resident.attributes.display,'none');
+ svg.setRoomFloor('all');assert.equal(resident.attributes.display,'inline');
+});
+test('only visible contact animations advance and removed room stops requesting frames',()=>{
+ let tick,queued=0;const svg=make(room(),{preview:'type',animation:{reducedMotion:false,requestFrame(fn){tick=fn;queued++;}}});
+ const resident=nodes(svg).find(n=>n.attributes['data-room-resident']);resident.isConnected=true;
+ const animation=mode=>nodes(svg).find(n=>n.attributes['data-contact-animation']===mode),picture=mode=>nodes(animation(mode)).find(n=>n.tagName==='image');
+ tick(0);const before=picture('write').attributes.href;tick(400);assert.match(picture('type').attributes.href,/desk-type-b-v4/);assert.equal(animation('type').attributes.opacity,'1');assert.equal(picture('write').attributes.href,before);
+ svg.setRoomFloor('2');const hidden=animation('type').attributes.opacity;tick(800);assert.equal(animation('type').attributes.opacity,hidden);
+ resident.isConnected=false;const count=queued;tick(900);assert.equal(queued,count);
+});
+test('changed inventory falls back to individual objects rather than leaving removed items baked in',()=>{
+ const r=room();r.items=r.items.filter(x=>x.name!=='床');const svg=make(r);
+ assert.notEqual(svg.attributes['data-room-art'],'reference-v4');assert.equal(nodes(svg).filter(n=>n.attributes['data-room-item']==='0').length,0);
+});
+test('artwork retains keyboard accessible light and curtain controls with saved states',()=>{
+ let lamp=0,curtain=0;const svg=make({...room(),lamp:false,curtain:false},{onLamp(){lamp++;},onCurtain(){curtain++;}});
+ const a=nodes(svg).find(n=>n.attributes['data-room-control']==='lamp'),b=nodes(svg).find(n=>n.attributes['data-room-control']==='curtain');
+ assert.equal(a.attributes['aria-label'],'打开台灯');assert.equal(b.attributes['aria-label'],'拉开窗帘');a.events.click();b.events.keydown({key:'Enter',preventDefault(){}});assert.equal(lamp,1);assert.equal(curtain,1);
+ assert.equal(nodes(svg).find(n=>n.attributes['data-curtain-overlay']).attributes.display,'inline');
+});
+test('resident close-up frames the occupied furniture and follows actions across floors',()=>{
+ const svg=make(room(),{preview:'type'}),fit=svg.attributes.viewBox;
+ assert.equal(typeof svg.setRoomDetail,'function');svg.setRoomDetail(true);
+ const type=svg.attributes.viewBox.split(' ').map(Number);assert.ok(type[2]<1000);assert.ok(type[0]<900&&type[0]+type[2]>900);assert.ok(type[1]<1470&&type[1]+type[3]>1470);
+ svg.setRoomActivity({preview:'sleep'});assert.equal(svg.attributes['data-room-floor'],'2');const bed=svg.attributes.viewBox.split(' ').map(Number);assert.ok(bed[2]<1000);assert.ok(bed[1]<610&&bed[1]+bed[3]>610);
+ svg.setRoomFloor('1');assert.equal(svg.attributes.viewBox,fit,'manual floor choice returns to whole-floor framing');
+});
+test('art walking remains in the clear aisle, covers eight phases and does not teleport',()=>{
+ let tick;const svg=make(room(),{preview:'walk',animation:{reducedMotion:false,requestFrame(fn){tick=fn;}}});nodes(svg).find(n=>n.attributes['data-room-resident']).isConnected=true;
+ const pose=nodes(svg).find(n=>n.attributes['data-room-pose']==='walk'),phases=new Set();let previous=null;
+ for(let t=0;t<30000;t+=40){tick(t);const[x,y]=pose.attributes.transform.match(/translate\(([^,]+),([^)]+)\)/).slice(1).map(Number);assert.ok(x>=1030&&x<=1050);assert.ok(y>=1655&&y<=1865);if(previous)assert.ok(Math.hypot(x-previous[0],y-previous[1])<5);previous=[x,y];if(svg.attributes['data-walk-frame']!=='standing')phases.add(svg.attributes['data-walk-frame']);}
+ assert.equal(phases.size,8);
+});
