@@ -1,43 +1,35 @@
-# 发布到 GitHub
+# 维护和发布
 
-仓库名称建议：`pseudo-congling-panel`。展示名称：**伪从绫开始的面板 1.0**。程序内部包名保留 `dsh-whale-status`，以免现有用户升级时被识别成另一个插件。
+仓库：[xinghailiuli/pseudo-congling-panel](https://github.com/xinghailiuli/pseudo-congling-panel)。本版展示名称为“伪从绫开始的面板 1.1”，包名始终为 `dsh-whale-status`。
 
-## 上传源码
+## 准备版本
 
-只上传本源码目录的内容，不要上传它外面的个人工作区或 DSH profile。本目录已经排除私人状态、账号和其他插件。
-
-1. 在 GitHub 新建一个 Public 仓库 `pseudo-congling-panel`。不要让 GitHub 再自动创建 README 或 LICENSE，本目录已提供。
-2. 推荐用 GitHub Desktop 的 **Add local repository**：选择本目录，尚无 Git 仓库时创建，再 Publish repository。也可使用下面的 Git 命令。
-3. 若使用命令行，在本目录执行（将 `YOUR_GITHUB_NAME` 替换为自己的 GitHub 用户名）：
+1. 从当前公开源码建立工作副本，保留独立数据目录、可选桥接与自带角色路由等可移植适配。
+2. 更新 `package.json` 版本、README、CHANGELOG、详细更新说明和发布说明。
+3. 仅纳入本面板代码与允许公开的素材，不打包个人状态、QQ/日记/记忆数据、运行令牌、其他插件、生成回执或整个个人工作区。
+4. 使用 Node.js 24 执行：
 
    ```powershell
-   git init -b main
-   git add .
-   git commit -m "Release pseudo Congling panel 1.0"
-   git remote add origin https://github.com/YOUR_GITHUB_NAME/pseudo-congling-panel.git
-   git push -u origin main
+   npm run build
+   npm test
+   npm pack
    ```
 
-如果 Git 尚未配置提交署名，按 Git 的提示配置自己的用户名和邮箱。不要把令牌写进仓库或 URL。仓库内保留 `lib/` 构建产物，便于检查源码与发布内容。
+5. 检查打包清单，解包到独立目录，从包内入口启动并检查房间与资源。`lib/`、工作区样式和全部懒加载块必须存在；PNG 本身不构成完整插件。
+6. 文件与许可核查后提交源码和构建产物，正常推送 Git 分支并创建新版本标签，不覆盖已发布标签。
 
-## 创建下载版本
+## GitHub Release
 
-1. 进入仓库 **Releases → Draft a new release**。
-2. 标签填写 `v1.0.0`，标题填写“伪从绫开始的面板 1.0”。
-3. 复制 `docs/RELEASE_NOTES.md` 的内容作为说明。
-4. 附上 `dsh-whale-status-1.0.0.tgz` 和发布目录的 `SHA256SUMS.txt`。源码 ZIP 可另附，GitHub 也会自动生成对应标签的源码下载。
-5. 在你完成实际安装/画面验收前，可先勾选 **pre-release** 并在说明里保留验证边界；验收后再正式发布。
+在仓库 **Releases → Draft a new release** 中，选对应提交创建 `v1.1.0` 标签，标题“伪从绫开始的面板 1.1 · 小屋生活与换装”。说明采用 [RELEASE_NOTES.md](RELEASE_NOTES.md)。
 
-`.tgz` 是给 DSH 安装的；源码 ZIP 是给开发者查看、修改和上传的。不要把源码 ZIP 改后缀当插件包，也不需要做 EXE。
+附上：
 
-后续升级时，修改 `package.json` 的版本、更新发布说明，运行：
+- `dsh-whale-status-1.1.0.tgz`：可安装插件。
+- `pseudo-congling-panel-1.1.0-source.zip`：来自对应提交的源码。
+- `SHA256SUMS.txt`：上述两文件的 SHA-256。
 
-```powershell
-npm run build
-npm test
-npm pack
-```
+最终原生 DSH 界面未验收时标记 **Pre-release**，并保留具体验证边界。发布后核对远程提交/标签和附件，下载校验实际文件。
 
-每次介绍、展示或分发含角色素材的版本，都保留原作者地址：[PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet)。
+`.tgz` 给 DSH 安装；源码 ZIP 供查看与修改。无需制作 EXE，也不要通过改扩展名替代打包。令牌只交给凭据管理器，不写进 Git URL、源码或文档。
 
-参考：[DSH 官方发布文档](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/publish.md)、[GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)。
+介绍、展示与分发始终保留角色来源：[PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet)。

@@ -5,11 +5,18 @@ import {roomNavigation} from '../src/room-navigation.mjs';
 
 const trip=(from,to)=>{const j=createRoomJourney(roomNavigation(from));j.go(to,0);const samples=[];for(let t=0;t<=20000;t+=10){const p=j.sample(t);samples.push(p);if(p.arrived)break;}assert.ok(samples.at(-1).arrived);return samples;};
 
+test('terrace approaches keep the full stance outside the new bench footprint',()=>{
+ for(const from of ['type','read','sleep','enchant','garden'])for(const pair of [[from,'rest'],['rest',from]])for(const p of trip(...pair)){
+  if(p.floor!==2||p.transition)continue;
+  assert.ok(!(p.x+14>1086&&p.x-14<1201&&p.y+8>644&&p.y-8<711),pair.join(' -> ')+' crosses bench at '+p.x+','+p.y);
+ }
+});
+
 test('watering and terrace sitting use the open floor between them in both directions',()=>{
  for(const [from,to]of [['garden','rest'],['rest','garden']]){
   const points=trip(from,to);let length=0;
   for(let i=1;i<points.length;i++)length+=Math.hypot(points[i].x-points[i-1].x,points[i].y-points[i-1].y);
-  assert.ok(length<160,`${from} -> ${to} walked ${length.toFixed(1)} px instead of the nearby clear approach`);
+  assert.ok(length<285,`${from} -> ${to} walked ${length.toFixed(1)} px instead of going around the nearby bench end`);
   assert.ok(points.every(p=>p.floor===2&&p.kind!=='stairs'&&p.x<1140));
  }
 });
@@ -18,7 +25,7 @@ test('left-side upstairs activities approach the seat without visiting the right
  for(const from of ['read','sleep','enchant']){
   const points=trip(from,'rest');assert.ok(points.every(p=>p.x<=1125),from+' detours to the right side before sitting');
   let approaching=false,previous=Infinity;
-  for(const p of points){const distance=Math.hypot(p.x-1102,p.y-705);if(distance<155)approaching=true;if(approaching){assert.ok(distance<=previous+.001,from+' walks away after reaching the seat approach');previous=distance;}}
+  for(const p of points){const distance=Math.hypot(p.x-1102,p.y-736);if(distance<155)approaching=true;if(approaching){assert.ok(distance<=previous+.001,from+' walks away after reaching the seat approach');previous=distance;}}
  }
 });
 

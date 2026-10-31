@@ -6,6 +6,8 @@ Character source and mandatory attribution: [PC2005-cloud/dsh-pet](https://githu
 
 `room-actions/` and `room-house/` contain the panel's AI-assisted 2D room/action artwork, including character derivatives. They retain the noncommercial and attribution terms described in `THIRD_PARTY_NOTICES.md`. `room-actions/manifest.json` holds the frame, hotspot and contact coordinates. Runtime movement and masking are implemented in `src/room-*.mjs`.
 
-The current scene uses floor-one-v6, floor-two-v7, normal walk-v3 frames, upstairs-garden-v7 and the v4/v5 contact layers. Older artwork still referenced by the renderer's compatibility routes or tests is retained. Private source-image paths and generation receipts are excluded from this distribution.
+The current scene uses floor-one-v6, floor-two-v7, floor-two-mirror-v12, normal walk-v3 frames, upstairs-garden-v7 and the v4/v5 contact layers. The `room-life-v10/` and `room-life-v11/` atlases add whole-character daily actions. The `wardrobe-v1/` directory includes 13 complete-character outfit sheets with 16 basic poses each and crop/outline metadata. These are AI-assisted derivatives under the same attribution and noncommercial conditions; they are not a 3D rig or separately interchangeable clothing layers.
+
+Older artwork still referenced by the renderer's compatibility routes or tests is retained. Private source-image paths, generation receipts and original private reference files are excluded from this distribution. The public wardrobe catalog contains only runtime IDs, names and quality labels.
 
 `asset-integrity.json` lists SHA-256 hashes of the distributed PNG and WebP files. Bundled pictures are byte-for-byte copies; no substitute resident is used.

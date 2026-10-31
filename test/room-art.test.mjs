@@ -9,6 +9,54 @@ class Element{constructor(tag){this.tagName=tag;this.attributes={};this.children
 const document={createElementNS(_,tag){return new Element(tag);}},nodes=n=>[n,...n.children.flatMap(nodes)];
 const make=(data=room(),extra={})=>createBlockRoom(data,{document,actionAssets:assets,petAssets:{idle:{frames:['idle0','idle1'],frameMs:40},head_pat:{frames:['pat0','pat1'],frameMs:40}},animation:{reducedMotion:true},...extra});
 
+test('two simultaneous room views never share SVG mask identities',()=>{
+ const a=make(),b=make(),ids=nodes(a).map(n=>n.attributes.id).filter(Boolean);
+ assert.equal(nodes(b).some(n=>ids.includes(n.attributes.id)),false);
+});
+
+test('furniture feature hotspots navigate on click or keyboard without changing resident activity',()=>{
+ const selected=[],r=room(),before=structuredClone(r),svg=make(r,{preview:'type',onFurniture:id=>selected.push(id)});
+ for(const [id,level]of [['computer','1'],['bed','2'],['mirror','2'],['enchant','2']]){
+  svg.setRoomFloor(level);const hotspot=nodes(svg).find(n=>n.attributes['data-room-furniture']===id);assert.ok(hotspot,id);assert.equal(hotspot.attributes.role,'button');
+  if(id==='computer')hotspot.events.click();else hotspot.events.keydown({key:'Enter',preventDefault(){}});
+  assert.equal(selected.at(-1),id);assert.equal(svg.attributes['data-room-activity'],'type');
+ }
+ svg.setRoomFloor('1');assert.equal(nodes(svg).find(n=>n.attributes['data-furniture-floor']==='2').attributes.display,'none');
+ svg.setRoomFloor('2');assert.equal(nodes(svg).find(n=>n.attributes['data-furniture-floor']==='1').attributes.display,'none');
+ assert.deepEqual(r,before);
+});
+
+test('mirror and late house artwork update in place, preserving the current walk and floor',()=>{
+ let tick;const svg=make(room(),{onFurniture(){},animation:{reducedMotion:false,requestFrame(fn){tick=fn;}}});
+ const resident=nodes(svg).find(n=>n.attributes['data-room-resident']);resident.isConnected=true;tick(0);svg.setRoomActivity({preview:'garden'});tick(3500);svg.setRoomFloor('2');
+ const before=svg.attributes['data-resident-feet'];assert.equal(typeof svg.setRoomArtAssets,'function');
+ svg.setRoomArtAssets({'floor-one':'new-one','floor-two':'new-two',garden:'new-garden',mirror:'new-mirror'});
+ assert.equal(svg.attributes['data-resident-feet'],before);assert.equal(svg.attributes['data-room-floor'],'2');
+ const patch=nodes(svg).find(n=>n.attributes['data-room-mirror']);assert.ok(patch);assert.equal(nodes(patch).find(n=>n.tagName==='image').attributes.href,'new-mirror');
+ assert.ok(nodes(svg).some(n=>n.tagName==='image'&&n.attributes.href==='new-two'));
+});
+
+test('missing contact artwork does not remove the diary feature hotspot',()=>{
+ const broken=structuredClone(assets);broken.house.actions.enchant.frames=[];let selected;
+ const svg=make(room(),{actionAssets:broken,onFurniture:id=>selected=id});
+ const hotspot=nodes(svg).find(n=>n.attributes['data-room-furniture']==='enchant');assert.ok(hotspot);hotspot.events.click();assert.equal(selected,'enchant');
+});
+
+test('wardrobe switches one actor without resetting journey and can restore original',()=>{
+ const svg=make(),before=svg.attributes['data-resident-feet'];
+ assert.equal(typeof svg.setRoomOutfit,'function');
+ const outfit={version:1,id:'navy-gala',url:'data:image/png;base64,AAAA',geometry:{width:400,height:400,frames:Array.from({length:16},(_,i)=>({crop:[i%4*100,Math.floor(i/4)*100,90,90],outline:[[0,0],[1,0],[1,1]]}))}};
+ assert.equal(svg.setRoomOutfit(outfit),true);assert.equal(svg.attributes['data-resident-feet'],before);
+ assert.equal(nodes(svg).filter(n=>n.attributes['data-room-pose']&&n.attributes.display==='inline').length,0);
+ assert.equal(nodes(svg).find(n=>n.attributes['data-wardrobe-actor']==='navy-gala').attributes.display,'inline');
+ svg.setRoomActivity({preview:'sleep'});
+ assert.equal(nodes(svg).find(n=>n.attributes['data-room-foreground']==='wardrobe-quilt').attributes.display,'inline');
+ assert.equal(svg.setRoomOutfit({...outfit,id:'bad'}),false);
+ assert.equal(svg.setRoomOutfit(null),true);
+ assert.equal(nodes(svg).find(n=>n.attributes['data-room-foreground']==='wardrobe-quilt').attributes.display,'none');
+ assert.equal(nodes(svg).filter(n=>n.attributes['data-room-pose']&&n.attributes.display==='inline').length,1);
+});
+
 test('incomplete upstairs art keeps the legacy resident visible and does not advertise unsupported actions',()=>{
  const broken=structuredClone(assets);broken.house.actions.read.frames=[];
  const svg=make(room(),{actionAssets:broken,preview:'read'});

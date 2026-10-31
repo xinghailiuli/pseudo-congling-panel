@@ -5,14 +5,40 @@ window.__ModuleLoader__.load({
     let assetOrigin='dsh-app://app';
     try { const url=new URL(window.location.href);if(['http:','https:','dsh-app:'].includes(url.protocol))assetOrigin=url.protocol+'//'+url.host; } catch {}
     const panelHtml = __PANEL_HTML__.replaceAll('__LIULI_ASSET_ORIGIN__',()=>assetOrigin);
-    let roomAssets;
+    let roomAssets,lifeAssets;
+    const wardrobeIds=new Set(__WARDROBE_IDS__),wardrobeLoads=new Map(),wardrobeKey='liuli-companion:wardrobe:v1';
     const allowedActions = new Set(__ALLOWED_ACTIONS__);
     __FRAME_BRIDGE__
     const PANEL_ID = 'whale-status';
     function StatusPanel() {
       const frame = React.useRef(null);
       React.useEffect(() => attachFrameBridge(window, () => frame.current?.contentWindow, allowedActions), []);
-      const sendRoomAssets=async()=>{try{roomAssets??=require.async('./client.room-art-v7.js');const assets=await roomAssets;frame.current?.contentWindow?.postMessage({channel:'liuli-companion',type:'room-assets',assets},'*');}catch{roomAssets=null;}};
+      React.useEffect(()=>{
+        let active=true;
+        const receive=async event=>{
+          const target=frame.current?.contentWindow,d=event.data;
+          if(!target||event.source!==target||d?.channel!=='liuli-companion')return;
+          if(d.type==='wardrobe-selected'&&(d.id==='original'||wardrobeIds.has(d.id))){try{localStorage.setItem(wardrobeKey,d.id);}catch{}return;}
+          if(d.type!=='wardrobe-request'||typeof d.requestId!=='string')return;
+          let id=d.id;if(id===undefined){try{id=localStorage.getItem(wardrobeKey);}catch{}id=wardrobeIds.has(id)?id:'original';}
+          if(id!=='original'&&!wardrobeIds.has(id))return;
+          try{
+            let assets=null;if(id!=='original'){if(!wardrobeLoads.has(id))wardrobeLoads.set(id,require.async('./client.wardrobe-'+id+'-v1.js'));assets=await wardrobeLoads.get(id);}
+            if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'wardrobe-assets',id,requestId:d.requestId,assets},'*');
+          }catch{wardrobeLoads.delete(id);if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'wardrobe-error',requestId:d.requestId},'*');}
+        };
+        window.addEventListener('message',receive);return()=>{active=false;window.removeEventListener('message',receive);};
+      },[]);
+      React.useEffect(()=>{
+        let active=true;
+        const receive=async event=>{
+          const target=frame.current?.contentWindow;
+          if(!target||event.source!==target||event.data?.channel!=='liuli-companion'||event.data.type!=='room-life-request')return;
+          try{lifeAssets??=require.async('./client.room-life-v11.js');const assets=await lifeAssets;if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'room-life-assets',assets},'*');}catch{lifeAssets=null;}
+        };
+        window.addEventListener('message',receive);return()=>{active=false;window.removeEventListener('message',receive);};
+      },[]);
+      const sendRoomAssets=async()=>{try{roomAssets??=require.async('./client.room-art-v12.js');const assets=await roomAssets;frame.current?.contentWindow?.postMessage({channel:'liuli-companion',type:'room-assets',assets},'*');}catch{roomAssets=null;}};
       return React.createElement('iframe', {
         ref: frame,
         title: '琉璃陪伴中心',

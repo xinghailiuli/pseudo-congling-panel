@@ -38,7 +38,7 @@ test('room inventory edits retain the inventory response revision when activity 
   let timerId = 0;
   const parent = { postMessage(message) { requests.push(message); } };
   const context = {
-    document, parent, crypto: webcrypto, DAFEIYU_CLIPS: {}, ROOM_ACTIONS: {},
+    document, parent, crypto: webcrypto, DAFEIYU_CLIPS: {}, ROOM_ACTIONS: {}, WARDROBE_CATALOG:JSON.parse(await readFile(new URL('../assets/wardrobe-v1/catalog.json',import.meta.url),'utf8')),
     window: { addEventListener(type, listener) { listeners[type] = listener; } },
     setTimeout(callback, delay) { timers.set(++timerId, { callback, delay }); return timerId; },
     clearTimeout(id) { timers.delete(id); },

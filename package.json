@@ -1,6 +1,6 @@
 {
   "name": "dsh-whale-status",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "琉璃陪伴中心：完整状态面板、MC 风格双层小屋、大肥鱼动作交互及可选记忆/日记/QQ 服务适配。",
   "type": "module",
@@ -24,7 +24,9 @@
     "README.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
-    "docs"
+    "docs",
+    "room-workspace.css",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "node build.mjs",
@@ -45,7 +47,7 @@
       ]
     }
   },
-  "displayName": "伪从绫开始的面板 1.0",
+  "displayName": "伪从绫开始的面板 1.1",
   "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "node": ">=24",

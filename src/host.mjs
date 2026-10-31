@@ -27,7 +27,7 @@ export async function startHost(ctx,options={}){
   const model=new Model({llm:()=>ctx.llm,target:async()=>{const c=bridgeRoot?await config():{};return {provider:options.provider||c.dsh?.provider||'deepseek-official',model:options.model||c.dsh?.model||'deepseek-flash'};}});
   const tools=new ToolCatalog({list:async()=>(ctx.tools?.schemas?.()||[]).filter(x=>x.name!=='run_code').map(x=>({name:x.name,description:x.description})),call,model});
   const memory=new BasicMemory(call,{project:options.memoryProject||'personal'}),diary=new Diary(diaryFile,call),qq=new QQ({config});
-  const service=new CompanionService({store,bridge,memory,diary,model,qq,tools,previewPersona:content=>selectRoleText(content,'v2'),runtimeInfo:()=>({version:'1.0.0',product:'伪从绫开始的面板 1.0',host:'DSH native',bridgeConfigured:Boolean(bridgeRoot),toolMode:ctx.tools?.modeFor?.(),memoryTools:['read_note','write_note','search_notes','list_directory'].map(n=>({name:n,loaded:Boolean(ctx.tools?.get?.(`mcp__basic_memory__${n}`))})),diaryTool:Boolean(ctx.tools?.get?.('mcp__diary__diary_write'))})});
+  const service=new CompanionService({store,bridge,memory,diary,model,qq,tools,previewPersona:content=>selectRoleText(content,'v2'),runtimeInfo:()=>({version:'1.1.0',product:'伪从绫开始的面板 1.1',host:'DSH native',bridgeConfigured:Boolean(bridgeRoot),toolMode:ctx.tools?.modeFor?.(),memoryTools:['read_note','write_note','search_notes','list_directory'].map(n=>({name:n,loaded:Boolean(ctx.tools?.get?.(`mcp__basic_memory__${n}`))})),diaryTool:Boolean(ctx.tools?.get?.('mcp__diary__diary_write'))})});
   await service.recover();
   const handler=createHandler({connection:ctx.connection,service,runtimeToken});
   for(const path of API_PATHS)releases.push(ctx.webServer.register({kind:'exact',path,handler}));

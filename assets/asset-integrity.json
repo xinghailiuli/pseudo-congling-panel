@@ -55,6 +55,11 @@
     "sha256": "7c87da08ea63d47089dd68c24411921d96d9fae7ff860f0472ad2fd2daf2d39b"
   },
   {
+    "file": "assets/room-house/floor-two-mirror-v12.png",
+    "bytes": 1973377,
+    "sha256": "e95d58bb0a51535bc6687b5dbe980155301e2f33b566623923bcf424bdd5cff2"
+  },
+  {
     "file": "assets/room-house/floor-two-v4.png",
     "bytes": 2367450,
     "sha256": "343ddd4dd206d46f26fb96db95bf459251aca8a7903c880edaa377c88462192a"
@@ -103,6 +108,51 @@
     "file": "assets/room-house/upstairs-rest-v5.png",
     "bytes": 2243663,
     "sha256": "3d22486c52f5282b370f24c28912af4622f327fba88c51e7bb7a1c7b17eed00c"
+  },
+  {
+    "file": "assets/room-life-v10/bed.png",
+    "bytes": 2498193,
+    "sha256": "df6607dd690f04c41b422afeb00f0f6834fe19a8d4a3de36245f6e7f07edfaa6"
+  },
+  {
+    "file": "assets/room-life-v10/carry.png",
+    "bytes": 2110133,
+    "sha256": "2b4ec83f1f7fe1af6bb3ad739b1bb259af9aeac815e220bcb81fea6225824c07"
+  },
+  {
+    "file": "assets/room-life-v10/cover.png",
+    "bytes": 2398951,
+    "sha256": "da98a67f739f2e25f2c3706bd0fed2614892641e98a8c7d1e97dbbc1a2aee56a"
+  },
+  {
+    "file": "assets/room-life-v10/desk.png",
+    "bytes": 2319634,
+    "sha256": "695eaba238370deaf60db9502963a897288d5cd6aacb0dd9ea87cd587ee107e8"
+  },
+  {
+    "file": "assets/room-life-v10/garden.png",
+    "bytes": 2656979,
+    "sha256": "e0ec584403f6249e451efd3d505817ad640286306bbf81149e5f14a0bdf776ea"
+  },
+  {
+    "file": "assets/room-life-v10/greenhouse.png",
+    "bytes": 2256514,
+    "sha256": "fdee3d88e8969827e05799dfac684824efec91694f41c64aed477680af66cecd"
+  },
+  {
+    "file": "assets/room-life-v10/sofa.png",
+    "bytes": 2352655,
+    "sha256": "e101289c4b639ad850f9f77d464493ba3a7f2322f44c7f0f87df8c991261babb"
+  },
+  {
+    "file": "assets/room-life-v10/upper.png",
+    "bytes": 2605060,
+    "sha256": "2302021f60ea2752adf5ce476acfe06536673dd915b7b3407b7d2c3efdf58652"
+  },
+  {
+    "file": "assets/room-life-v11/sofa-rest.png",
+    "bytes": 2369404,
+    "sha256": "efc434a3280099bc353d3da41eaf226703a820c5ba342ccf0fdb715ffe6c16b1"
   },
   {
     "file": "assets/room-pet/head_pat/head_pat_001.webp",
@@ -4928,5 +4978,70 @@
     "file": "assets/room-pet/working_command/working_command_241.webp",
     "bytes": 15308,
     "sha256": "924143fb81d017aec66fcfb788203b0ce34060eae8b6e9d586742e97df336bd5"
+  },
+  {
+    "file": "assets/wardrobe-v1/cream-hoodie.png",
+    "bytes": 1990235,
+    "sha256": "f3d071bad41cc181098d3e3e0e94876395e4b1dafa5a4c2b32671440a806a752"
+  },
+  {
+    "file": "assets/wardrobe-v1/doctor.png",
+    "bytes": 2149348,
+    "sha256": "e7591acec5dbf1202c5b1fc4ff99e3cc7bd5ea3b920c362e40290d28301bd08b"
+  },
+  {
+    "file": "assets/wardrobe-v1/hanfu.png",
+    "bytes": 2751342,
+    "sha256": "e8a95e4bfc6df3012afe675bea5ced696afbe59b2b9bd679376a5be3fd2708a3"
+  },
+  {
+    "file": "assets/wardrobe-v1/navy-gala.png",
+    "bytes": 2232864,
+    "sha256": "01e518ee56cd46cc51fde76476ca2f15ff56cec1a697666b6e96284e683eaf46"
+  },
+  {
+    "file": "assets/wardrobe-v1/red-server.png",
+    "bytes": 2331455,
+    "sha256": "4ed3fd3473aaf7b6c004e2e8072764219d87b2637119960f2f06d5bebef8c135"
+  },
+  {
+    "file": "assets/wardrobe-v1/sailor.png",
+    "bytes": 2264812,
+    "sha256": "458144ce178f7b9f02551405d7cf9dc036dd5497fc86084ce296887054d34c27"
+  },
+  {
+    "file": "assets/wardrobe-v1/snow-earmuffs.png",
+    "bytes": 2066036,
+    "sha256": "f2d6d0aac601d83b27ed0da992eb6e3306358fdb786e5a6ece4c7a5bc40ecbc6"
+  },
+  {
+    "file": "assets/wardrobe-v1/swordswoman.png",
+    "bytes": 2461428,
+    "sha256": "ae463c68b84db782e27fd71b0e4ff806aa4a8689bbce54487beee018238e9755"
+  },
+  {
+    "file": "assets/wardrobe-v1/voxel-whale.png",
+    "bytes": 1961227,
+    "sha256": "da817d5016d54441164068d88ba41323bb12c8f5efd6a34c1a2f5c887365e5fd"
+  },
+  {
+    "file": "assets/wardrobe-v1/whale-hood.png",
+    "bytes": 2112786,
+    "sha256": "314fc98c2e9861c9be8f845c278ef18e0865ee2a629a1431c3d16cf65d60f185"
+  },
+  {
+    "file": "assets/wardrobe-v1/whale-maid.png",
+    "bytes": 2258774,
+    "sha256": "6785fde63c6f2d7193843fc0506c93a626ce9af896b3faab35202bb4f9f91dad"
+  },
+  {
+    "file": "assets/wardrobe-v1/whale-sweater.png",
+    "bytes": 2071187,
+    "sha256": "077ce7224e8671afedf3f56ed7856365a09719e94559bbfeeb1e69cb79dec193"
+  },
+  {
+    "file": "assets/wardrobe-v1/white-beret.png",
+    "bytes": 2262064,
+    "sha256": "85d24245b83ccdb3890ebbf64002af79f773337c9f5d01e7577b08a8bffb2e92"
   }
 ]

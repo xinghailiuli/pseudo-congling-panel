@@ -1,0 +1,67 @@
+[
+  {
+    "id": "navy-gala",
+    "name": "星海礼服",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "red-server",
+    "name": "红帽店员",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "voxel-whale",
+    "name": "方块鲸鱼冬装",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "whale-hood",
+    "name": "鲸鱼兜帽冬装",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "snow-earmuffs",
+    "name": "雪花耳罩冬装",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "cream-hoodie",
+    "name": "奶油卫衣",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "white-beret",
+    "name": "白色贝雷帽",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "whale-maid",
+    "name": "鲸鱼女仆",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "whale-sweater",
+    "name": "鲸鱼毛衣",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "doctor",
+    "name": "白衣研究员",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "hanfu",
+    "name": "星河汉服",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "swordswoman",
+    "name": "夜蓝剑装",
+    "quality": "基础16姿态"
+  },
+  {
+    "id": "sailor",
+    "name": "蓝白水手服",
+    "quality": "基础16姿态"
+  }
+]

@@ -2,8 +2,8 @@ import {roomActivity,roomWalkPoint} from './room-life.mjs';
 import {createRoomHouse} from './room-house.mjs';
 import {createArtBlockRoom} from './room-art.mjs';
 
-export function createBlockRoom(room,{document:doc=document,onLamp,onCurtain,petAssets,actionAssets={},animation={},night={},jobs=[],preview='auto',onActivity,onFloor}={}){
- const illustrated=createArtBlockRoom(room,{document:doc,onLamp,onCurtain,petAssets,actionAssets,animation,night,jobs,preview,onActivity,onFloor});if(illustrated)return illustrated;
+export function createBlockRoom(room,{document:doc=document,onLamp,onCurtain,petAssets,actionAssets={},animation={},night={},jobs=[],preview='auto',onActivity,onFloor,onFurniture}={}){
+ const illustrated=createArtBlockRoom(room,{document:doc,onLamp,onCurtain,petAssets,actionAssets,animation,night,jobs,preview,onActivity,onFloor,onFurniture});if(illustrated)return illustrated;
  const {svg,el,point,floors,drawings,staticKeyboard,blanket,anchors}=createRoomHouse(room,doc,{onLamp,onCurtain});
  let visual={night,jobs,preview},elapsed=0,lastMode,lastSource,patStart=null,patPending=false,origin=null,floor='1';
  const requestFrame=animation.requestFrame||globalThis.requestAnimationFrame?.bind(globalThis),reduced=animation.reducedMotion??globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches??false;

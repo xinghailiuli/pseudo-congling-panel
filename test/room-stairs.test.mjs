@@ -47,7 +47,7 @@ test('a nearby node across a wall is not a legal shortcut while redirecting',()=
 });
 test('foreground masks contain furniture silhouettes and never a rectangle of floor pixels',()=>{
  const svg=createBlockRoom({items:names.map((name,id)=>({id,name}))},{document,actionAssets:assets,preview:'read',animation:{reducedMotion:true}});
- const clips=nodes(svg).filter(n=>String(n.attributes.id||'').startsWith('room-front-'));assert.ok(clips.length>=6);for(const clip of clips)assert.ok(clip.children.every(n=>n.tagName==='polygon'));
+ const clips=nodes(svg).filter(n=>String(n.attributes.id||'').includes('room-front-'));assert.ok(clips.length>=6);for(const clip of clips)assert.ok(clip.children.every(n=>n.tagName==='polygon'));
 });
 const animated=extra=>{let tick;const svg=createBlockRoom({items:names.map((name,id)=>({id,name}))},{document,actionAssets:assets,preview:'type',animation:{reducedMotion:false,requestFrame(fn){tick=fn;}},...extra});const resident=nodes(svg).find(n=>n.attributes['data-room-resident']);resident.isConnected=true;tick(0);return {svg,resident,tick:t=>tick(t)};};
 test('rapid destination changes preserve the active departure fade and only change its destination',()=>{
