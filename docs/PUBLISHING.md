@@ -1,6 +1,6 @@
 # 维护和发布
 
-仓库：[xinghailiuli/pseudo-congling-panel](https://github.com/xinghailiuli/pseudo-congling-panel)。本版展示名称为“伪从绫开始的面板 1.1”，包名始终为 `dsh-whale-status`。
+仓库：[xinghailiuli/pseudo-congling-panel](https://github.com/xinghailiuli/pseudo-congling-panel)。本版展示名称为“伪从绫开始的面板 1.11 优化版”，包名始终为 `dsh-whale-status`。
 
 ## 准备版本
 
@@ -20,12 +20,12 @@
 
 ## GitHub Release
 
-在仓库 **Releases → Draft a new release** 中，选对应提交创建 `v1.1.0` 标签，标题“伪从绫开始的面板 1.1 · 小屋生活与换装”。说明采用 [RELEASE_NOTES.md](RELEASE_NOTES.md)。
+在仓库 **Releases → Draft a new release** 中，选对应提交创建 `v1.1.1` 标签，标题“伪从绫开始的面板 1.11 优化版 · 动作与小屋体验修订”。说明采用 [RELEASE_NOTES.md](RELEASE_NOTES.md)。
 
 附上：
 
-- `dsh-whale-status-1.1.0.tgz`：可安装插件。
-- `pseudo-congling-panel-1.1.0-source.zip`：来自对应提交的源码。
+- `dsh-whale-status-1.1.1.tgz`：可安装插件。
+- `pseudo-congling-panel-1.1.1-source.zip`：来自对应提交的源码。
 - `SHA256SUMS.txt`：上述两文件的 SHA-256。
 
 最终原生 DSH 界面未验收时标记 **Pre-release**，并保留具体验证边界。发布后核对远程提交/标签和附件，下载校验实际文件。

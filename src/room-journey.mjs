@@ -44,5 +44,8 @@ export function createRoomJourney({nodes,edges,targets,start,speed=100,stride=62
   for(const e of path.edges){const from=points[e.fromKey],to=points[e.toKey],gaitSpan=e.kind==='stairs'?4:e.kind==='landing'?0:distance(from,to)/stride*8;segments.push({...e,from,to,start:clock,end:clock+e.duration,gaitStart,gaitSpan,step});clock+=e.duration;gaitStart+=gaitSpan;if(e.kind==='stairs')step++;}
   station=points[goal];stationKey=goal;stationPhase=gaitStart;target=mode;
  }
- return {go,sample};
+ return {go,sample,
+  snapshot:()=>structuredClone({segments,station,stationKey,stationPhase,target}),
+  restore(value){const s=structuredClone(value);if(!s||!points[s.stationKey]||!Array.isArray(s.segments)||s.segments.some(e=>!points[e.fromKey]||!points[e.toKey]||![e.start,e.end,e.gaitStart,e.gaitSpan,e.from?.x,e.from?.y,e.to?.x,e.to?.y].every(Number.isFinite))||!Number.isFinite(s.stationPhase))throw Error('Invalid room journey');segments=s.segments;station=points[s.stationKey];stationKey=s.stationKey;stationPhase=s.stationPhase;target=s.target;}
+ };
 }

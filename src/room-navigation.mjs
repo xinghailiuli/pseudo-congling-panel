@@ -18,5 +18,10 @@ export function roomNavigation(start='type') {
  // nearby end, keeping a full foot stance clear of both legs and stair support.
  link('garden','restNorth');link('restNorth','restWest');link('gate','restWest');link('restWest','rest');
  const targets={type:'desk',write:'desk',lounge:'sofa',walk:'aisle',sleep:'bed',read:'book',enchant:'magic',garden:'garden',rest:'rest',wanderFront:'front',wanderBack:'aisle'};
+ for(const node of ['front','aisle','entry','sofaLane','hall','garden','terrace','restWest'])targets['roam-'+node]=node;
  return {nodes,edges,targets,start:targets[start]||'aisle',speed:120,stride:62};
+}
+export function chooseRoomWander(current,random=Math.random){
+ const choices=['front','aisle','entry','sofaLane','hall','garden','terrace','restWest'].map(n=>'roam-'+n).filter(n=>n!==current);
+ return choices[Math.min(choices.length-1,Math.max(0,Math.floor(random()*choices.length)))];
 }

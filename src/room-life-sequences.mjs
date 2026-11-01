@@ -107,11 +107,23 @@ export function createRoomLifeDefinitions(geometry) {
    add('b'+i,i,at,covered?'bed':'hips',pivot,{prop:covered?'quilt':null,headFraction:covered?[.45,.22]:undefined});
   }
   def.poses.b2.at=[517,655];def.poses.b3.at=[499,655];def.poses.b22.at=[517,655];
-  for(const [id,cell]of Object.entries({b7:0,b8:1,b9:2,b10:3,b11:4,b12:3,b13:5,b14:6,b15:7,b16:6,b17:7,b18:8,b19:9,b20:10,b21:11}))add(id,cell,[362,617],'bed',[.36,.32],{atlas:'cover',scale:.55,prop:'quilt'});
-  def.still='b10';def.entry=[step('stand',180),...bedApproach.steps,...sequence(['edge','lower','b2','b3','b4','b5','b6','b7','b8','b9'],210)];
+  // Use a bare lying character on the room's actual pillow. The old cover
+  // atlas contains another pillow/duvet and cannot be composited onto this bed.
+  if(geometry['sofa-rest'])for(const id of ['b7','b8','b9','b10','b11','b12','b13','b14','b15','b16','b17','b18','b19','b20','b21']){
+   add(id,['b7','b8','b18','b19','b20','b21'].includes(id)?0:1,[323,625],'bed',[.25,.45],{atlas:'sofa-rest',scale:.48,rotation:-20,prop:'quilt'});
+  }
+  def.poses.b5.at=[405,644];def.poses.b6.at=[365,632];
+  if(geometry['bed-entry']){
+   const entries={b2:[0,489,565,0],b3:[1,460,575,0],b4:[2,422,583,0],b5:[3,383,598,0],b6:[4,339,615,0],b7:[4,325,621,.2],b8:[4,325,621,.6],b9:[5,325,621,1],b10:[5,325,621,1],b11:[6,325,621,1],b12:[5,325,621,1],b13:[6,325,621,1],b14:[6,325,621,1],b15:[5,325,621,1],b16:[5,325,621,1],b17:[5,325,621,1],b18:[4,325,621,1],b19:[7,383,598,.3],b20:[2,422,583,0],b21:[1,460,575,0],b22:[0,489,565,0]};
+   for(const[id,[cell,x,y,cover]]of Object.entries(entries)){
+    const atlas=geometry['bed-entry'],f=atlas.frames[cell];
+    def.poses[id]={atlas:'bed-entry',cell,bedCell:cell,at:[x,y],support:cell>=4&&cell<=6?'bed':'hips',prop:cover?'quilt':null,pivot:[...f.head],head:[...f.head],scale:188/atlas.referenceHeight,cover};
+   }
+  }
+  def.still='b10';def.entry=[step('stand',180),...bedApproach.steps,...sequence(['edge','lower','b2','b3','b4','b5','b6','b7','b8','b9'],650)];
   def.variations=[{name:'盖好被子，安静睡一会',frames:[step('b10',18000),step('b11',13000),step('b12',18000)]},{name:'轻轻翻身，继续睡觉',frames:[...sequence(['b13','b14','b15','b16'],800),step('b17',20000),step('b16',15000),step('b10',15000)]}];
   const bedBack=bedApproach.backSteps(bedApproach.positions.length-1);
-  for(const [id,pose]of Object.entries(def.poses))def.exits[id]=id==='stand'?[]:pose.route?[...bedApproach.backSteps(pose.routeIndex),step('stand',120)]:[...(id==='edge'?[]:id==='lower'?sequence(['edge']):sequence([...(pose.prop==='quilt'?['b18','b19','b20','b21']:['b4','b3','b2']),'b22','lower','edge'],220)),...bedBack,step('stand',120)];
+  for(const [id,pose]of Object.entries(def.poses))def.exits[id]=id==='stand'?[]:pose.route?[...bedApproach.backSteps(pose.routeIndex),step('stand',120)]:[...(id==='edge'?[]:id==='lower'?sequence(['edge']):sequence([...(pose.support==='bed'?['b18','b19','b20','b21']:['b4','b3','b2']),'b22','lower','edge'],400)),...bedBack,step('stand',120)];
  }
  for(const mode of ['read','enchant','rest']){
   const {def,add}=make(mode,'upper'),base=mode==='read'?[704,535]:mode==='enchant'?[548,510]:[1102,736];
@@ -131,5 +143,90 @@ export function createRoomLifeDefinitions(geometry) {
    for(const [id,pose]of Object.entries(def.poses))def.exits[id]=id==='stand'?[]:sequence([...(pose.prop?['u16','u17']:[]),'u18','lower','stand'],220);
   }
  }
+ if(geometry.transition)installFurnitureTransitions(defs,geometry);
+ if(geometry.bedReference)installBedReference(defs,geometry);
  return defs;
 }
+
+// Reference storyboard: entry and exit are separate drawings. Every pose
+// keeps the quilt's mattress contact anchored; only the drawn limbs move.
+function installBedReference(defs,geometry){
+ const d=defs.sleep,g=geometry.bedReference,step=(pose,duration=260,move=false)=>({pose,duration,move});
+ const scale=188/g.referenceHeight;
+ for(let cell=0;cell<24;cell++){
+  const places={7:[530,730],8:[510,720],9:[485,710],10:[470,710],11:[460,710],12:[460,710],13:[470,710],14:[485,710],15:[510,720],16:[530,730]};
+  const f=g.frames[cell];d.poses['bed-ref-'+cell]={atlas:'bedReference',cell,bedReferenceCell:cell,at:places[cell]||[540,740],support:cell<3||cell>=19?'feet':cell>=8&&cell<=14?'bed':'hips',prop:null,pivot:[...f.hip],head:[...f.head],scale,articulated:true,compositeQuilt:true,cover:cell>=10&&cell<=14?1:0};
+ }
+ const walk=(from,to,prefix)=>{const count=Math.max(1,Math.ceil(Math.hypot(to[0]-from[0],to[1]-from[1])/7));return Array.from({length:count+1},(_,i)=>{const cell=i%8,f=geometry.walk.frames[cell],id=prefix+i;d.poses[id]={atlas:'walk',cell,at:from.map((v,k)=>v+(to[k]-v)*i/count),support:'feet',prop:null,pivot:[f.crop[0]+f.crop[2]*.48,f.crop[1]+f.crop[3]*.98],head:[f.crop[0]+f.crop[2]*.5,f.crop[1]+f.crop[3]*.22],scale:190/geometry.walk.frames[0].crop[3],flip:to[0]>=from[0]?1:-1,cover:0};return step(id,86,true);});};
+ const contact=f=>[540+(f.feet[0]-f.hip[0])*scale,740+(f.feet[1]-f.hip[1])*scale];
+ const origin=d.poses.stand.at,front=contact(g.frames[0]),end=contact(g.frames[23]);
+ const approach=[...walk(origin,[572,790],'reference-outside-'),...walk([572,790],front,'reference-front-')];
+ const leave=[...walk(end,[572,790],'reference-leave-'),...walk([572,790],origin,'reference-home-'),step('stand',120)];
+ const entry=Array.from({length:12},(_,i)=>step('bed-ref-'+i,[260,300,260,350,300,260,300,300,350,300,600,1000][i]));
+ const exit=Array.from({length:12},(_,i)=>step('bed-ref-'+(i+12),[300,500,400,400,300,300,400,350,300,500,500,500][i]));
+ d.entry=[...approach,...entry];d.still='bed-ref-11';d.variations=[{name:'枕好枕头，拉好被子安静休息',frames:[step(d.still,60000)]}];
+ for(const id of Object.keys(d.poses)){
+  const a=approach.findIndex(s=>s.pose===id),cell=d.poses[id].bedReferenceCell;
+  if(id==='stand')d.exits[id]=[];
+  else if(a>=0)d.exits[id]=[...approach.slice(0,a).reverse(),step('stand',120)];
+  else if(Number.isInteger(cell)&&cell<12)d.exits[id]=[...entry.slice(cell+1),...exit,...leave];
+  else if(Number.isInteger(cell))d.exits[id]=[...exit.slice(cell-12+1),...leave];
+  else {const i=leave.findIndex(s=>s.pose===id);d.exits[id]=i>=0?leave.slice(i+1):[...exit,...leave];}
+ }
+}
+
+// The body drawings articulate at the support point. Do not interpolate a
+// sleeping cutout across the mattress between these frames.
+function installFurnitureTransitions(defs,geometry){
+ const g=geometry.transition,scale=188/g.referenceHeight;
+ const pose=(cell,at,support='hips',extra={})=>{const f=g.frames[cell];return {atlas:'transition',cell,transitionCell:cell,at:[...at],support,prop:null,pivot:[...f.hip],head:[...f.head],scale,articulated:true,...extra};};
+ const step=(name,duration=115,move=false)=>({pose:name,duration,move});
+ const walkTo=(d,from,to,prefix)=>{const length=Math.hypot(to[0]-from[0],to[1]-from[1]),n=Math.max(1,Math.ceil(length/7));const names=[];
+  for(let i=0;i<=n;i++){const cell=i%8,f=geometry.walk.frames[cell],p=from.map((v,k)=>v+(to[k]-v)*i/n),id=prefix+i;d.poses[id]={atlas:'walk',cell,at:p,support:'feet',prop:null,pivot:[f.crop[0]+f.crop[2]*.48,f.crop[1]+f.crop[3]*.98],head:[f.crop[0]+f.crop[2]*.5,f.crop[1]+f.crop[3]*.22],scale:190/geometry.walk.frames[0].crop[3],flip:to[0]>=from[0]?1:-1};names.push(id);}
+  return names.map(id=>step(id,86,true));
+ };
+ for(const mode of ['type','write']){
+  const d=defs[mode],approach=walkTo(d,d.poses.stand.at,[950,490],'desk-contact-'),lower=[];
+  for(let i=0;i<8;i++){
+   const cell=[0,0,1,1,2,3,4,5][i],f=geometry.desk.frames[cell],id='desk-settle-'+i;
+   d.poses[id]={atlas:'desk',cell,deskCell:i,at:[950-38*i/7,464-43*i/7],support:i<5?'feet':'hips',prop:null,pivot:[f.crop[0]+f.crop[2]*.48,f.crop[1]+f.crop[3]*.84],head:[f.crop[0]+f.crop[2]*.5,f.crop[1]+f.crop[3]*.22],scale:190/geometry.desk.frames[0].crop[3],articulated:true};lower.push(step(id,125));
+  }
+  d.entry=[...approach,...lower,step(d.still,200)];
+  const getUp=[...lower.slice().reverse(),...approach.slice().reverse(),step('stand',120)];
+  for(const[id,p]of Object.entries(d.poses)){if(id==='stand')d.exits[id]=[];else{const i=d.entry.findIndex(s=>s.pose===id);d.exits[id]=i>=0?[...d.entry.slice(0,i).reverse(),step('stand',120)]:[...(p.prop==='pen'?[step('d12',160)]:[]),...getUp];}}
+ }
+ for(const mode of ['sleep','lounge','rest']){
+  const d=defs[mode],sleep=mode==='sleep',target=sleep?[490,660]:mode==='lounge'?[755,674]:[1140,661],floor=sleep?[490,785]:mode==='lounge'?[740,742]:[1128,738],origin=d.poses.stand.at;
+  const approach=sleep?[...walkTo(d,origin,[572,780],'approach-outside-'),...walkTo(d,[572,780],floor,'approach-front-')]:walkTo(d,origin,floor,'approach-contact-');
+  if(sleep){d.poses.stand.cover=0;for(const s of approach)d.poses[s.pose].cover=0;}
+  const lower=[];
+  for(let i=0;i<8;i++){const f=g.frames[16+i],p0=g.frames[16],start=[floor[0],floor[1]-(p0.anchor[1]-p0.hip[1])*scale],at=start.map((v,k)=>v+(target[k]-v)*i/7),id='settle-'+i;d.poses[id]=pose(16+i,at,i<6?'feet':'hips',{cover:sleep?0:1});lower.push(step(id,125));}
+  let enter=[...approach,...lower,step('settle-7',350)];
+  if(sleep){
+   const bed=[];for(let i=0;i<16;i++){const amount=Math.min(1,i/8),at=[490+(450-490)*amount,660+(615-660)*amount],id='bed-joint-'+i;d.poses[id]=pose(i,at,i<10?'hips':'bed',{prop:i>=12?'quilt':null,cover:i<13?0:(i-12)/3});bed.push(step(id,i>=12?500:i===0?350:150));}
+   enter.push(...bed);d.still='bed-joint-15';
+   d.variations=[{name:'盖好被子，安静睡觉',frames:[step(d.still,60000)]}];
+   d.sleepEvents=true;
+  }else enter.push(step(d.still,250));
+  d.entry=enter;
+  const outward=[...lower.slice(0,7).reverse().map(s=>step(s.pose,125)),...approach.slice().reverse().map(s=>step(s.pose,86,true)),step('stand',120)];
+  for(const id of Object.keys(d.poses)){
+   if(id==='stand'){d.exits[id]=[];continue;}
+   const at=enter.findIndex(s=>s.pose===id);
+   if(at>=0)d.exits[id]=[...enter.slice(0,at).reverse().map(s=>step(s.pose,s.move?86:sleep&&/^bed-joint-1[234]$/.test(s.pose)?550:150,s.move)),step('stand',120)];
+   else if(sleep)d.exits[id]=[...enter.slice().reverse().map(s=>step(s.pose,s.move?86:/^bed-joint-1[234]$/.test(s.pose)?550:150,s.move)),step('stand',120)];
+   else d.exits[id]=[...(d.exits[id]||[]).filter(s=>!['stand','lower'].includes(s.pose)),...outward];
+  }
+ }
+}
+
+export function roomSleepVariation(elapsed,seed=0){
+ if(elapsed<60000)return null;
+ const index=Math.floor((elapsed-60000)/90000),local=(elapsed-60000)%90000;
+ if(local>=6500)return null;
+ const n=((Math.imul((seed|0)+index+1,1103515245)+12345)>>>0)%100;
+ if(n>=80)return null;
+ return {kind:n<25?'kick':'turn',progress:local/6500,index};
+}
+
+

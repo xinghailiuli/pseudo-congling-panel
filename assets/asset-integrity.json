@@ -20,6 +20,151 @@
     "sha256": "00df5adae8fbea75c34d8072985f3def23fab7019820d7ff819f6a864e4524f9"
   },
   {
+    "file": "assets/room-bed-reference-v19/cream-hoodie-fixed.png",
+    "bytes": 2246495,
+    "sha256": "f5236b5bd9ee9ffac0bb578fbd5492000bbfb1692d3e8477d1a56794791382da"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/cream-hoodie-sleep.png",
+    "bytes": 2222501,
+    "sha256": "7d9b4343c73052b0138a8f5e9fa81cc2e26c0c633063588f71ed75ffa95cef23"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/doctor-fixed.png",
+    "bytes": 2335185,
+    "sha256": "bce759af1c894ca7cacb6cf58c42a2c457461b42bb08db147d2a9e1a397b588d"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/doctor-sleep.png",
+    "bytes": 2222599,
+    "sha256": "65c3fe1684b604d29554e342c3ae0ce75a3e6279c9c1618e0bea50e4272cc41a"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/folded.png",
+    "bytes": 1104213,
+    "sha256": "c40a15669eb77670780d67c9c9dd22a6c5fd011948eaa2afb6917bad03302e98"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/hanfu-fixed.png",
+    "bytes": 2401974,
+    "sha256": "dedf7756fc0fb803ddd415179de72a0cb247db32bbc9210e0a5f5f84dab341b4"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/hanfu-sleep.png",
+    "bytes": 2342796,
+    "sha256": "9f3140e4db75eb2c7db2a980b2ed77bfdf7f4dd052774cbc85163867abb160ad"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/navy-gala-fixed.png",
+    "bytes": 2419105,
+    "sha256": "b86eaa899c8286e92947a2ed409c6ed59941a607f34bd3253b22d3151586b12c"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/navy-gala-sleep.png",
+    "bytes": 2300249,
+    "sha256": "8db0d85b6a4c62d2f72ed6066edf72408330fb2b7842ee3ce283e2edcfa95040"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/original-fixed.png",
+    "bytes": 2397830,
+    "sha256": "0749f227f682763f03a25ee821f2021c4044fc2934655e518dcefda59e751df3"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/original-sleep.png",
+    "bytes": 2179898,
+    "sha256": "866e9ad39115af2117df5fc0c25c9ac410e64ac3bb95c3c8cf3ec0e26b191711"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/red-server-fixed.png",
+    "bytes": 2404465,
+    "sha256": "ceba66dae0dcb3d9583088e20edb72d01fb0a6e5d806015569e411b7d84a71f1"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/red-server-sleep.png",
+    "bytes": 2281459,
+    "sha256": "e55047527d133a85760fc7679edc3b934d4089b7d282e7bdf2af02df1e9fe4e7"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/sailor-fixed.png",
+    "bytes": 2203412,
+    "sha256": "82c849014c25187c2dbd88f51a4dab0c9755fe1fa846d4b1be974d708a9b2e42"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/sailor-sleep.png",
+    "bytes": 2226363,
+    "sha256": "4b9b66296c75279d5b3d258e45cb6f7999d2394b9250d34c5151e2726548ba92"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/snow-earmuffs-fixed.png",
+    "bytes": 2359656,
+    "sha256": "d075494c1b36036f3f20c7407327c9e819e8c00292e230afad140e6135435134"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/snow-earmuffs-sleep.png",
+    "bytes": 2291929,
+    "sha256": "7b40d919194ca47ea419369a62f7e5354cdf2da72e3b471a1dbab1aba3992e95"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/swordswoman-fixed.png",
+    "bytes": 2466226,
+    "sha256": "2a2659611e4e6a34feddb5e7fec8e9869382c635d26f328a4fb828631cdd8c50"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/swordswoman-sleep.png",
+    "bytes": 2293027,
+    "sha256": "c96a5ab957e5b1c3bacaabe47acc0bb4fff4f5dcd0efb42afe64c8021575a1f1"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/voxel-whale-fixed.png",
+    "bytes": 2245755,
+    "sha256": "8c00f9f8e92d3f21fe45246ac356254c416dc88ca716cddc62a091db8e46ef95"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/voxel-whale-sleep.png",
+    "bytes": 2219975,
+    "sha256": "9f9dfe566e54052ed9be2c127f805e257ac90ed001d2d1350e3266b4ab6625d8"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/whale-hood-fixed.png",
+    "bytes": 2307226,
+    "sha256": "422cd5614d4001a6ef4bed9c5966b7674bf7ff2341343c017877a040d49fa8ae"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/whale-hood-sleep.png",
+    "bytes": 2105150,
+    "sha256": "96f9ac02ad66ef54ca84e19fa730a9a88a3a0a60d16b975b84fd1afc4f93273f"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/whale-maid-fixed.png",
+    "bytes": 2382454,
+    "sha256": "9859b2f794d085fadd6410ae6dcbc5e85c42440764c09dfa38cdce5db7a463f4"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/whale-maid-sleep.png",
+    "bytes": 2275073,
+    "sha256": "7e876e99084dffb01d6f958d094f529ac4974dff8c6c5cd30bef32674c889804"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/whale-sweater-fixed.png",
+    "bytes": 2321390,
+    "sha256": "6c8d31c96beeb510a5e5debdb41957020ea8b2a06929508557f3baac6bd382fd"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/whale-sweater-sleep.png",
+    "bytes": 2187704,
+    "sha256": "d3ffa3b0752bea269f50a230a1200a754f2ec8da75be6777104c81bbcba30953"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/white-beret-fixed.png",
+    "bytes": 2392920,
+    "sha256": "bd65fe12c33c37686674e5838555d7a9cfa24476943e7750ede7806a46c1b90f"
+  },
+  {
+    "file": "assets/room-bed-reference-v19/white-beret-sleep.png",
+    "bytes": 2229236,
+    "sha256": "fe16d38ceeaad211e6171252ad0569bdb5137a9f9d0e351b91f077a77d0d3219"
+  },
+  {
     "file": "assets/room-house/bed-sleep-v4.png",
     "bytes": 2334528,
     "sha256": "84a346a7375bba68cedfc5d1b2888dd798d7c1dff13d4cb56fe62b1ef7503eb7"
@@ -153,6 +298,16 @@
     "file": "assets/room-life-v11/sofa-rest.png",
     "bytes": 2369404,
     "sha256": "efc434a3280099bc353d3da41eaf226703a820c5ba342ccf0fdb715ffe6c16b1"
+  },
+  {
+    "file": "assets/room-life-v16/bed.png",
+    "bytes": 1712837,
+    "sha256": "7b8a794213534f20743d295d7bfba94b8f52fdbec0153a498614db7cde3d6190"
+  },
+  {
+    "file": "assets/room-life-v16/bedding.png",
+    "bytes": 1980606,
+    "sha256": "6698c264db319c4952b77bdb2d86e401e36ab20374e8e536960594b9f2bacfdf"
   },
   {
     "file": "assets/room-pet/head_pat/head_pat_001.webp",
@@ -4980,6 +5135,221 @@
     "sha256": "924143fb81d017aec66fcfb788203b0ce34060eae8b6e9d586742e97df336bd5"
   },
   {
+    "file": "assets/room-transition-v17/cream-hoodie-desk.png",
+    "bytes": 1367320,
+    "sha256": "451d4e43c9811707d0eedf04f69c113bbc397faaceb509e0d2c161dbcba9cc51"
+  },
+  {
+    "file": "assets/room-transition-v17/cream-hoodie-sleep.png",
+    "bytes": 2141871,
+    "sha256": "d12c13368fe7e8d73b04afe68988ddb13ba3c7e628903ee32108b89d5cf935a4"
+  },
+  {
+    "file": "assets/room-transition-v17/cream-hoodie.png",
+    "bytes": 2563515,
+    "sha256": "4a2c1f12d6a7f84db332b2e8911f3c1407221713dee3fbb9c675310ffc6f1127"
+  },
+  {
+    "file": "assets/room-transition-v17/doctor-desk.png",
+    "bytes": 2235380,
+    "sha256": "2c1b34a7a95625e67fc5c3ed908ffbd49780efe43f54b40240e5969936c0992c"
+  },
+  {
+    "file": "assets/room-transition-v17/doctor-sleep.png",
+    "bytes": 2354246,
+    "sha256": "2bf92190e07c8ac6447a4fe71d23c08f1cd32844015519d6be5c99dfc489e5bd"
+  },
+  {
+    "file": "assets/room-transition-v17/doctor.png",
+    "bytes": 2617975,
+    "sha256": "cbf518186c272c74969e49bce496fa8f6ebc3c2e9f3c8de979ed20b31ec74998"
+  },
+  {
+    "file": "assets/room-transition-v17/hanfu-desk.png",
+    "bytes": 1673966,
+    "sha256": "d1b0618304363fd69a2df3bddb14d103fe723b07ac8aeb7697623bf0273e189d"
+  },
+  {
+    "file": "assets/room-transition-v17/hanfu-sleep.png",
+    "bytes": 2830753,
+    "sha256": "663363ac6ab57ec6e8ab710b3c45ee3f61bb26250065221208a29230d276d591"
+  },
+  {
+    "file": "assets/room-transition-v17/hanfu.png",
+    "bytes": 2864216,
+    "sha256": "8f3c5f9a59cf0ff6c4061abe323279c9b8cc2dc3303a93da0e6def3d27c9b12b"
+  },
+  {
+    "file": "assets/room-transition-v17/mattress.png",
+    "bytes": 1938427,
+    "sha256": "845c06f417575db13e67c239c87bd07b52e6af84b2e93d9728cf4f5fe02961bf"
+  },
+  {
+    "file": "assets/room-transition-v17/navy-gala-desk.png",
+    "bytes": 2310698,
+    "sha256": "a9f138890f77feb6f9f109a85a1cabc4e232fd0bdd68b74fa6805cfd3c5502fe"
+  },
+  {
+    "file": "assets/room-transition-v17/navy-gala-sleep.png",
+    "bytes": 2291272,
+    "sha256": "936fad2513739f7004ad6118d7a3a23a329b5983b096a63ffbe8e64ec4b96c80"
+  },
+  {
+    "file": "assets/room-transition-v17/navy-gala.png",
+    "bytes": 2738457,
+    "sha256": "80bf31c42b18dbc094af5d5c97be77d793def981e672d32af5801d548737c483"
+  },
+  {
+    "file": "assets/room-transition-v17/original-sleep.png",
+    "bytes": 2614702,
+    "sha256": "b33e08a134f57a0eb05888f49457189bd3beed669d433c392e29975c3072aea0"
+  },
+  {
+    "file": "assets/room-transition-v17/original.png",
+    "bytes": 2559876,
+    "sha256": "8e220c84ce1396b227e31d86358f31c7735012cec41c5a2f69b5a316fa862fd9"
+  },
+  {
+    "file": "assets/room-transition-v17/quilt.png",
+    "bytes": 1723315,
+    "sha256": "cf8c63f411381db418a9a03d0bfba3fc209e5e687580883b3cc55ae94b55a772"
+  },
+  {
+    "file": "assets/room-transition-v17/red-server-desk.png",
+    "bytes": 1639461,
+    "sha256": "e9e2136b8ebc0f93118bc00f6f3a9be09b805b97ca996dfef56c734bae7add40"
+  },
+  {
+    "file": "assets/room-transition-v17/red-server-sleep.png",
+    "bytes": 2319039,
+    "sha256": "ca32349ef2b42fe907de9a86976746e4f3198a69d00fe9fc31569faa41d21ff8"
+  },
+  {
+    "file": "assets/room-transition-v17/red-server.png",
+    "bytes": 2751002,
+    "sha256": "1fa78fdedf9ed606fd7416a7c283899d7d642ac5fc1e2b726e26af9608fbc48b"
+  },
+  {
+    "file": "assets/room-transition-v17/sailor-desk.png",
+    "bytes": 1448698,
+    "sha256": "57e34088b2e2cd3eac6453e38b3bcf1fee1b63645d4c3c295685b89e280fa2fd"
+  },
+  {
+    "file": "assets/room-transition-v17/sailor-sleep.png",
+    "bytes": 2605095,
+    "sha256": "115ffd055f88c5403d47082ac2b3c99c4749e4e1bb5767d6cba076a5f63ff5f4"
+  },
+  {
+    "file": "assets/room-transition-v17/sailor.png",
+    "bytes": 2726507,
+    "sha256": "2a845fb2b8888b2673219c16eb32801cf620d140cbc8e879de1a6242b7733f26"
+  },
+  {
+    "file": "assets/room-transition-v17/snow-earmuffs-desk.png",
+    "bytes": 1430982,
+    "sha256": "df618f2639cc6086d5f9e4363c099fca5da276e3d71ba7e95bba2521a8b30d37"
+  },
+  {
+    "file": "assets/room-transition-v17/snow-earmuffs-sleep.png",
+    "bytes": 2271686,
+    "sha256": "c2197a9705ba3f5bbc40963024a46fe89284fbb3ae7d57c2bf0c91488c2a6cdf"
+  },
+  {
+    "file": "assets/room-transition-v17/snow-earmuffs.png",
+    "bytes": 2692637,
+    "sha256": "175672a3371572749e163dc1ecaebed9804de169ecc6081a70fbb4734e413707"
+  },
+  {
+    "file": "assets/room-transition-v17/swordswoman-desk.png",
+    "bytes": 2374542,
+    "sha256": "756727861af8cf80a10b59d9ea1938f5afaf5488cd5fd674918746f98e9b1498"
+  },
+  {
+    "file": "assets/room-transition-v17/swordswoman-sleep.png",
+    "bytes": 2282774,
+    "sha256": "b3452d4be88046a1c4bb905f06e2fc656809f1c13bf32ddcc448bfcf995606f8"
+  },
+  {
+    "file": "assets/room-transition-v17/swordswoman.png",
+    "bytes": 2859291,
+    "sha256": "f4d7f262278ea71a1d10d6609e15bba9631e7fe944b3cdb89028f2fc22dca466"
+  },
+  {
+    "file": "assets/room-transition-v17/voxel-whale-desk.png",
+    "bytes": 1240047,
+    "sha256": "e72ebaf4a01845a6ff281a094f2b3858a0c0a46414a6b40807f57a7346137bcd"
+  },
+  {
+    "file": "assets/room-transition-v17/voxel-whale-sleep.png",
+    "bytes": 1903760,
+    "sha256": "7c49370846cb409f096ba4e397fb2e3cb868b612a3609e0e7e15d0ca905883cd"
+  },
+  {
+    "file": "assets/room-transition-v17/voxel-whale.png",
+    "bytes": 2470941,
+    "sha256": "0fcd91758c87a61e3143bd438d86d245ada2e4c0842045912bf4d3c2fc2c37d0"
+  },
+  {
+    "file": "assets/room-transition-v17/whale-hood-desk.png",
+    "bytes": 1521802,
+    "sha256": "21522e519ebeb98233222ab647ee4d0aedfaa75a322c31714b6c426b3d1b5896"
+  },
+  {
+    "file": "assets/room-transition-v17/whale-hood-sleep.png",
+    "bytes": 2544561,
+    "sha256": "c6113d29234f41869a6076e29e64e82352ec97c27416f4374e9290902cde659f"
+  },
+  {
+    "file": "assets/room-transition-v17/whale-hood.png",
+    "bytes": 2634421,
+    "sha256": "c8e0e7e379acf8b2fad64caf571afd70f95b5614286734f0ecdb6a27cda0a37b"
+  },
+  {
+    "file": "assets/room-transition-v17/whale-maid-desk.png",
+    "bytes": 1507071,
+    "sha256": "91cf22f28bd5d9c03374a62205c40c3ae9bf22782a85cb889d790372b8ec497a"
+  },
+  {
+    "file": "assets/room-transition-v17/whale-maid-sleep.png",
+    "bytes": 2589386,
+    "sha256": "80e5459ad2151167601352429fc475346e7f561c91c5d85727c8e4e576e5807f"
+  },
+  {
+    "file": "assets/room-transition-v17/whale-maid.png",
+    "bytes": 2647808,
+    "sha256": "20b23fd0de958159defdf265d44c89b7bdde05717c9dcdd83d4e016b42e04e2d"
+  },
+  {
+    "file": "assets/room-transition-v17/whale-sweater-desk.png",
+    "bytes": 2197980,
+    "sha256": "6f2eb3607a4cd1768d91a83157056e85e1d59c0bbb6139f5ee013b0fa7f91c85"
+  },
+  {
+    "file": "assets/room-transition-v17/whale-sweater-sleep.png",
+    "bytes": 2293438,
+    "sha256": "255923ed6c25560c17580ee6756b1fb1693b7ff3d92a5161d776cf8c09c1dc61"
+  },
+  {
+    "file": "assets/room-transition-v17/whale-sweater.png",
+    "bytes": 2660526,
+    "sha256": "abae18101a0882ea6d87132c7f04655148ce5be42642796e7ad76858536a2651"
+  },
+  {
+    "file": "assets/room-transition-v17/white-beret-desk.png",
+    "bytes": 1491671,
+    "sha256": "1619fb5b932448fae332b4b8dd1ebff3bec43e6d6f76f1a437bd59f7ff7c3fe8"
+  },
+  {
+    "file": "assets/room-transition-v17/white-beret-sleep.png",
+    "bytes": 2513673,
+    "sha256": "5394a59f079ac27efd2742faf4d38352d6d22d27c10f14c804fba8d923ab766f"
+  },
+  {
+    "file": "assets/room-transition-v17/white-beret.png",
+    "bytes": 2585204,
+    "sha256": "f571ed18ce90d1785b0ca5d2fcc7ab231b08d5690d36d79dc10af274602350dc"
+  },
+  {
     "file": "assets/wardrobe-v1/cream-hoodie.png",
     "bytes": 1990235,
     "sha256": "f3d071bad41cc181098d3e3e0e94876395e4b1dafa5a4c2b32671440a806a752"
@@ -5043,5 +5413,200 @@
     "file": "assets/wardrobe-v1/white-beret.png",
     "bytes": 2262064,
     "sha256": "85d24245b83ccdb3890ebbf64002af79f773337c9f5d01e7577b08a8bffb2e92"
+  },
+  {
+    "file": "assets/wardrobe-v15/cream-hoodie-desk.png",
+    "bytes": 1391992,
+    "sha256": "f6e2cec6b9cba62eb394afb4a8e616b2d10d7fbdde46db0c54d8ffbfa8b30427"
+  },
+  {
+    "file": "assets/wardrobe-v15/doctor-desk.png",
+    "bytes": 1461115,
+    "sha256": "7bf891fd2bd464be611c8c11393839cbff607fad77b267f07f42d32b60f7193c"
+  },
+  {
+    "file": "assets/wardrobe-v15/hanfu-desk.png",
+    "bytes": 1901600,
+    "sha256": "5e54ada0ca4c705a25c77d8b8590d8a1ad2ee5961325148c95cdef5dd3a222e8"
+  },
+  {
+    "file": "assets/wardrobe-v15/navy-gala-desk.png",
+    "bytes": 1535634,
+    "sha256": "241d1c6e57f323a86da5fc2cbbe3a4a951720a12e6fba8c5fe73280591ac57d0"
+  },
+  {
+    "file": "assets/wardrobe-v15/red-server-desk.png",
+    "bytes": 1723974,
+    "sha256": "ac85858ce026fe630dc4a6b28a20cffa18505928327d26c72dc503a1242e7340"
+  },
+  {
+    "file": "assets/wardrobe-v15/sailor-desk.png",
+    "bytes": 1568504,
+    "sha256": "6ddc0db40e8165cace05654179e831408dde473d315c3bc23d1d43d88dbad5ff"
+  },
+  {
+    "file": "assets/wardrobe-v15/snow-earmuffs-desk.png",
+    "bytes": 1505783,
+    "sha256": "ffacfdfe8912300730183ce6dc4ff00efd13f2c11cdaaa790f8eda1987a57044"
+  },
+  {
+    "file": "assets/wardrobe-v15/swordswoman-desk.png",
+    "bytes": 1768454,
+    "sha256": "2a1b0cdcbf9c8b56e55d39ed310bd499bbda53dea79e80bbe3f9a5ae371489aa"
+  },
+  {
+    "file": "assets/wardrobe-v15/voxel-whale-desk.png",
+    "bytes": 1256390,
+    "sha256": "ab6fc211956088ffe0528e7320bec12c4ad2f59c7abe8ea05a1c75bb33c5f8f8"
+  },
+  {
+    "file": "assets/wardrobe-v15/whale-hood-desk.png",
+    "bytes": 1423314,
+    "sha256": "cb80817eb76d2b64890bd7521bc5a0091959dc3549a7b3a593f59b8f19df947d"
+  },
+  {
+    "file": "assets/wardrobe-v15/whale-maid-desk.png",
+    "bytes": 1510945,
+    "sha256": "9a8859784ab4240122ca0424cc274bcb958bb87720de66800c0d3613ceb94381"
+  },
+  {
+    "file": "assets/wardrobe-v15/whale-sweater-desk.png",
+    "bytes": 1603083,
+    "sha256": "38c6c07ac989729ce4e43d5ff56278a89802afc5d1786f7525fcd11a759078bd"
+  },
+  {
+    "file": "assets/wardrobe-v15/white-beret-desk.png",
+    "bytes": 1488644,
+    "sha256": "5e11a524941aff967e73aea2e5a5f08810dfd0679a017f1bc31a20004cdc7764"
+  },
+  {
+    "file": "assets/wardrobe-v16/cream-hoodie-bed.png",
+    "bytes": 1805365,
+    "sha256": "d47b2d3824d35eef15ddd5e121af2b72b531aee97e2b294331a9cb8a2517c910"
+  },
+  {
+    "file": "assets/wardrobe-v16/cream-hoodie-walk.png",
+    "bytes": 1566701,
+    "sha256": "1f0c37d5f6ecb3282c4df52262845ae1a4d519a6852ddc8faa11beaf4a44a29a"
+  },
+  {
+    "file": "assets/wardrobe-v16/doctor-bed.png",
+    "bytes": 1966980,
+    "sha256": "ab80d4687916548f894effa0a7f5c5e544b26e61406a3f3643982f01655bdfe5"
+  },
+  {
+    "file": "assets/wardrobe-v16/doctor-walk.png",
+    "bytes": 1668147,
+    "sha256": "50bd97c7d191b0512d9f86bf5ce7f79b0d4d379c6ffa486b32e0b764b361ca8e"
+  },
+  {
+    "file": "assets/wardrobe-v16/hanfu-bed.png",
+    "bytes": 2186997,
+    "sha256": "e75cbea1227649edd3c11089b9928170312431f1f89e52c37f27ef94324d0cb9"
+  },
+  {
+    "file": "assets/wardrobe-v16/hanfu-walk.png",
+    "bytes": 2103764,
+    "sha256": "0b157d0a72d8e3c6f404caf10495b2a670eb7445368523578de949923ba18fa1"
+  },
+  {
+    "file": "assets/wardrobe-v16/navy-gala-bed.png",
+    "bytes": 1988211,
+    "sha256": "5b33bb4cdb282c4ee03c11bfd7ee831eadb4cc765d9f74d0266ecb759712c813"
+  },
+  {
+    "file": "assets/wardrobe-v16/navy-gala-walk.png",
+    "bytes": 1818349,
+    "sha256": "57a1dc7215423fb4adcacb196829195f43c857b273a771b49b9f084a37407d00"
+  },
+  {
+    "file": "assets/wardrobe-v16/red-server-bed.png",
+    "bytes": 1892033,
+    "sha256": "2c1d9c5bce978635d57526df6b7f8c06bcda85bede97f09cdc07ff93310d2e81"
+  },
+  {
+    "file": "assets/wardrobe-v16/red-server-walk.png",
+    "bytes": 1895322,
+    "sha256": "5df9f70d829490d3ef1d34585b0c929dc3c3139d82e29c3d606cacc6be3c793d"
+  },
+  {
+    "file": "assets/wardrobe-v16/sailor-bed.png",
+    "bytes": 1867123,
+    "sha256": "158a327244a43b6dda85460128d0c80425c516125674e688139a729647ce3183"
+  },
+  {
+    "file": "assets/wardrobe-v16/sailor-walk.png",
+    "bytes": 1677075,
+    "sha256": "6dad66a306966ef487c2552d7bd8b90fdc3162f69ca730dddaf149301216e2e4"
+  },
+  {
+    "file": "assets/wardrobe-v16/snow-earmuffs-bed.png",
+    "bytes": 1743980,
+    "sha256": "d0a0eca3852df07efca9cd008c6775aaf872643497ef86dc2eadf5a5b85c762d"
+  },
+  {
+    "file": "assets/wardrobe-v16/snow-earmuffs-walk.png",
+    "bytes": 1683051,
+    "sha256": "39324137e3d1c89627e40a1352955c5f6c0b8e14621e40a282e54f761d604b75"
+  },
+  {
+    "file": "assets/wardrobe-v16/swordswoman-bed.png",
+    "bytes": 1945426,
+    "sha256": "5fbdcf0a7364741f804f4c53fe5203326ba22488b3f0ef920a96861d50168b1d"
+  },
+  {
+    "file": "assets/wardrobe-v16/swordswoman-walk.png",
+    "bytes": 1906092,
+    "sha256": "992459fb54ff152b30d88e839d29fd007c8e971a3e8fd2ae4e0697ff90df568c"
+  },
+  {
+    "file": "assets/wardrobe-v16/voxel-whale-bed.png",
+    "bytes": 1602994,
+    "sha256": "7ecd4fb855fdc89e27d01319d7450cca2f57c8748595cb53a46586f579ada5c4"
+  },
+  {
+    "file": "assets/wardrobe-v16/voxel-whale-walk.png",
+    "bytes": 1282112,
+    "sha256": "2b407d2f827eab8cf5b488c6b5c7ad6e87ab8636b2a2c5419343e134b5487cf9"
+  },
+  {
+    "file": "assets/wardrobe-v16/whale-hood-bed.png",
+    "bytes": 1874517,
+    "sha256": "4e48eb4894487486dd244f147661b5378e62355c15c0b587f4587613d68504af"
+  },
+  {
+    "file": "assets/wardrobe-v16/whale-hood-walk.png",
+    "bytes": 1611354,
+    "sha256": "386050ad73f6f418613d9289e97698a29f7d6915e74f91a1c82c37e0b9128b8b"
+  },
+  {
+    "file": "assets/wardrobe-v16/whale-maid-bed.png",
+    "bytes": 1880504,
+    "sha256": "2375944a266fff4b566880d464b3d8c3a6c5f1ad0e4d79c4df204005c5c381ab"
+  },
+  {
+    "file": "assets/wardrobe-v16/whale-maid-walk.png",
+    "bytes": 1793488,
+    "sha256": "b59f16710c0678b33615a34580926a9c41f9805706007c6df0ba7165c73d313e"
+  },
+  {
+    "file": "assets/wardrobe-v16/whale-sweater-bed.png",
+    "bytes": 1853449,
+    "sha256": "8ea530e91b9fcb82def111ce0c0c3ad6dfaaf7b737bb9d402f5e766291faabd2"
+  },
+  {
+    "file": "assets/wardrobe-v16/whale-sweater-walk.png",
+    "bytes": 1758113,
+    "sha256": "1905997e4f4a203fdcafcdc0ea2696587df801207946f2a607af972259bc20a6"
+  },
+  {
+    "file": "assets/wardrobe-v16/white-beret-bed.png",
+    "bytes": 1721409,
+    "sha256": "e936058a1d0f088c50165e19381e3169d73671622bfbc864809ea832d59609b1"
+  },
+  {
+    "file": "assets/wardrobe-v16/white-beret-walk.png",
+    "bytes": 1725158,
+    "sha256": "96a4e2582d22100d028b16b3aa5ab4db90ce15cc9cad4d09e3e93c12e8fc800d"
   }
 ]

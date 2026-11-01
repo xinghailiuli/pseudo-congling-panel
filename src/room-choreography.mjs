@@ -47,8 +47,18 @@ export function createRoomChoreography(definitions) {
   const index=frameAt(clip,clock),step=clip.frames[index],next=clip.frames[index+1]||(wrap?clip.frames[0]:step),progress=Math.max(0,Math.min(1,(clock-step.start)/step.duration));
   const frame=active.def.poses[step.pose],nextFrame=active.def.poses[next.pose];
   const moving=Boolean(step.move&&nextFrame.support==='feet'&&frame.support==='feet');
-  const position=moving?frame.at.map((v,i)=>v+(nextFrame.at[i]-v)*progress):[...frame.at];
-  return result(active.mode,step.pose,phase,{progress,time:base+clock,move:moving,position,nextPose:next.pose,frameEnd:base+step.end,variation:step.variation||null});
+  const contact=active.mode==='sleep'&&!moving&&!frame.articulated;
+  const blend=contact?progress*progress*(3-2*progress):progress;
+  const bedContact=Number.isInteger(frame.bedReferenceCell)&&Number.isInteger(nextFrame.bedReferenceCell)&&frame.support!=='feet'&&nextFrame.support!=='feet';
+  let position=moving||contact||bedContact?frame.at.map((v,i)=>v+(nextFrame.at[i]-v)*blend):[...frame.at];
+  let contactHead=null;
+  if(contact&&frame.head&&frame.pivot&&nextFrame.head&&nextFrame.pivot){
+   const head=p=>{const r=(p.rotation||0)*Math.PI/180,x=(p.head[0]-p.pivot[0])*p.scale*(p.flip||1),y=(p.head[1]-p.pivot[1])*p.scale;return [p.at[0]+x*Math.cos(r)-y*Math.sin(r),p.at[1]+x*Math.sin(r)+y*Math.cos(r)];};
+   const from=head(frame),to=head(nextFrame);contactHead=from.map((v,i)=>v+(to[i]-v)*blend);
+   position=frame.at.map((v,i)=>v+contactHead[i]-from[i]);
+  }
+  const cover=(frame.cover??(frame.support==='bed'?1:0))+((nextFrame.cover??(nextFrame.support==='bed'?1:0))-(frame.cover??(frame.support==='bed'?1:0)))*blend;
+  return result(active.mode,step.pose,phase,{progress,time:base+clock,move:moving,position,contactHead,cover,nextFrame,nextPose:next.pose,frameEnd:base+step.end,variation:step.variation||null});
  };
  const sample=value=>{
   const now=time(value);if(!active)return null;
@@ -63,12 +73,14 @@ export function createRoomChoreography(definitions) {
   return sampleClip(active.def.loop,clock,base,'perform',true);
  };
  return {
+  snapshot(){if(!active)return null;const {def,...state}=active;return structuredClone(state);},
+  restore(value){if(!value){active=null;return;}const s=structuredClone(value),def=modeFor(s.mode);time(s.at);if(s.exit){time(s.exit.at);const clip=compile(s.exit.clip.frames,def.poses,s.mode+'/restore');s.exit.clip=clip;s.exit.readyAt=s.exit.at+clip.duration;}active={...s,def};},
   start(mode,at,{settled=false,seated=false}={}){active={mode,def:modeFor(mode),at:time(at),settled:Boolean(settled),seated:Boolean(seated),exit:null};return sample(at);},
   sample,
   still(mode){const def=modeFor(mode);return result(mode,def.still,'perform');},
   requestExit(value,{seated=false}={}){
    const now=time(value);if(!active)return now;if(active.exit&&(!active.exit.seated||seated))return active.exit.readyAt;
-   const current=sample(now),seed=current.move?current.nextPose:current.pose,at=current.move?current.frameEnd:Math.max(now,active.at);
+   const current=sample(now),finishStep=current.move||active.mode==='sleep'&&current.phase!=='perform'&&current.progress>0,seed=finishStep?current.nextPose:current.pose,at=finishStep?current.frameEnd:Math.max(now,active.at);
    const selected=seated&&active.def.seatedExits[seed]||active.def.exits[seed];
    const path=[{pose:seed,duration:120},...selected.frames.map(({pose,duration,move})=>({pose,duration,move}))];
    const clip=compile(path,active.def.poses,active.mode+'/requested-exit');active.exit={at,clip,seated:Boolean(seated&&active.def.seatedExits[seed]),readyAt:at+clip.duration};return active.exit.readyAt;

@@ -11,3 +11,5 @@ The current scene uses floor-one-v6, floor-two-v7, floor-two-mirror-v12, normal 
 Older artwork still referenced by the renderer's compatibility routes or tests is retained. Private source-image paths, generation receipts and original private reference files are excluded from this distribution. The public wardrobe catalog contains only runtime IDs, names and quality labels.
 
 `asset-integrity.json` lists SHA-256 hashes of the distributed PNG and WebP files. Bundled pictures are byte-for-byte copies; no substitute resident is used.
+
+The 1.11 optimized update (package 1.1.1) adds supplementary seated and walking sheets in wardrobe-v15/v16, bed/chair/sleep transitions in room-life-v16 and room-transition-v17, and reference-guided entry/exit plus sleep-event artwork in room-bed-reference-v19. These remain AI-assisted 2D character derivatives under the same attribution and noncommercial terms.

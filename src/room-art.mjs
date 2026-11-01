@@ -1,9 +1,9 @@
 import {roomActivity,roomWalkPoint} from './room-life.mjs';
 import {createRoomJourney} from './room-journey.mjs';
-import {roomNavigation} from './room-navigation.mjs';
+import {roomNavigation,chooseRoomWander} from './room-navigation.mjs';
 import {createRoomChoreography} from './room-choreography.mjs';
-import {createRoomLifeDefinitions} from './room-life-sequences.mjs';
-import {createRoomLifeArt,validateRoomLifeAssets} from './room-life-art.mjs';
+import {createRoomLifeDefinitions,roomSleepVariation} from './room-life-sequences.mjs';
+import {createRoomLifeArt,validateRoomLifeAssets,createRoomQuilt} from './room-life-art.mjs';
 import {createRoomWardrobe} from './room-wardrobe.mjs';
 import {createRoomDaylight} from './room-daylight.mjs';
 let roomArtSerial=0;
@@ -38,8 +38,10 @@ export function createArtBlockRoom(room,{document:doc,petAssets={},actionAssets=
  const leisureDwell={lounge:150000,garden:120000,type:150000,write:150000,read:100000,enchant:80000,rest:120000,sleep:180000};
  let visual={night,jobs,preview},elapsed=0,frameAt=null,motionTime=0,floor='1',detail=false,currentMode=null,lastSource=null,patUntil=0,patStarted=0,pausedWalk=false,journey=null,travelling=false,lastNotice='',residentLevel='1',follow=true,departure=null,lifeClock=0,lastPaint=0,route=null,camera=null,previousPortal=null,wanderUntil=0;
  const requestFrame=animation.requestFrame||globalThis.requestAnimationFrame?.bind(globalThis),reduced=animation.reducedMotion??globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches??false;
+ let sleepStarted=0,quiltCover=0,sleepSeed=animation.sleepSeed??Math.floor(Math.random()*1000000);
  let life=null,lifeArt=null,lifeMode=null,lifeExit=false,lifeNeedsEntry=false,lifeChairEntry=false,lifeSample=null,lifeLoad=0,lifeAssets=null,lifeLoading=false;
  const lifeScenery=el('g',{'data-life-scenery':10,display:'none'});floors[2].append(lifeScenery);
+ const bedSurface=el('g',{'data-bed-surface':'v16',display:'none','clip-path':clip('bed-surface-v16','261,591 462,550 548,705 531,756 343,789')}),bedSurfaceImage=image();bedSurface.append(bedSurfaceImage);floors[2].append(bedSurface);
  const gardenPatch=el('g',{'clip-path':clip('room-life-garden','879,246 1266,202 1342,446 1322,551 927,584 879,489')}),gardenPicture=image();gardenPatch.append(gardenPicture);lifeScenery.append(gardenPatch);
  const bench=el('g',{'data-life-bench':true});lifeScenery.append(bench);
  for(const [points,fill]of [['1086,657 1160,644 1201,665 1127,680','#c38c53'],['1127,680 1201,665 1201,675 1127,691','#87552e'],['1086,657 1127,680 1127,691 1086,668','#a66b36'],['1096,668 1108,675 1108,711 1096,705','#704522'],['1180,675 1191,672 1191,707 1180,711','#704522']])bench.append(el('polygon',{points,fill,stroke:'#704b2b','stroke-width':1}));
@@ -74,15 +76,22 @@ export function createArtBlockRoom(room,{document:doc,petAssets={},actionAssets=
  // Foreground clips follow the actual furniture silhouette. A rectangle of
  // floor pixels must never erase the resident's body above a fence.
  const occluders=[];
- const foreground=(name,level,polygons,when,url)=>{const c=el('clipPath',{id:'room-front-'+name,clipPathUnits:'userSpaceOnUse'});for(const points of polygons)c.append(el('polygon',{points}));defs.append(c);const g=el('g',{'data-room-foreground':name,'clip-path':`url(#room-front-${name})`,transform:`translate(0,${offsets[level]})`,'pointer-events':'none',display:'none'}),picture=image(url||house.floors[level]);g.append(picture);resident.append(g);if(url&&url===house.repairs?.[level]?.url)artPictures.push([picture,level===1?'floor-one':'floor-two']);occluders.push({g,level,when,name,picture});};
+ const foreground=(name,level,polygons,when,url)=>{const c=el('clipPath',{id:'room-front-'+name,clipPathUnits:'userSpaceOnUse'});for(const points of polygons)c.append(el('polygon',{points}));defs.append(c);const g=el('g',{'data-room-foreground':name,'clip-path':`url(#room-front-${name})`,transform:`translate(0,${offsets[level]})`,'pointer-events':'none',display:'none'}),picture=image(url||house.floors[level]);g.append(picture);(name==='wardrobe-quilt'?svg:resident).append(g);if(url&&url===house.repairs?.[level]?.url)artPictures.push([picture,level===1?'floor-one':'floor-two']);occluders.push({g,level,when,name,picture});};
  foreground('sofa',1,['680,578 746,554 789,543 823,541 884,653 929,720 925,768 787,807 735,756 680,626'],p=>p.x>620&&p.x<965&&p.y<640);
- foreground('chair',1,['847,426 869,432 888,377 948,369 972,400 975,473 956,495 959,527 944,535 925,510 902,539 886,536 891,516 913,489 868,480 850,462'],p=>p.x>790&&p.x<995&&p.y<521);
+  foreground('chair',1,[
+   '888,377 948,369 972,400 975,473 956,495 913,489 882,468 881,427',
+   '847,426 864,420 881,432 880,443 864,440 866,476 855,474 851,444',
+   '913,489 936,489 959,527 944,535 925,510 902,539 886,536 891,516'
+  ],p=>p.x>790&&p.x<995&&p.y<521);
  foreground('lower-rail',1,['1128,446 1155,437 1230,526 1229,578 1201,586 1127,512'],p=>p.x>1165&&p.y<650,house.repairs?.[1]?.url);
  foreground('entry-lantern',1,['1118,763 1145,749 1168,769 1167,835 1143,850 1119,832'],p=>p.x>1085&&p.y<812,house.repairs?.[1]?.url);
  foreground('greenhouse-rail',2,['955,495 1318,456 1324,503 958,549','1066,485 1080,477 1092,486 1092,537 1077,542 1067,532','1175,472 1188,464 1202,471 1202,521 1187,526 1176,518'],p=>p.x>953&&p.x<1310&&p.y<543,house.repairs?.[2]?.url);
  foreground('upper-gate-post',2,['772,477 787,467 803,474 805,515 792,523 776,512'],p=>p.x>765&&p.x<910&&p.y<558,house.repairs?.[2]?.url);
  foreground('life-garden',2,['939,504 1085,484 1086,518 945,551','1168,471 1321,452 1322,499 1168,520'],p=>p.y<535);
- foreground('wardrobe-quilt',2,['327,631 476,602 526,690 521,722 378,749 342,722'],()=>false);
+ foreground('wardrobe-quilt',2,['330,651 370,636 416,623 463,618 504,628 534,664 548,705 531,745 358,754 339,708'],()=>false,house.repairs?.[2]?.url);
+ const quiltPull=el('clipPath',{id:'quilt-pull-v16',clipPathUnits:'userSpaceOnUse'}),quiltRect=el('rect',{x:330,y:550,width:250,height:220});quiltPull.append(quiltRect);defs.append(quiltPull);
+ const quiltLayer=occluders.find(o=>o.name==='wardrobe-quilt');quiltLayer.picture.setAttribute('clip-path','url(#'+instance+'room-front-wardrobe-quilt)');const paintQuilt=createRoomQuilt({document:doc,root:quiltLayer.g,picture:quiltLayer.picture,id:instance+'quilt-mesh'});
+ const foldedQuilt=el('g',{display:'none','data-folded-quilt':true,'pointer-events':'none'}),foldedQuiltViewport=el('svg',{x:455,y:685,width:100,height:70,viewBox:'365 260 830 580'}),foldedQuiltImage=el('image',{width:1536,height:1024});foldedQuiltViewport.append(foldedQuiltImage);foldedQuilt.append(foldedQuiltViewport);svg.append(foldedQuilt);
  const upstairsControls=el('g',{'data-upstairs-controls':true});svg.append(upstairsControls);
  const hotspotDefs={
   read:{label:'书架：翻书',rect:[575,283,108,190],mark:[641,289]},
@@ -114,7 +123,7 @@ export function createArtBlockRoom(room,{document:doc,petAssets={},actionAssets=
   for(const level of [1,2]){const g=el('g',{'data-furniture-floor':level,transform:'translate(0,'+offsets[level]+')'});svg.append(g);featureLayers[level]=g;}
   const targets=[
    {id:'computer',level:1,label:'电脑：记忆与人格',rect:[784,268,268,142],mark:[1020,314],symbol:'忆'},
-   {id:'bed',level:2,label:'床：长夜与梦境',rect:[282,554,266,195],mark:[306,609],symbol:'梦'},
+   {id:'bed',level:2,label:'床：长夜与梦境',rect:[282,554,266,195],mark:[521,736],symbol:'梦'},
    {id:'mirror',level:2,label:'全息镜：换装',rect:[685,171,121,169],mark:[797,196],symbol:'衣'}
   ];
   if(!upstairs)targets.push({id:'enchant',level:2,label:'附魔台：日记',...hotspotDefs.enchant,symbol:'记'});
@@ -133,6 +142,8 @@ export function createArtBlockRoom(room,{document:doc,petAssets={},actionAssets=
  const syncVisibility=()=>{
   const crossing=Boolean(route?.transition&&follow);
   for(const[level,g]of Object.entries(floors)){const visible=!crossing&&(floor==='all'||floor===level);g.setAttribute('display',visible?'inline':'none');g.setAttribute('aria-hidden',String(!visible));}
+  if(lifeAssets?.mattress)quiltLayer.g.setAttribute('display',!crossing&&!lifeSample?.frame?.compositeQuilt&&!(lifeAssets.foldedQuilt&&quiltCover===0)&&(floor==='all'||floor==='2')?'inline':'none');
+  foldedQuilt.setAttribute('display',lifeAssets?.foldedQuilt&&quiltCover===0&&!lifeSample?.frame?.compositeQuilt&&!crossing&&(floor==='all'||floor==='2')?'inline':'none');
   const visible=crossing||floor==='all'||floor===residentLevel;
   resident.setAttribute('display',visible?'inline':'none');interaction.setAttribute('display',visible?'inline':'none');
   for(const[level,g]of Object.entries(featureLayers)){const visible=!crossing&&(floor==='all'||floor===level);g.setAttribute('display',visible?'inline':'none');g.setAttribute('aria-hidden',String(!visible));}
@@ -155,6 +166,7 @@ export function createArtBlockRoom(room,{document:doc,petAssets={},actionAssets=
   if(!travelling||currentMode==='walk')lifeClock+=(dt-held)*(life&&currentMode!=='walk'?20000/(leisureDwell[currentMode]||20000):1);
   const desired=activityAt(lifeClock);let mode=desired.mode,skipDeparture=false;
   const occupied=lifeMode?life?.sample(motionTime):null;
+  if(!reduced&&currentMode==='sleep'&&mode!=='sleep'&&occupied?.phase==='perform'&&lifeAssets?.geometry.sleepMotion&&roomSleepVariation(motionTime-sleepStarted,sleepSeed))mode='sleep';
   const sameChair=!travelling&&['type','write'].includes(currentMode)&&['type','write'].includes(mode)&&(!occupied||occupied.support==='hips');
   if(life&&lifeMode&&!travelling&&!reduced&&(lifeExit||mode!==currentMode&&(!sameChair||occupied?.prop))){
    if(!lifeExit)lifeExit=sameChair?'seated':'standing';else if(!sameChair)lifeExit='standing';
@@ -176,15 +188,23 @@ export function createArtBlockRoom(room,{document:doc,petAssets={},actionAssets=
   }
   lastSource=activity.source;route=journey.sample(motionTime);
   if(mode==='walk'&&!reduced&&route.arrived){
-   if(!wanderUntil)wanderUntil=motionTime+650;
-   if(motionTime>=wanderUntil){journey.go(route.target==='wanderFront'?'wanderBack':'wanderFront',motionTime);route=journey.sample(motionTime);wanderUntil=0;}
+   if(!wanderUntil)wanderUntil=motionTime+650+(animation.random||Math.random)()*2350;
+   if(motionTime>=wanderUntil){journey.go(chooseRoomWander(route.target,animation.random||Math.random),motionTime);route=journey.sample(motionTime);wanderUntil=0;}
   }
   travelling=!reduced&&(!route.arrived||Boolean(departure&&motionTime<departure.until));
   lifeSample=null;
   if(life&&!travelling&&mode!=='walk'&&life.has(mode)){
-   if(lifeMode!==mode){life.start(mode,motionTime,{settled:!lifeNeedsEntry,seated:lifeChairEntry});lifeMode=mode;lifeNeedsEntry=false;lifeChairEntry=false;}
+   if(lifeMode!==mode){sleepStarted=motionTime;life.start(mode,motionTime,{settled:!lifeNeedsEntry,seated:lifeChairEntry});lifeMode=mode;lifeNeedsEntry=false;lifeChairEntry=false;}
    lifeSample=reduced?life.still(mode):life.sample(motionTime);
   }
+  if(!reduced&&lifeSample?.mode==='sleep'&&lifeSample.phase==='perform'&&lifeAssets?.geometry.transition){
+   const e=roomSleepVariation(motionTime-sleepStarted,sleepSeed);svg.setAttribute('data-sleep-event',e?.kind||'');
+   if(e){const p=e.progress,wave=Math.sin(Math.PI*p),reference=Boolean(lifeAssets.geometry.sleepReference),g=lifeAssets.geometry.sleepReference||lifeAssets.geometry.sleepMotion;
+    if(g){const restPosition=[...lifeSample.position],p0=lifeSample.frame,restHead=restPosition.map((v,i)=>v+(p0.head[i]-p0.pivot[i])*p0.scale);const cell=(e.kind==='kick'?8:0)+Math.min(7,Math.floor(p*8)),f=g.frames[cell];
+    lifeSample={...lifeSample,pose:'sleep-'+e.kind,restPosition,position:restHead,frame:{...lifeSample.frame,atlas:reference?'sleepReference':'sleepMotion',cell,sleepCell:reference?undefined:cell,sleepReferenceCell:reference?cell:undefined,transitionCell:undefined,bedReferenceCell:undefined,compositeQuilt:reference,pivot:[...f.head],head:[...f.head],scale:188/g.referenceHeight,rotation:0},cover:reference?1:e.kind==='kick'?1-Math.sin(Math.PI*p)*.65:1,quiltLift:reference?0:e.kind==='kick'?Math.sin(Math.PI*p*2)**2*8:wave*3,variation:e.kind==='kick'?'蜷起腿，轻轻踢开被角，再拉回来':'轻轻侧过身，继续睡觉'};}
+ 
+   }
+  }else svg.setAttribute('data-sleep-event','');
   svg.setAttribute('data-life-mode',lifeSample?.mode||'');svg.setAttribute('data-life-phase',lifeSample?.phase||'');svg.setAttribute('data-life-pose',lifeSample?.pose||'');svg.setAttribute('data-life-support',lifeSample?.support||'');
   writingPaper.setAttribute('display',lifeSample?.mode==='write'?'inline':'none');cupRest.setAttribute('display',lifeSample?.mode==='rest'&&lifeSample.prop==='cup'?'none':'inline');
   if(previousPortal&&!route.transition&&camera){const p=previousPortal;camera[0]+=p.to.x-p.from.x;camera[1]+=p.to.y+offsets[p.to.floor]-p.from.y-offsets[p.from.floor];}
@@ -211,12 +231,15 @@ export function createArtBlockRoom(room,{document:doc,petAssets={},actionAssets=
   const position=transition?{...transition.from,moving:false,frame:null,facing:1}:route;
   let head=hitPoints[mode]||[position.x,position.y-150],offset=offsets[residentLevel],propPoint=null;
   const depthPoint=lifeSample?{x:lifeSample.position[0],y:lifeSample.position[1]}:position;
+  if(lifeSample?.mode==='sleep')quiltCover=lifeSample.cover??quiltCover;
+  paintQuilt(quiltCover,lifeSample?.quiltLift||0);
   for(const mask of occluders){
-   const name=mask.name;
-   const contactMask=name==='wardrobe-quilt'&&wardrobe.active&&displayed==='sleep'&&!travelling&&(!lifeSample||lifeSample.support==='bed')||lifeSample&&((name==='chair'&&['type','write'].includes(mode)&&depthPoint.x<995&&depthPoint.y<521)||(name==='life-garden'&&mode==='garden'&&depthPoint.y<535));
+   const name=mask.name;if(name==='wardrobe-quilt'&&lifeAssets?.mattress){mask.g.setAttribute('display',!transition&&!lifeSample?.frame?.compositeQuilt&&!(lifeAssets.foldedQuilt&&quiltCover===0)&&(floor==='all'||floor==='2')?'inline':'none');continue;}
+   const contactMask=name==='wardrobe-quilt'&&Boolean(lifeAssets?.mattress)||name==='wardrobe-quilt'&&displayed==='sleep'&&!travelling&&(lifeSample?lifeSample.support==='bed'||lifeSample.cover>0:wardrobe.active)||lifeSample&&((name==='chair'&&['type','write'].includes(mode)&&depthPoint.x<995&&depthPoint.y<521)||(name==='life-garden'&&mode==='garden'&&depthPoint.y<535));
    const walking=displayed==='walk'||lifeSample?.move;
    mask.g.setAttribute('display',mask.level===Number(residentLevel)&&(contactMask||walking&&!transition&&name!=='life-garden'&&!(name==='greenhouse-rail'&&lifeSample?.mode==='garden')&&mask.when(depthPoint))?'inline':'none');
   }
+  foldedQuilt.setAttribute('display',lifeAssets?.foldedQuilt&&quiltCover===0&&!lifeSample?.frame?.compositeQuilt&&!transition&&(floor==='all'||floor==='2')?'inline':'none');
   if(lifeSample){const result=lifeArt.render(lifeSample,offset);head=result.head;propPoint=result.prop;svg.setAttribute('data-resident-feet',lifeSample.position.join(','));}
   if(displayed==='walk'){
    const stepping=position.kind==='stairs',moving=position.moving&&!departing&&!greeting;
@@ -257,16 +280,34 @@ export function createArtBlockRoom(room,{document:doc,petAssets={},actionAssets=
  svg.setRoomLifeAssets=assets=>{
   // postMessage clones objects. Each artwork revision is immutable; repeat
   // deliveries must never reset a reclining pose or an in-progress safe exit.
-  if(lifeAssets&&lifeAssets.version===assets?.version||lifeLoading)return svg.roomLifeReady;
+  if(lifeAssets&&lifeAssets.version===assets?.version&&lifeAssets.revision===assets?.revision||lifeLoading)return svg.roomLifeReady;
   if(!validateRoomLifeAssets(assets))return Promise.resolve(false);
   lifeLoading=true;
   const token=++lifeLoad,load=animation.loadRoomImage||((url)=>new Promise((resolve,reject)=>{const ImageClass=doc.defaultView?.Image||globalThis.Image;if(!ImageClass){reject(Error('No image decoder'));return;}const img=new ImageClass();img.onload=resolve;img.onerror=reject;img.src=url;}));
-  svg.roomLifeReady=Promise.all([...Object.values(assets.atlases),assets.greenhouse].map(load)).then(()=>{
+  svg.roomLifeReady=Promise.all([...Object.values(assets.atlases),assets.greenhouse,...(assets.bedding?[assets.bedding]:[]),...(assets.mattress?[assets.mattress]:[]),...(assets.quilt?[assets.quilt.url]:[]),...(assets.foldedQuilt?[assets.foldedQuilt]:[])].map(load)).then(()=>{
    if(token!==lifeLoad)return false;
    const next=createRoomChoreography(createRoomLifeDefinitions(assets.geometry));
-   lifeArt?.hide();lifeArt=createRoomLifeArt({document:doc,root:lifeRoot,assets});life=next;lifeAssets=assets;lifeMode=null;lifeExit=false;
+   lifeArt?.hide();lifeArt=createRoomLifeArt({document:doc,root:lifeRoot,assets});life=next;lifeAssets=assets;lifeMode=null;lifeExit=false;if(assets.foldedQuilt)foldedQuiltImage.setAttribute('href',assets.foldedQuilt);
+   if(assets.bedding){bedSurfaceImage.setAttribute('href',assets.mattress||assets.bedding);bedSurface.setAttribute('display','inline');quiltLayer.picture.setAttribute('href',assets.bedding);
+    if(assets.quilt){const q=assets.quilt,[x,y,w,h]=q.crop,p=quiltLayer.picture;p.setAttribute('href',q.url);p.setAttribute('x',330-x*218/w);p.setAttribute('y',618-y*136/h);p.setAttribute('width',q.width*218/w);p.setAttribute('height',q.height*136/h);p.setAttribute('clip-path','none');p.setAttribute('transform','translate(878,0) scale(-1,1)');}}
    gardenPicture.setAttribute('href',assets.greenhouse);occluders.find(x=>x.name==='life-garden').picture.setAttribute('href',assets.greenhouse);lifeScenery.setAttribute('display','inline');svg.setAttribute('data-life-version',String(assets.version));paint(elapsed);return true;
   }).catch(()=>false).finally(()=>{if(token===lifeLoad)lifeLoading=false;});return svg.roomLifeReady;
  };
+ const roomIdentity=JSON.stringify(room.items.map(({id,name})=>[id,name]));
+ svg.getRoomRuntime=()=>lifeAssets&&journey?{version:1,revision:lifeAssets.revision,identity:roomIdentity,savedAt:Date.now(),preview:visual.preview,quiltCover,state:{elapsed,motionTime,floor,detail,currentMode,lastSource,travelling,residentLevel,follow,departure,lifeClock,lastPaint,route,camera,previousPortal,wanderUntil,sleepStarted,sleepSeed,lifeMode,lifeExit,lifeNeedsEntry,lifeChairEntry},journey:journey.snapshot(),life:life?.snapshot()}:null;
+ svg.restoreRoomRuntime=value=>{
+  try{
+   const compatibleRevision=value?.revision===lifeAssets?.revision||value?.revision===17&&lifeAssets?.revision===19;
+   if(value?.version!==1||value.identity!==roomIdentity||!compatibleRevision||!Number.isFinite(value.savedAt))return false;
+   const s=value.state;if(!s||![s.elapsed,s.motionTime,s.lifeClock,s.lastPaint,s.sleepStarted,s.sleepSeed,s.wanderUntil].every(Number.isFinite)||!['all','1','2'].includes(s.floor)||!['1','2'].includes(s.residentLevel)||!['auto','walk','sleep','type','write','lounge','read','enchant','garden','rest'].includes(value.preview))return false;
+   const nextJourney=createRoomJourney(roomNavigation(s.currentMode));nextJourney.restore(value.journey);
+   const nextLife=createRoomChoreography(createRoomLifeDefinitions(lifeAssets.geometry));nextLife.restore(value.life);
+   ({elapsed,motionTime,floor,detail,currentMode,lastSource,travelling,residentLevel,follow,departure,lifeClock,lastPaint,route,camera,previousPortal,wanderUntil,sleepStarted,sleepSeed,lifeMode,lifeExit,lifeNeedsEntry,lifeChairEntry}=s);
+   quiltCover=Number.isFinite(value.quiltCover)?Math.max(0,Math.min(1,value.quiltCover)):0;journey=nextJourney;life=nextLife;visual.preview=value.preview;frameAt=null;pausedWalk=false;patUntil=0;
+   // Advance clocks without running hidden animation frames or replaying steps.
+   elapsed+=Math.min(86400000,Math.max(0,Date.now()-value.savedAt));paint(elapsed);updateView(1000,true);onFloor?.(floor,{detail});return true;
+  }catch{return false;}
+ };
  paint(0);updateView(1000,true);if(requestFrame&&!reduced){doc.addEventListener?.('visibilitychange',resetFrameClock);requestFrame(tick);}if(actionAssets.lifeV10)svg.setRoomLifeAssets(actionAssets.lifeV10);return svg;
 }
+

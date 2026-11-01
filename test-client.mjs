@@ -16,7 +16,7 @@ test('wardrobe lazy loading is scoped, cached, recoverable and persists only sel
  const send=(source,data)=>Promise.all([...listeners].map(fn=>fn({source,data:{channel:'liuli-companion',...data}})));
  await send({}, {type:'wardrobe-request',requestId:'a',id:'navy-gala'});assert.equal(requests.length,0);
  await send(target,{type:'wardrobe-request',requestId:'a',id:'../bad'});assert.equal(requests.length,0);
- await send(target,{type:'wardrobe-request',requestId:'a',id:'navy-gala'});assert.equal(requests[0],'./client.wardrobe-navy-gala-v1.js');assert.equal(sent.at(-1).requestId,'a');
+ await send(target,{type:'wardrobe-request',requestId:'a',id:'navy-gala'});assert.equal(requests[0],'./client.wardrobe-navy-gala-v19.js');assert.equal(sent.at(-1).requestId,'a');
  await send(target,{type:'wardrobe-request',requestId:'b',id:'navy-gala'});assert.equal(requests.length,1);
  assert.equal(saved.size,0,'loading alone must not overwrite choice');
  await send(target,{type:'wardrobe-selected',id:'navy-gala'});assert.equal(saved.get('liuli-companion:wardrobe:v1'),'navy-gala');
@@ -65,8 +65,9 @@ test('DSH sidebar opens a sandboxed, self-contained status page', async () => {
   frame.props.ref.current={contentWindow:{postMessage:(message,origin)=>sent.push({message,origin})}};
   await frame.props.onLoad();
   assert.equal(chunkRequests.join(','),'./client.room-art-v12.js');
-  assert.equal(sent[0].message.type,'room-assets');assert.equal(sent[0].message.assets.stairs,'verified-fixture-data');
-  frame.props.ref.current=null;await frame.props.onLoad();assert.equal(sent.length,1,'Unmounted iframe must not receive assets');
+  assert.equal(sent[0].message.type,'room-runtime');
+  assert.equal(sent.find(x=>x.message.type==='room-assets').message.assets.stairs,'verified-fixture-data');
+  frame.props.ref.current=null;await frame.props.onLoad();assert.equal(sent.length,2,'Unmounted iframe must not receive assets');
 });
 
 test('v12 artwork chunk contains the approved wall mirror while retaining v7 floors',async()=>{
@@ -93,8 +94,25 @@ test('life artwork loads only on a request from the current iframe and stops del
  const target={postMessage:message=>sent.push(message)};ref.current={contentWindow:target};const dispose=effects.map(fn=>fn());
  const send=source=>Promise.all([...listeners].map(fn=>fn({source,data:{channel:'liuli-companion',type:'room-life-request'}})));
  await send({});assert.equal(requests.length,0,'external source cannot load artwork');
- const pending=send(target);assert.equal(requests.join(','),'./client.room-life-v11.js');resolveAssets({version:10});await pending;assert.equal(sent[0].type,'room-life-assets');
+ const pending=send(target);assert.equal(requests.join(','),'./client.room-life-v19.js');resolveAssets({version:10});await pending;assert.equal(sent[0].type,'room-life-assets');
  const late=send(target);for(const fn of dispose)fn?.();await late;assert.equal(sent.length,1);assert.equal(listeners.size,0);
+});
+
+test('room runtime is stored by host and returned after remount; unrelated windows cannot replace it',async()=>{
+ const stored=new Map(),localStorage={getItem:k=>stored.get(k),setItem:(k,v)=>stored.set(k,v)};
+ const effects=[],listeners=new Set(),sent=[],ref={current:null};let panel,plugin;
+ const React={createElement:(type,props)=>({type,props}),useRef:()=>ref,useEffect:fn=>effects.push(fn)};
+ const require=()=>React;require.async=async()=>({});
+ const window={addEventListener:(_,fn)=>listeners.add(fn),removeEventListener:(_,fn)=>listeners.delete(fn),__ModuleLoader__:{load:d=>plugin=d.factory(require)}};
+ vm.runInNewContext(await readFile(new URL('./lib/client.js',import.meta.url),'utf8'),{window,localStorage,Set,AbortController,fetch:()=>{throw Error("No network expected");}});
+ plugin.apply({slots:{inject:(_,fn)=>fn(),register:(o,c)=>{if(o.key==='whale-status')panel=c;}}});panel();
+ const first={postMessage:m=>sent.push(m)};ref.current={contentWindow:first};let dispose=effects.splice(0).map(fn=>fn());
+ const send=(source,type,value)=>Promise.all([...listeners].map(fn=>fn({source,data:{channel:'liuli-companion',type,value}})));
+ const value={version:1,savedAt:123,state:{residentLevel:'2',currentMode:'sleep'}};
+ await send({},'room-runtime-save',value);assert.equal(stored.size,0);
+ await send(first,'room-runtime-save',value);assert.equal(JSON.parse(stored.get('liuli-companion:room-runtime:v1')).state.residentLevel,'2');
+ dispose.forEach(fn=>fn?.());panel();const second={postMessage:m=>sent.push(m)};ref.current={contentWindow:second};dispose=effects.splice(0).map(fn=>fn());
+ await send(second,'room-runtime-request');assert.equal(sent.at(-1).value.state.currentMode,'sleep');dispose.forEach(fn=>fn?.());
 });
 
 test('life lazy chunk preserves every original atlas byte and valid bounded metadata',async()=>{
@@ -104,6 +122,8 @@ test('life lazy chunk preserves every original atlas byte and valid bounded meta
  const hash=b=>createHash('sha256').update(b).digest('hex');
  for(const[name,url]of Object.entries(payload.atlases))assert.equal(hash(Buffer.from(url.split(',')[1],'base64')),hash(await readFile(new URL(name==='walk'?'./assets/room-actions/walk-v3.png':'./assets/'+(name==='sofa-rest'?'room-life-v11/':'room-life-v10/')+name+'.png',import.meta.url))));
 });
+
+
 
 test('iframe image policy follows the actual host instead of the author local port',async()=>{
  const source=await readFile(new URL('./lib/client.js',import.meta.url),'utf8');

@@ -30,9 +30,26 @@ const html = (await read('./panel.html')).replace('__PANEL_CSS__', () => css).re
 const template = (await readFile(new URL('./client.template.js', import.meta.url), 'utf8')).replace('__WARDROBE_IDS__',()=>JSON.stringify(wardrobeCatalog.map(o=>o.id)));
 await mkdir(new URL('./lib/', import.meta.url), { recursive: true });
 const wardrobeGeometry=JSON.parse(await read('./assets/wardrobe-v1/geometry.json'));
+const wardrobeDeskGeometry=JSON.parse(await read('./assets/wardrobe-v15/geometry.json'));
+const supplementGeometry=JSON.parse(await read('./assets/room-transition-v17/supplement-geometry.json'));
+const transitionGeometry=JSON.parse(await read('./assets/room-transition-v17/geometry.json'));
+const bedReferenceGeometry=JSON.parse(await read('./assets/room-bed-reference-v19/geometry.json'));
+const sleepReferenceGeometry=JSON.parse(await read('./assets/room-bed-reference-v19/sleep-geometry.json'));
+const walkGeometry=JSON.parse(await read('./assets/wardrobe-v16/walk-geometry.json')),bedGeometry=JSON.parse(await read('./assets/wardrobe-v16/bed-geometry.json'));
 for(const {id} of wardrobeCatalog){
  const payload={version:1,id,geometry:wardrobeGeometry[id],url:'data:image/png;base64,'+(await readFile(new URL('./assets/wardrobe-v1/'+id+'.png',import.meta.url))).toString('base64')};
  await writeFile(new URL('./lib/client.wardrobe-'+id+'-v1.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.wardrobe-'+id+'-v1.js",factory:()=>('+JSON.stringify(payload)+')});\n');
+ payload.desk={geometry:wardrobeDeskGeometry[id],url:'data:image/png;base64,'+(await readFile(new URL('./assets/wardrobe-v15/'+id+'-desk.png',import.meta.url))).toString('base64')};
+ if(!payload.desk.geometry)throw new Error('Missing desk geometry: '+id);
+ await writeFile(new URL('./lib/client.wardrobe-'+id+'-v15.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.wardrobe-'+id+'-v15.js",factory:()=>('+JSON.stringify(payload)+')});\n');
+ for(const kind of ['walk','bed'])payload[kind]={geometry:(kind==='walk'?walkGeometry:bedGeometry)[id],url:'data:image/png;base64,'+(await readFile(new URL('./assets/wardrobe-v16/'+id+'-'+kind+'.png',import.meta.url))).toString('base64')};
+ await writeFile(new URL('./lib/client.wardrobe-'+id+'-v16.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.wardrobe-'+id+'-v16.js",factory:()=>('+JSON.stringify(payload)+')});\n');
+ payload.transition={geometry:transitionGeometry[id],url:'data:image/png;base64,'+(await readFile(new URL('./assets/room-transition-v17/'+id+'.png',import.meta.url))).toString('base64')};
+ for(const[kind,key]of [['sleep','sleepMotion'],['desk','deskTransition']])payload[key]={geometry:supplementGeometry[kind][id],url:'data:image/png;base64,'+(await readFile(new URL('./assets/room-transition-v17/'+id+'-'+kind+'.png',import.meta.url))).toString('base64')};
+ await writeFile(new URL('./lib/client.wardrobe-'+id+'-v17.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.wardrobe-'+id+'-v17.js",factory:()=>('+JSON.stringify(payload)+')});\n');
+ payload.bedReference={geometry:bedReferenceGeometry[id],url:'data:image/png;base64,'+(await readFile(new URL('./assets/room-bed-reference-v19/'+id+'-fixed.png',import.meta.url))).toString('base64')};
+ payload.sleepReference={geometry:sleepReferenceGeometry[id],url:'data:image/png;base64,'+(await readFile(new URL('./assets/room-bed-reference-v19/'+id+'-sleep.png',import.meta.url))).toString('base64')};
+ await writeFile(new URL('./lib/client.wardrobe-'+id+'-v19.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.wardrobe-'+id+'-v19.js",factory:()=>('+JSON.stringify(payload)+')});\n');
 }
 await writeFile(new URL('./lib/client.room-art-v7.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.room-art-v7.js",factory:()=>('+JSON.stringify(roomImages)+')});\n');
 const roomV12={...roomImages,mirror:await inlineRoomAsset('floor-two-mirror-v12.png')};
@@ -41,6 +58,18 @@ const lifeGeometry=JSON.parse(await read('./assets/room-life-v11/geometry.json')
 for(const name of Object.keys(lifeGeometry))lifeAtlases[name]='data:image/png;base64,'+(await readFile(new URL(name==='walk'?'./assets/room-actions/walk-v3.png':'./assets/'+(name==='sofa-rest'?'room-life-v11/':'room-life-v10/')+name+'.png',import.meta.url))).toString('base64');
 const lifePayload={version:11,geometry:lifeGeometry,atlases:lifeAtlases,greenhouse:'data:image/png;base64,'+(await readFile(new URL('./assets/room-life-v10/greenhouse.png',import.meta.url))).toString('base64')};
 await writeFile(new URL('./lib/client.room-life-v11.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.room-life-v11.js",factory:()=>('+JSON.stringify(lifePayload)+')});\n');
+lifePayload.geometry={...lifeGeometry,...JSON.parse(await read('./assets/room-life-v16/geometry.json'))};
+lifePayload.atlases={...lifeAtlases,'bed-entry':'data:image/png;base64,'+(await readFile(new URL('./assets/room-life-v16/bed.png',import.meta.url))).toString('base64')};
+lifePayload.revision=16;
+lifePayload.bedding='data:image/png;base64,'+(await readFile(new URL('./assets/room-life-v16/bedding.png',import.meta.url))).toString('base64');
+await writeFile(new URL('./lib/client.room-life-v16.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.room-life-v16.js",factory:()=>('+JSON.stringify(lifePayload)+')});\n');
+lifePayload.revision=17;lifePayload.geometry={...lifePayload.geometry,transition:transitionGeometry.original};lifePayload.atlases={...lifePayload.atlases,transition:'data:image/png;base64,'+(await readFile(new URL('./assets/room-transition-v17/original.png',import.meta.url))).toString('base64')};lifePayload.mattress='data:image/png;base64,'+(await readFile(new URL('./assets/room-transition-v17/mattress.png',import.meta.url))).toString('base64');
+lifePayload.geometry.sleepMotion=supplementGeometry.sleep.original;lifePayload.atlases.sleepMotion='data:image/png;base64,'+(await readFile(new URL('./assets/room-transition-v17/original-sleep.png',import.meta.url))).toString('base64');
+lifePayload.quilt={url:'data:image/png;base64,'+(await readFile(new URL('./assets/room-transition-v17/quilt.png',import.meta.url))).toString('base64'),width:1536,height:1024,crop:[114,91,1339,873]};
+await writeFile(new URL('./lib/client.room-life-v17.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.room-life-v17.js",factory:()=>('+JSON.stringify(lifePayload)+')});\n');
+lifePayload.revision=19;lifePayload.geometry.bedReference=bedReferenceGeometry.original;lifePayload.atlases.bedReference='data:image/png;base64,'+(await readFile(new URL('./assets/room-bed-reference-v19/original-fixed.png',import.meta.url))).toString('base64');
+lifePayload.geometry.sleepReference=sleepReferenceGeometry.original;lifePayload.atlases.sleepReference='data:image/png;base64,'+(await readFile(new URL('./assets/room-bed-reference-v19/original-sleep.png',import.meta.url))).toString('base64');lifePayload.foldedQuilt='data:image/png;base64,'+(await readFile(new URL('./assets/room-bed-reference-v19/folded.png',import.meta.url))).toString('base64');
+await writeFile(new URL('./lib/client.room-life-v19.js',import.meta.url),'window.__ModuleLoader__.load({id:"dsh-whale-status",chunk:"client.room-life-v19.js",factory:()=>('+JSON.stringify(lifePayload)+')});\n');
 const bridge = (await read('./src/frame-bridge.mjs')).replace('export function ', 'function ');
 const actions = Object.keys(new CompanionService({}).handlers);
 const built = template.replace('__PANEL_HTML__', () => JSON.stringify(html)).replace('__ALLOWED_ACTIONS__', () => JSON.stringify(actions)).replace('__FRAME_BRIDGE__', () => bridge);

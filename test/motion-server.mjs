@@ -10,7 +10,7 @@ const page=`<!doctype html><meta charset="utf-8"><title>房间动作逐帧验收
 <script type="module">
 import {createBlockRoom} from '/src/room-scene.mjs';
 const assets=await (await fetch('/manifest.json')).json();const pets=await (await fetch('/pet-manifest.json')).json();
-const roomArtwork=await (await fetch('/fixture-assets/client.room-art-v12.js')).json();assets.lifeV10=await (await fetch('/fixture-assets/client.room-life-v11.js')).json();
+const roomArtwork=await (await fetch('/fixture-assets/client.room-art-v12.js')).json();assets.lifeV10=await (await fetch('/fixture-assets/client.room-life-v19.js')).json();
 const names=['床','书桌','台灯','窗','沙发','冰箱','电视','绿萝','旧相册','日记本','记事本','床头柜','书架','椅子','电脑','茶几','挂画','挂钟','盆栽'];
 const room={lamp:true,curtain:true,items:names.map((name,id)=>({name,id:String(id)}))},modes={type:'敲键盘',write:'写字',lounge:'沙发休息',walk:'散步',sleep:'盖被子',read:'翻书',enchant:'附魔',garden:'浇小麦',rest:'露台休息'};
 let svg,tick,time=0,timer=null;const status=()=>{document.querySelector('#readout').textContent='时间 '+(time/1000).toFixed(2)+'s · 动作 '+svg.dataset.roomActivity+' · 实际楼层 '+svg.dataset.residentLevel+' · '+svg.dataset.travelKind+' · 脚点 '+svg.dataset.residentFeet+' · 步态 '+svg.dataset.walkFrame+' · 到达 '+Number(svg.dataset.travelArrives/1000).toFixed(2)+'s';};

@@ -40,7 +40,7 @@ const descendants=n=>[n,...n.children.flatMap(descendants)];
 function scene(preview='walk'){
  let frame;const listeners=new Map(),doc={hidden:false,createElementNS:(_,tag)=>new Element(tag),addEventListener:(type,fn)=>listeners.set(type,fn),removeEventListener:(type,fn)=>{if(listeners.get(type)===fn)listeners.delete(type);}};
  const room={items:names.map((name,id)=>({id,name}))};const before=structuredClone(room);
- const svg=createBlockRoom(room,{document:doc,actionAssets:assets,preview,petAssets:{idle:{frames:['idle0','idle1'],frameMs:40},head_pat:{frames:['pat0','pat1'],frameMs:40}},animation:{reducedMotion:false,requestFrame:fn=>{frame=fn;}}});
+ const svg=createBlockRoom(room,{document:doc,actionAssets:assets,preview,petAssets:{idle:{frames:['idle0','idle1'],frameMs:40},head_pat:{frames:['pat0','pat1'],frameMs:40}},animation:{reducedMotion:false,random:()=>0,requestFrame:fn=>{frame=fn;}}});
  const all=descendants(svg),resident=all.find(n=>n.attributes['data-room-resident']);resident.isConnected=true;frame(0);
  return {svg,resident,room,before,node:(key,value)=>all.find(n=>n.attributes[key]===value),tick:t=>frame(t),pat:()=>all.find(n=>n.attributes['aria-label']==='摸摸大肥鱼').events.click(),visibility:hidden=>{doc.hidden=hidden;listeners.get('visibilitychange')?.();},listeners};
 }

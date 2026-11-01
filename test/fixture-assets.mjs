@@ -2,7 +2,7 @@
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 const catalog=JSON.parse(await readFile(new URL('../assets/wardrobe-v1/catalog.json',import.meta.url)));
-const allowed=new Set(['client.room-art-v12.js','client.room-life-v11.js',...catalog.map(o=>'client.wardrobe-'+o.id+'-v1.js')]);
+const allowed=new Set(['client.room-art-v12.js','client.room-life-v19.js',...catalog.map(o=>'client.wardrobe-'+o.id+'-v19.js')]);
 const cache=new Map();
 export async function fixtureAssetReply(req,res){
  const url=new URL(req.url,'http://localhost');
@@ -24,10 +24,10 @@ export function fixtureAssetBridge(frame){
  window.addEventListener('message',async event=>{
   const d=event.data;if(event.source!==frame.contentWindow||d?.channel!=='liuli-companion')return;
   if(d.type==='wardrobe-selected'){selected=d.id;return;}
-  if(d.type==='room-life-request'){send({type:'room-life-assets',assets:await load('client.room-life-v11.js')});return;}
+  if(d.type==='room-life-request'){send({type:'room-life-assets',assets:await load('client.room-life-v19.js')});return;}
   if(d.type!=='wardrobe-request')return;
   const id=d.id??selected;
-  try{if(!/^[a-z-]+$/.test(id))throw Error('Invalid outfit');send({type:'wardrobe-assets',requestId:d.requestId,id,assets:id==='original'?null:await load('client.wardrobe-'+id+'-v1.js')});}
+  try{if(!/^[a-z-]+$/.test(id))throw Error('Invalid outfit');send({type:'wardrobe-assets',requestId:d.requestId,id,assets:id==='original'?null:await load('client.wardrobe-'+id+'-v19.js')});}
   catch{send({type:'wardrobe-error',requestId:d.requestId});}
  });
 }

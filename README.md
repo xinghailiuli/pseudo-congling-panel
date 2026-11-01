@@ -1,10 +1,10 @@
-# 伪从绫开始的面板 1.1
+# 伪从绫开始的面板 1.11 优化版
 
 **琉璃陪伴中心 · DeepSeek Harness 插件套件**
 
 完整陪伴面板、14 × 10 格 MC 风格双层小屋，以及大肥鱼的生活动作与物品交互。这个包只安装 `dsh-whale-status` 一个面板插件。
 
-**1.1 更新：更多生活动作、13 套服装与常驻试衣预览、家具专属页面，以及跟随用户电脑本地时间的窗外光景。** [完整更新详情](docs/UPDATE_1.1.md) · [下载 1.1.0](https://github.com/xinghailiuli/pseudo-congling-panel/releases/tag/v1.1.0) · [小黑盒发帖稿](docs/XIAOHEIHE_POST.md)
+**1.11 优化版：走路与坐姿修复、参考分镜上下床、翻身/踢被子、两层随机散步及房间状态接续。** 展示名称 1.11，安装包版本 1.1.1。 [完整更新详情](docs/UPDATE_1.11.md) · [下载优化版](https://github.com/xinghailiuli/pseudo-congling-panel/releases/tag/v1.1.1) · [小黑盒发帖稿](docs/XIAOHEIHE_POST.md)
 
 此版本先以预发布提供；自动化与隔离检查已完成，真实 DSH 界面及动作观感仍待使用者验收。
 
@@ -32,11 +32,11 @@
 
 适用于 DeepSeek Harness 桌面/网页界面。发布适配基线为 Windows 的 DSH `0.2.0-rc.2`、Node.js 24；本次提供离线测试结果，其他系统与实际界面请自行验证。
 
-1. 从本仓库的 **Releases** 下载 `dsh-whale-status-1.1.0.tgz`，保留 `.tgz` 扩展名。
+1. 从本仓库的 **Releases** 下载 `dsh-whale-status-1.1.1.tgz`，保留 `.tgz` 扩展名。
 2. 在下载目录打开终端，安装到你正在使用的 DSH profile。桌面端通常是 `desktop`：
 
    ```powershell
-   dsh plugin --profile desktop add ./dsh-whale-status-1.1.0.tgz
+   dsh plugin --profile desktop add ./dsh-whale-status-1.1.1.tgz
    ```
 
    网页端使用相应 profile（通常为 `web`）。如果终端找不到 `dsh`，先按 DSH 官方说明配置 CLI。
@@ -45,7 +45,7 @@
 
 新用户会得到完整家具和角色；不需要另外安装 `dsh-dafeiyu`。安装包已包含构建产物，安装时不需要编译。不要将整个个人 DSH profile 覆盖为本项目文件。
 
-升级 1.0 时使用同一 profile 和原数据目录安装新版；包名不变。换装在“她的房间 → 二楼 → 镜子”进入，也可使用房间内衣柜按钮。镜子替换挂画的显示，不增加或重置已保存物品。
+从 1.0 / 1.1 升级时使用同一 profile 和原数据目录安装新版；包名不变。换装在“她的房间 → 二楼 → 镜子”进入，也可使用房间内衣柜按钮。镜子替换挂画的显示，不增加或重置已保存物品。
 
 升级前备份你自己的插件数据。公开版默认数据目录为 `$DSH_HOME/data/dsh-whale-status`；未设置 `DSH_HOME` 时为 `~/.dsh/data/dsh-whale-status`。可使用 `stateRoot` 或 `LIULI_DATA_DIR` 指定独立目录。多个 profile 同时运行时请分别指定目录。已有数据不会被默认家具覆盖；使用本项目早期个人版时，应明确配置原 `stateRoot`，避免看起来像新建了数据。
 
@@ -62,7 +62,7 @@
 
 所有功能与适配逻辑都保留。没有配置外部服务时，相关功能会显示未接入或不可用；这不会阻止房间加载。安装包不会附带或自动部署这些外部服务，也不会自动接入本机其他 QQ 账号。
 
-原装角色保留完整细分生活动画；新增服装使用 16 个基础姿态及局部动态，尚未逐套覆盖原装角色全部持物细节。修改默认家具组合后会使用独立物品绘制兼容模式，参考图插画及其精细接触动作以默认 19 件物品布局为基准。
+原装角色保留完整细分生活动画；13 套服装保留 16 个基础姿态，并增加走路、书桌坐姿及过渡。原装及全部服装均接入 24 个上下床姿态和 16 个翻身/踢被姿态；其他持物细节尚未逐套覆盖原装全部动作。修改默认家具组合后会使用独立物品绘制兼容模式，参考图插画及其精细接触动作以默认 19 件物品布局为基准。
 
 详细配置、API 契约和接入示例见 [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md)。
 
@@ -76,7 +76,7 @@ npm test
 npm pack
 ```
 
-本项目源代码只依赖 Node 内置模块，前端从 DSH 宿主获取 React。无需复制作者的其他项目或 `node_modules`。`npm pack` 会重新构建并生成 `.tgz`。保留 `lib/` 中的入口、房间/生活素材块和 13 个 `client.wardrobe-*-v1.js` 文件；不要只复制 PNG。
+本项目源代码只依赖 Node 内置模块，前端从 DSH 宿主获取 React。无需复制作者的其他项目或 `node_modules`。`npm pack` 会重新构建并生成 `.tgz`。保留 `lib/` 中的入口、房间/生活素材块和 当前 `client.room-life-v19.js`、13 个 `client.wardrobe-*-v19.js` 文件及兼容块；不要只复制 PNG。
 
 供开发者手动检查的隔离预览：`npm run preview`（端口 18406）或 `npm run preview:motion`（端口 18408）。预览使用虚构数据，不连接 QQ；它不代表实际 DSH 安装验收。
 

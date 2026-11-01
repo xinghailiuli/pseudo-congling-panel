@@ -12,7 +12,7 @@ const nodes=n=>[n,...n.children.flatMap(nodes)];
 async function make({art=true,loader=async()=>{},preview='lounge'}={}){
  const document={hidden:false,createElementNS(_,tag){return new Element(tag);},addEventListener(){},removeEventListener(){}};
  let tick;const room={lamp:true,curtain:true,items:['床','书桌','台灯','窗','沙发','冰箱','电视','绿萝','旧相册','日记本','记事本','床头柜','书架','椅子','电脑','茶几','挂画','挂钟','盆栽'].map((name,i)=>({id:String(i),name}))};
- const svg=createBlockRoom(room,{document,preview,actionAssets:{...manifest,...(art?{lifeV10:payload()}:{})},animation:{reducedMotion:false,requestFrame(fn){tick=fn;},loadRoomImage:loader}});
+ const svg=createBlockRoom(room,{document,preview,actionAssets:{...manifest,...(art?{lifeV10:payload()}:{})},animation:{reducedMotion:false,random:()=>0,requestFrame(fn){tick=fn;},loadRoomImage:loader}});
  if(art)await svg.roomLifeReady;tick(0);return {svg,document,tick:time=>tick(time)};
 }
 test('art payload validates format, bounded geometry and PNG-only URLs before decoding',()=>{
