@@ -1,3 +1,7 @@
 * text=auto eol=lf
 *.png binary
 *.webp binary
+
+# Source archives keep all editable sources/artwork; npm run build recreates these.
+/lib/client*.js export-ignore
+/lib/panel-built.html export-ignore

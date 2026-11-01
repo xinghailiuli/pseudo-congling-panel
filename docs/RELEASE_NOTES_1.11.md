@@ -17,6 +17,10 @@
 
 保留双层 MC 小屋、19 件默认物品、科技镜衣柜及预览、家具专属工作区和本地电脑时间窗景。仅分发陪伴中心套件，不包含其他插件、个人数据或账号配置。
 
+## 包体积优化
+
+安装包只携带当前运行所需的完整构建代码、内嵌服装/动作素材及图片路由资源，并保留 1.1 公开版兼容块，去除内部修订的重复构建块。源码 ZIP 保留全部可编辑源码、原始动作图片及完整性清单，省略可重新生成的客户端构建文件；开发前请先运行 `npm run build`，再运行 `npm test`。两种包的用途不同，安装包无需编译，源码包可重新生成全部客户端资源。
+
 ## 下载与升级
 
 - **安装包：** [dsh-whale-status-1.1.1.tgz](https://github.com/xinghailiuli/pseudo-congling-panel/releases/download/v1.1.1/dsh-whale-status-1.1.1.tgz)
@@ -34,4 +38,4 @@ dsh plugin --profile desktop add ./dsh-whale-status-1.1.1.tgz
 
 角色来源：[PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet)。素材及衍生作品禁止商用，介绍、展示和分发须保留原作者链接；程序代码许可与素材许可分开，见仓库 THIRD_PARTY_NOTICES.md。
 
-发布验证：公开版 204 项测试通过；1,122 张图片完整性检查通过。完整结果和限制见上面的发布验证范围。
+发布验证：公开版 205 项测试通过；1,122 张图片完整性检查通过。完整结果和限制见上面的发布验证范围。
