@@ -2,66 +2,105 @@
   {
     "id": "navy-gala",
     "name": "星海礼服",
+    "file": "9f134da75eba88f86cd31582a020e48ac1322931c6b242a9.webp",
+    "hint": "Navy and gold top-hat winter dress.",
+    "reference": "9f134da75eba88f86cd31582a020e48ac1322931c6b242a9.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "red-server",
     "name": "红帽店员",
+    "file": "5a0ada4cc7d851b3a849e182cc8679dcfc7cde4b65707460.webp",
+    "hint": "Red visor, red white striped shirt, red skirt with yellow trim, whale apron, headset and ponytail.",
+    "reference": "5a0ada4cc7d851b3a849e182cc8679dcfc7cde4b65707460.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "voxel-whale",
     "name": "方块鲸鱼冬装",
+    "file": "5caf7e0da8f4eee6d9fe00c48eff113cbab521bc9c7d9e45.webp",
+    "hint": "Preserve the cubic voxel Minecraft-style rendered character, whale winter hood and blue coat, NOT 2D line illustration.",
+    "reference": "5caf7e0da8f4eee6d9fe00c48eff113cbab521bc9c7d9e45.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "whale-hood",
     "name": "鲸鱼兜帽冬装",
+    "file": "461abecd4cd00727c8f8f58da3fba5c7637a9e42fb450178.webp",
+    "hint": "Huge whale hood with spout, fluffy white trim, striped blue white scarf, navy whale coat.",
+    "reference": "461abecd4cd00727c8f8f58da3fba5c7637a9e42fb450178.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "snow-earmuffs",
     "name": "雪花耳罩冬装",
+    "file": "640f1847ce8e47c00db84506c1211adc8d7e27e6466b85e0.webp",
+    "hint": "White fluffy earmuffs with snowflake ornament, navy whale snow coat. NO whale hood or hat.",
+    "reference": "640f1847ce8e47c00db84506c1211adc8d7e27e6466b85e0.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "cream-hoodie",
     "name": "奶油卫衣",
+    "file": "800997e0d9f8fe593ae121ea14a30f565f4c351dda26bbcf.webp",
+    "hint": "Cream hoodie, gold bow, beige pleated skirt, legwarmers, orange asterisk hair ornament. Preserve blue hair.",
+    "reference": "800997e0d9f8fe593ae121ea14a30f565f4c351dda26bbcf.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "white-beret",
     "name": "白色贝雷帽",
+    "file": "bd1b2c4b30a604f4431ef5742938712dfc13f3c814fd70c8.webp",
+    "hint": "Cream beret scarf doublebreasted coat, gray skirt black tights cream boots, lavender-silver hair with white streak as reference.",
+    "reference": "bd1b2c4b30a604f4431ef5742938712dfc13f3c814fd70c8.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "whale-maid",
     "name": "鲸鱼女仆",
+    "file": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+    "hint": "ONLY TOP LEFT character outfit from collage: white frilly maid headband, navy maid dress, white whale apron.",
+    "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "whale-sweater",
     "name": "鲸鱼毛衣",
+    "file": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+    "hint": "ONLY TOP ROW THIRD character outfit: white fluffy beret, cream white pullover with big blue whale motif, navy pleated skirt.",
+    "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "doctor",
     "name": "白衣研究员",
+    "file": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+    "hint": "ONLY BOTTOM LEFT character outfit: glasses, white lab coat over navy clothing, blue necktie.",
+    "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "hanfu",
     "name": "星河汉服",
+    "file": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+    "hint": "ONLY BOTTOM ROW SECOND character outfit: ornate purple blue flowing hanfu robes, floral hair ornaments, long translucent sleeves, circular fan.",
+    "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "swordswoman",
     "name": "夜蓝剑装",
+    "file": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+    "hint": "ONLY BOTTOM ROW THIRD character outfit: black navy gold fantasy swordswoman dress with belts and sheathed sword.",
+    "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
     "quality": "基础16姿态"
   },
   {
     "id": "sailor",
     "name": "蓝白水手服",
+    "file": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+    "hint": "ONLY BOTTOM RIGHT character outfit: white and blue sailor school uniform, large blue bow, navy pleated skirt, white socks.",
+    "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
     "quality": "基础16姿态"
   }
 ]

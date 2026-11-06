@@ -14,7 +14,7 @@
     ],
     "webpQuality": 68
   },
-  "license": "ASSET-LICENSE.md",
+  "license": "LICENSE.txt",
   "clips": {
     "idle": {
       "frames": [
@@ -1046,6 +1046,5 @@
         "frameCount": 1
       }
     }
-  },
-  "originalRepositoryLicense": "LICENSE.txt"
+  }
 }

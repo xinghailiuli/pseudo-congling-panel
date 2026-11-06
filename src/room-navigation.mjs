@@ -19,9 +19,34 @@ export function roomNavigation(start='type') {
  link('garden','restNorth');link('restNorth','restWest');link('gate','restWest');link('restWest','rest');
  const targets={type:'desk',write:'desk',lounge:'sofa',walk:'aisle',sleep:'bed',read:'book',enchant:'magic',garden:'garden',rest:'rest',wanderFront:'front',wanderBack:'aisle'};
  for(const node of ['front','aisle','entry','sofaLane','hall','garden','terrace','restWest'])targets['roam-'+node]=node;
- return {nodes,edges,targets,start:targets[start]||'aisle',speed:120,stride:62};
+ for(const p of roomRoamingPoints()){const id='free-'+p.floor+'-'+p.x+'-'+p.y;point(id,p.x,p.y,p.floor);const anchors=Object.keys(nodes).filter(k=>!k.startsWith('free-')&&edges.some(e=>(e[0]===k||e[1]===k)&&!e[2].kind)&&roomWalkVisible(p,nodes[k]));if(anchors.length){link(id,anchors[0]);targets['roam-'+id]=id;}else delete nodes[id];}
+ return {nodes,edges,targets,start:targets[start]||'aisle',speed:120,stride:62,canWalk:roomWalkVisible};
+}
+// Foot-space polygons include a stance margin. The raised upper-left landing
+// and the lower terrace are separate islands, joined only by explicit stairs.
+export function roomWalkVisible(a,b){
+ if(a.floor!==b.floor)return false;
+ const areas=a.floor===1?[
+  [[980,518],[1110,505],[1122,615],[1118,743],[1184,750],[1185,792],[968,814],[948,774],[970,620]],
+  [[635,538],[1034,535],[1054,580],[640,590]],
+  [[632,552],[673,559],[702,741],[658,762],[619,599]]
+ ]:[
+  [[527,500],[750,489],[774,548],[701,584],[710,724],[635,759],[567,742],[563,590]],
+  [[975,568],[1315,550],[1335,625],[1293,670],[1232,680],[1239,749],[1020,769],[984,689]]
+ ];
+ const obstacles=a.floor===1?[
+  [[687,575],[820,530],[950,749],[787,824]],
+  [[1106,624],[1207,612],[1208,745],[1121,764]]
+ ]:[[[1068,650],[1185,636],[1200,710],[1070,730]]];
+ const inside=(p,polygon)=>{let yes=false;for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){
+  const [x,y]=polygon[i],[xx,yy]=polygon[j];if((y>p.y)!==(yy>p.y)&&p.x<(xx-x)*(p.y-y)/(yy-y)+x)yes=!yes;
+ }return yes;};
+ const n=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)/3));
+ for(let i=0;i<=n;i++){const p={x:a.x+(b.x-a.x)*i/n,y:a.y+(b.y-a.y)*i/n};if(!areas.some(poly=>inside(p,poly))||obstacles.some(poly=>inside(p,poly)))return false;}
+ return true;
 }
 export function chooseRoomWander(current,random=Math.random){
- const choices=['front','aisle','entry','sofaLane','hall','garden','terrace','restWest'].map(n=>'roam-'+n).filter(n=>n!==current);
+ const choices=Object.keys(roomNavigation().targets).filter(n=>n.startsWith('roam-')&&n!==current);
  return choices[Math.min(choices.length-1,Math.max(0,Math.floor(random()*choices.length)))];
 }
+function roomRoamingPoints(){const out=[];for(const floor of [1,2])for(let y=550;y<=760;y+=70)for(let x=600;x<=1300;x+=70){const p={x,y,floor};if(roomWalkVisible(p,p))out.push(p);}return out;}

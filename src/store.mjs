@@ -3,14 +3,13 @@ import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { defaultConfig, validateConfig } from './config.mjs';
 import { HttpError, check, redact } from './errors.mjs';
-import { defaultRoom } from './room-defaults.mjs';
 
 export function initialState(now = Date.now()) {
   return {
     schemaVersion: 1, companionId: 'liuli', revision: 0, createdAt: now, updatedAt: now,
     config: defaultConfig(),
     night: { energy: 80, mood: 60, initialized: true, updatedAt: now, sleeping: false, startedAt: null, wokeAt: now, attempts: 0, seen: [], timeline: [], dreamCycles: [], unread: {} },
-    room: defaultRoom(),
+    room: { lamp: false, curtain: true, description: '海风吹过窗边，书桌与床铺静静等着她。', items: [], interactions: [] },
     memories: [], subjects: {}, merges: [], profiles: {}, affinity: {}, settlements: [], dreams: [],
     diaryMeta: {}, avatars: [], avatarCurrent: null, personaHistory: [], jobs: [], events: [], receipts: {}, sessions: {}, checkpoints: {},
   };
@@ -60,6 +59,7 @@ export class CompanionStore {
     } catch (e) { await store.close(); throw e; }
   }
   constructor(root, lockPath, ownerId) { this.root = root; this.path = join(root, 'state.json'); this.lockPath = lockPath; this.ownerId = ownerId; this.queue = Promise.resolve(); this.closed = false; }
+  revision() { check(!this.closed, 'STORE_CLOSED', '状态服务已停止', 503); return this.state.revision; }
   read() { check(!this.closed, 'STORE_CLOSED', '状态服务已停止', 503); return structuredClone(this.state); }
   update(expectedRevision, fn) {
     const run = this.queue.then(async () => {

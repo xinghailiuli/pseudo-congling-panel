@@ -1,3 +1,4 @@
+import {transitionWindow} from './room-pose-transition.mjs';
 // A local animation clock only: no DOM, random timers, persistence or service calls.
 export function createRoomChoreography(definitions) {
  const finite=value=>Number.isFinite(value);
@@ -58,7 +59,7 @@ export function createRoomChoreography(definitions) {
    position=frame.at.map((v,i)=>v+contactHead[i]-from[i]);
   }
   const cover=(frame.cover??(frame.support==='bed'?1:0))+((nextFrame.cover??(nextFrame.support==='bed'?1:0))-(frame.cover??(frame.support==='bed'?1:0)))*blend;
-  return result(active.mode,step.pose,phase,{progress,time:base+clock,move:moving,position,contactHead,cover,nextFrame,nextPose:next.pose,frameEnd:base+step.end,variation:step.variation||null});
+  return result(active.mode,step.pose,phase,{progress,duration:step.duration,time:base+clock,move:moving,position,contactHead,cover,nextFrame,nextPose:next.pose,frameEnd:base+step.end,variation:step.variation||null});
  };
  const sample=value=>{
   const now=time(value);if(!active)return null;
@@ -80,7 +81,7 @@ export function createRoomChoreography(definitions) {
   still(mode){const def=modeFor(mode);return result(mode,def.still,'perform');},
   requestExit(value,{seated=false}={}){
    const now=time(value);if(!active)return now;if(active.exit&&(!active.exit.seated||seated))return active.exit.readyAt;
-   const current=sample(now),finishStep=current.move||active.mode==='sleep'&&current.phase!=='perform'&&current.progress>0,seed=finishStep?current.nextPose:current.pose,at=finishStep?current.frameEnd:Math.max(now,active.at);
+   const current=sample(now),finishStep=current.move||active.mode==='sleep'&&current.phase!=='perform'&&current.progress>0||(current.frame.articulated||current.nextFrame?.articulated)&&transitionWindow(current)>0,seed=finishStep?current.nextPose:current.pose,at=finishStep?current.frameEnd:Math.max(now,active.at);
    const selected=seated&&active.def.seatedExits[seed]||active.def.exits[seed];
    const path=[{pose:seed,duration:120},...selected.frames.map(({pose,duration,move})=>({pose,duration,move}))];
    const clip=compile(path,active.def.poses,active.mode+'/requested-exit');active.exit={at,clip,seated:Boolean(seated&&active.def.seatedExits[seed]),readyAt:at+clip.duration};return active.exit.readyAt;

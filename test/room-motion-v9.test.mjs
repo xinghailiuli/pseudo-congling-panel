@@ -42,7 +42,7 @@ function scene(preview='walk'){
  const room={items:names.map((name,id)=>({id,name}))};const before=structuredClone(room);
  const svg=createBlockRoom(room,{document:doc,actionAssets:assets,preview,petAssets:{idle:{frames:['idle0','idle1'],frameMs:40},head_pat:{frames:['pat0','pat1'],frameMs:40}},animation:{reducedMotion:false,random:()=>0,requestFrame:fn=>{frame=fn;}}});
  const all=descendants(svg),resident=all.find(n=>n.attributes['data-room-resident']);resident.isConnected=true;frame(0);
- return {svg,resident,room,before,node:(key,value)=>all.find(n=>n.attributes[key]===value),tick:t=>frame(t),pat:()=>all.find(n=>n.attributes['aria-label']==='摸摸大肥鱼').events.click(),visibility:hidden=>{doc.hidden=hidden;listeners.get('visibilitychange')?.();},listeners};
+ return {svg,resident,room,before,node:(key,value)=>all.find(n=>n.attributes[key]===value),tick:t=>frame(t),pat:()=>all.find(n=>['摸摸小鲸鱼','摸摸大肥鱼'].includes(n.attributes['aria-label'])).events.click(),visibility:hidden=>{doc.hidden=hidden;listeners.get('visibilitychange')?.();},listeners};
 }
 const feet=s=>s.svg.attributes['data-resident-feet'].split(',').map(Number);
 

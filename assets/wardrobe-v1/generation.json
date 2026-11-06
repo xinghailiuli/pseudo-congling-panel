@@ -1,0 +1,84 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "outfits": [
+    {
+      "id": "navy-gala",
+      "reference": "9f134da75eba88f86cd31582a020e48ac1322931c6b242a9.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. Navy and gold top-hat winter dress.",
+      "correction": null
+    },
+    {
+      "id": "red-server",
+      "reference": "5a0ada4cc7d851b3a849e182cc8679dcfc7cde4b65707460.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. Red visor, red white striped shirt, red skirt with yellow trim, whale apron, headset and ponytail.",
+      "correction": null
+    },
+    {
+      "id": "voxel-whale",
+      "reference": "5caf7e0da8f4eee6d9fe00c48eff113cbab521bc9c7d9e45.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. Preserve the cubic voxel Minecraft-style rendered character, whale winter hood and blue coat, NOT 2D line illustration.",
+      "correction": null
+    },
+    {
+      "id": "whale-hood",
+      "reference": "461abecd4cd00727c8f8f58da3fba5c7637a9e42fb450178.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. Huge whale hood with spout, fluffy white trim, striped blue white scarf, navy whale coat.",
+      "correction": null
+    },
+    {
+      "id": "snow-earmuffs",
+      "reference": "640f1847ce8e47c00db84506c1211adc8d7e27e6466b85e0.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. White fluffy earmuffs with snowflake ornament, navy whale snow coat. NO whale hood or hat.",
+      "correction": null
+    },
+    {
+      "id": "cream-hoodie",
+      "reference": "800997e0d9f8fe593ae121ea14a30f565f4c351dda26bbcf.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. Cream hoodie, gold bow, beige pleated skirt, legwarmers, orange asterisk hair ornament. Preserve blue hair.",
+      "correction": null
+    },
+    {
+      "id": "white-beret",
+      "reference": "bd1b2c4b30a604f4431ef5742938712dfc13f3c814fd70c8.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. Cream beret scarf doublebreasted coat, gray skirt black tights cream boots, lavender-silver hair with white streak as reference.",
+      "correction": null
+    },
+    {
+      "id": "whale-maid",
+      "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. ONLY TOP LEFT character outfit from collage: white frilly maid headband, navy maid dress, white whale apron.",
+      "correction": null
+    },
+    {
+      "id": "whale-sweater",
+      "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. ONLY TOP ROW THIRD character outfit: white fluffy beret, cream white pullover with big blue whale motif, navy pleated skirt.",
+      "correction": null
+    },
+    {
+      "id": "doctor",
+      "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. ONLY BOTTOM LEFT character outfit: glasses, white lab coat over navy clothing, blue necktie.",
+      "correction": null
+    },
+    {
+      "id": "hanfu",
+      "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. ONLY BOTTOM ROW SECOND character outfit: ornate purple blue flowing hanfu robes, floral hair ornaments, long translucent sleeves, circular fan.",
+      "correction": "Explicit bottom-row target; hanfu: full-length lavender white embroidered Chinese gown with flower cluster and fan, no apron/headband. Swordswoman: black navy gold belted swordswoman dress, boots and sheathed sword, no hood/fur/scarf."
+    },
+    {
+      "id": "swordswoman",
+      "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. ONLY BOTTOM ROW THIRD character outfit: black navy gold fantasy swordswoman dress with belts and sheathed sword.",
+      "correction": "Explicit bottom-row target; hanfu: full-length lavender white embroidered Chinese gown with flower cluster and fan, no apron/headband. Swordswoman: black navy gold belted swordswoman dress, boots and sheathed sword, no hood/fur/scarf."
+    },
+    {
+      "id": "sailor",
+      "reference": "01d48f8e3b2da4b45476c7cc20e146420a8f5247ab326c8f.webp",
+      "prompt": "Create a production transparent PNG sprite atlas for the EXACT referenced chibi whale girl outfit. Preserve garment design, accessories, shoes, hairstyle, tail, face identity and reference art style. 4 columns by 4 rows equal-size cells, 16 separated full-body sprites, no text, backgrounds, shadows, furniture or grid lines. Each sprite entirely inside its cell, 10% transparent padding each edge, consistent character scale. Row 1: front idle, left profile idle, back idle, right profile idle. Row 2: four consecutive LEFT-facing natural walking cycle poses, eyes open, stable head and height, alternating feet. Row 3: sitting left-facing writing with pen, sitting typing WITHOUT computer, sitting reading book, sitting relaxed eating snack. Row 4: lying sideways asleep, prone lounging, standing watering with watering can, standing enchanting holding book. Never substitute another outfit. All cells whole full-body. ONLY BOTTOM RIGHT character outfit: white and blue sailor school uniform, large blue bow, navy pleated skirt, white socks.",
+      "correction": null
+    }
+  ]
+}

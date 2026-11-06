@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,rm,writeFile,readFile} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';
-const mod=await import('../src/companion-client.mjs');
+const mod=await import('../../qq-bridge/src/companion-client.mjs').catch(()=>import('../../qq-bot/qq-bridge/src/companion-client.mjs')).catch(()=>import('../tools/companion-client.mjs')).catch(()=>null);
 test('runtime client persists failed inbound events and flushes exactly once on recovery',async t=>{
  assert.ok(mod,'companion bridge client must exist');const root=await mkdtemp(join(tmpdir(),'liuli-runtime-'));t.after(()=>rm(root,{recursive:true,force:true}));await writeFile(join(root,'runtime-token'),'fixture-token');let offline=true;const ingested=[];
  const api={async doFetch(url,init){if(offline)throw Error('offline');const b=JSON.parse(init.body);if(b.action==='ingest')ingested.push(b.body.id);return new Response(JSON.stringify({data:{allow:true,sleeping:false}}));}};

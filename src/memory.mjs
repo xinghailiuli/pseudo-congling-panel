@@ -8,11 +8,17 @@ export function addMemory(records, input, now = Date.now()) {
   const attribute=String(input.attribute||'').slice(0,120), value=String(input.value||'').slice(0,4000);
   const digest=hash(normal(content)), semantic=hash(`${normal(attribute)}|${normal(value)}`);
   const same=records.find(r=>r.scope===scope&&r.subject===subject&&(r.digest===digest || (attribute&&value&&r.semantic===semantic)));
-  if(same){same.lastRecalledAt=now;same.reinforcements=(same.reinforcements||0)+1;return {record:same,duplicate:true};}
+  // 按来源幂等：同一 sourceId 的重放不产生任何强化（含重启后重复投递）。
+  if(same){
+    const seen=Array.isArray(same.sourceIds)?same.sourceIds:[];
+    if(same.sourceId===sourceId||seen.includes(sourceId))return {record:same,duplicate:true,replayed:true};
+    same.sourceIds=[...seen,sourceId];same.lastRecalledAt=now;same.reinforcements=(same.reinforcements||0)+1;
+    return {record:same,duplicate:true};
+  }
   const id=hash(`${scope}|${subject}|${sourceId}|${digest}`).slice(0,32);
   const duplicate=records.find(r=>r.id===id);if(duplicate)return {record:duplicate,duplicate:true};
   const conflicts=records.filter(r=>r.scope===scope&&r.subject===subject&&r.status==='active'&&attribute&&r.attribute===attribute&&r.value!==value);
-  const record={id,scope,subject,sourceId,content,attribute,value,digest,semantic,level,status:conflicts.length?'conflict':'active',conflicts:conflicts.map(r=>r.id),createdAt:now,updatedAt:now,lastRecalledAt:now,reinforcements:0,evidence:String(input.evidence||content),kind:input.kind==='event'?'event':'fact',sourceRef:null};
+  const record={id,scope,subject,sourceId,content,attribute,value,digest,semantic,level,status:conflicts.length?'conflict':'active',conflicts:conflicts.map(r=>r.id),createdAt:now,updatedAt:now,lastRecalledAt:now,reinforcements:0,evidence:String(input.evidence||content),kind:input.kind==='event'?'event':'fact',sourceRef:null,sourceIds:[sourceId],accessCount:0,lastAccessAt:0};
   records.push(record);return {record,duplicate:false};
 }
 export function resolveMemory(records,id,patch,now=Date.now()) {
@@ -20,10 +26,12 @@ export function resolveMemory(records,id,patch,now=Date.now()) {
   check(patch&&typeof patch==='object','INVALID_INPUT','缺少修改内容');
   if('level' in patch)check(Number.isInteger(patch.level)&&patch.level>=0&&patch.level<=5,'INVALID_INPUT','记忆等级应为 0–5');
   if('status' in patch)check(['active','archived','conflict'].includes(patch.status),'INVALID_INPUT','记忆状态不正确');
-  if(patch.supersedes){const old=records.find(r=>r.id===patch.supersedes);check(old&&old.id!==row.id&&old.scope===row.scope&&old.subject===row.subject,'INVALID_INPUT','只能修订同一会话、同一主体的记忆');old.status='archived';old.updatedAt=now;row.supersedes=old.id;}
+  if(patch.supersedes){const old=records.find(r=>r.id===patch.supersedes);check(old&&old.id!==row.id&&old.scope===row.scope&&old.subject===row.subject,'INVALID_INPUT','只能修订同一会话、同一主体的记忆');old.status='archived';old.updatedAt=now;row.supersedes=old.id;row.status='active';row.conflicts=(row.conflicts||[]).filter(x=>x!==old.id);}
   for(const key of ['level','status'])if(key in patch)row[key]=patch[key];row.updatedAt=now;
   return row;
 }
+// 读取只记访问量，不制造事实置信度：reinforcements 只由新的用户证据（addMemory 去重命中）推进。
+export function recordAccess(r,now=Date.now()){r.accessCount=(r.accessCount||0)+1;r.lastAccessAt=now;return r;}
 export function strength(r,now,config) {
   if(r.level===0||!config.forgetting)return 1;
   const age=Math.max(0,now-(r.lastRecalledAt??r.createdAt))/86400000;

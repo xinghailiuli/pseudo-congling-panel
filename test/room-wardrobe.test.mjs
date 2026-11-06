@@ -46,7 +46,7 @@ test('walking alternates the lifted foot, keeps the other sole down and does not
  for(let gait=0;gait<8;gait+=.1)for(const x of [.2,.6]){const p=wardrobeMotionPoint(x,1,{moving:true,gait});assert.ok(p[1]>=.97&&p[1]<=1);assert.ok(p[0]>=0&&p[0]<=1);}
 });
 test('desk fingers move locally, with reduced motion and body support respected',()=>{
- for(const cell of [8,9]){const a=wardrobeMotionPoint(.16,.625,{cell,time:0}),b=wardrobeMotionPoint(.16,.625,{cell,time:400});assert.ok(Math.hypot(a[0]-b[0],a[1]-b[1])>.002);const hip=wardrobeMotionPoint(.5,.92,{cell,time:400});assert.ok(Math.hypot(hip[0]-.5,hip[1]-.92)<.002);assert.deepEqual(wardrobeMotionPoint(.16,.625,{cell,time:400,reduced:true}),[.16,.625]);}
+ for(const cell of [8,9]){const a=wardrobeMotionPoint(.135,.515,{cell,time:0}),b=wardrobeMotionPoint(.135,.515,{cell,time:400});assert.ok(Math.hypot(a[0]-b[0],a[1]-b[1])>.002);const hip=wardrobeMotionPoint(.5,.92,{cell,time:400});assert.deepEqual(hip,[.5,.92]);assert.deepEqual(wardrobeMotionPoint(.135,.515,{cell,time:400,reduced:true}),[.135,.515]);for(const point of [[.5,.2],[.3,.45],[.5,.6]])assert.deepEqual(wardrobeMotionPoint(...point,{cell,time:400}),point);}
 });
 test('reject incomplete, foreign and oversized wardrobe assets',()=>{
  assert.equal(validateWardrobe(asset),true);

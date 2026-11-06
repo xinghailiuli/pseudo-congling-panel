@@ -1,0 +1,32 @@
+{
+  "version": 11,
+  "asset": "sofa-rest.png",
+  "generatedWith": "built-in image_gen",
+  "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-578d63fe-6858-44e6-865f-ceff5fe03130.png",
+  "references": [
+    "assets/room-pet/idle/idle_001.webp",
+    "assets/room-house/floor-one-v6.png",
+    "assets/room-life-v10/sofa.png"
+  ],
+  "purpose": "Correct full-body side/prone poses to run lengthwise along the existing sofa.",
+  "layout": {
+    "columns": 4,
+    "rows": 3,
+    "frames": 12
+  },
+  "calibration": {
+    "rotationDegrees": 25,
+    "scale": 0.46,
+    "supportedAnchor": [
+      767,
+      662
+    ]
+  },
+  "originalBytesPreserved": true,
+  "notes": [
+    "The source PNG was copied without pixel edits.",
+    "The SVG renderer applies the calibrated support transform.",
+    "Existing v10 images and chunk are retained for recovery.",
+    "This remains a 2D sprite scene."
+  ]
+}

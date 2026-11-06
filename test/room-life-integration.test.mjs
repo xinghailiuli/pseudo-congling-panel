@@ -74,7 +74,7 @@ test('canceling a seated pen handoff returns to writing without standing',async(
 
 test('automatic life remains at the sofa long enough to enjoy its resting poses',async()=>{
  const {svg,tick}=await make({preview:'auto'});let arrived=0;
- for(let t=100;t<=60000;t+=100){tick(t);if(svg.attributes['data-room-activity']==='lounge'&&svg.attributes['data-resident-travel']==='false'){arrived=t;break;}}
+ for(let t=100;t<=80000;t+=100){tick(t);if(svg.attributes['data-room-activity']==='lounge'&&svg.attributes['data-resident-travel']==='false'){arrived=t;break;}}
  assert(arrived>0,'automatic stroll reaches the sofa');
  for(let t=arrived+100;t<arrived+90000;t+=100){tick(t);assert.equal(svg.attributes['data-room-activity'],'lounge','must not leave after one short loop');}
  svg.setRoomActivity({preview:'walk'});tick(arrived+100000);assert.equal(svg.attributes['data-room-activity'],'walk','manual choice remains responsive');

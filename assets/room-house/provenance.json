@@ -1,0 +1,72 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "C:/Users/Administrator/AppData/Local/Temp/codex-clipboard-ed9afa39-9037-438f-953f-612bc5f70909.png",
+  "characterReference": "original dsh-dafeiyu idle and idle_yawn frame",
+  "policy": "Copies preserve generated pixels; runtime SVG clips isolate contact regions. Original sprites and all saved object data retained.",
+  "receipts": [
+    {
+      "name": "floor-one-v4",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-f314cb5e-d029-44f0-a227-ae1f699d4efd.png",
+      "sha256": "6748b97cace61e44c7219ef2e7d817671a0d9cc9ed0a78c07820fb73f71372a8",
+      "width": 1536,
+      "height": 1024,
+      "colorType": 6
+    },
+    {
+      "name": "floor-two-v4",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-47595047-87c4-46fa-9884-fc44bd472396.png",
+      "sha256": "343ddd4dd206d46f26fb96db95bf459251aca8a7903c880edaa377c88462192a",
+      "width": 1536,
+      "height": 1024,
+      "colorType": 6
+    },
+    {
+      "name": "desk-type-a-v4",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-cf6917a5-1214-4658-b7f7-5429cc2b1fbf.png",
+      "sha256": "95002df1a2e0b018cb3e4f61e7abbf67067cabcc6d0a18453e69a751478ad734",
+      "width": 1536,
+      "height": 1024,
+      "colorType": 6
+    },
+    {
+      "name": "desk-type-b-v4",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-717c02e2-e63b-4d7b-b366-fc18c9871fbb.png",
+      "sha256": "a2a96ff4345e33cd384856ba9adab4c6131f3e53d43bdefdf609ee25e70a3cf5",
+      "width": 1536,
+      "height": 1024,
+      "colorType": 6
+    },
+    {
+      "name": "desk-write-a-v4",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-9e6b86b5-d9b3-4baf-b13d-c4a10d565104.png",
+      "sha256": "a35d9f4e80877edb0fbee7012f138ec14c4d960a03c7ada33de7cbd006891e9c",
+      "width": 1536,
+      "height": 1024,
+      "colorType": 6
+    },
+    {
+      "name": "desk-write-b-v4",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-a24312aa-855a-41df-8837-eef194a72a1c.png",
+      "sha256": "369590f4875e0247182f4a7637f5c8f0de16950520489e2b4f277564bc96e7d1",
+      "width": 1536,
+      "height": 1024,
+      "colorType": 6
+    },
+    {
+      "name": "bed-sleep-v4",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-4c0695de-af68-4543-9e99-75fdd72f2449.png",
+      "sha256": "84a346a7375bba68cedfc5d1b2888dd798d7c1dff13d4cb56fe62b1ef7503eb7",
+      "width": 1536,
+      "height": 1024,
+      "colorType": 6
+    },
+    {
+      "name": "sofa-lounge-v4",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-b38db40f-6197-40c8-864a-08e925c18d27.png",
+      "sha256": "7f3cf73c4832c688c643e5068619dcf022fb0eb6b999cd4c9b64972a6215b1cd",
+      "width": 1536,
+      "height": 1024,
+      "colorType": 6
+    }
+  ]
+}

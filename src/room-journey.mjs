@@ -1,9 +1,16 @@
 // Finite routes use explicit walkable edges. Floor changes have a timed landing
 // edge; redirecting cannot draw a nearest-node shortcut through furniture.
-export function createRoomJourney({nodes,edges,targets,start,speed=100,stride=62}) {
+export function createRoomJourney({nodes,edges,targets,start,speed=100,stride=62,canWalk}) {
  const points=Object.fromEntries(Object.entries(nodes).map(([key,p])=>[key,Array.isArray(p)?{x:p[0],y:p[1],floor:p[2]||1}:{...p}]));
  const distance=(a,b)=>Math.hypot(b.x-a.x,b.y-a.y),graph=Object.fromEntries(Object.keys(points).map(k=>[k,[]]));
  for(const[a,b,meta={}]of edges){const edge={a,b,kind:meta.kind||'walk',duration:meta.duration??distance(points[a],points[b])/speed*1000};graph[a].push(edge);graph[b].push(edge);}
+ // Join only mutually visible floor nodes. Treads and portal handoffs retain
+ // their calibrated edges; a shorter line is not permission to cross furniture.
+ const walkingKeys=Object.keys(points).filter(k=>graph[k].some(e=>e.kind==='walk'));
+ if(canWalk)for(let i=0;i<walkingKeys.length;i++)for(let j=i+1;j<walkingKeys.length;j++){
+  const a=walkingKeys[i],b=walkingKeys[j];if(graph[a].some(e=>e.a===b||e.b===b)||!canWalk(points[a],points[b]))continue;
+  const edge={a,b,kind:'walk',duration:distance(points[a],points[b])/speed*1000};graph[a].push(edge);graph[b].push(edge);
+ }
  let segments=[],station=points[start],stationKey=start,stationPhase=0,target=null;
  const endTime=()=>segments.at(-1)?.end??0;
  function at(time){return segments.find(s=>time<s.end)||null;}
@@ -32,10 +39,11 @@ export function createRoomJourney({nodes,edges,targets,start,speed=100,stride=62
    // Finish the visible handoff before reversing, retaining its original clock.
    prefix=[old];begin=old.toKey;clock=old.end;
   }else if(old){
-   const fraction=Math.max(0,Math.min(1,(time-old.start)/(old.end-old.start))),candidates=[{key:old.fromKey,portion:fraction},{key:old.toKey,portion:1-fraction}].map(c=>({...c,path:shortest(c.key,goal)})).filter(c=>c.path);
-   const best=candidates.sort((a,b)=>a.path.cost+a.portion*(old.end-old.start)-b.path.cost-b.portion*(old.end-old.start))[0];if(!best)return;
-   begin=best.key;const duration=distance(current,points[begin])/Math.max(.01,distance(old.from,old.to))*(old.end-old.start);
-   if(duration>.001){prefix=[{...old,from:{x:current.x,y:current.y,floor:current.floor},to:points[begin],toKey:begin,fromKey:old.fromKey===begin?old.toKey:old.fromKey,start:time,end:time+duration,gaitStart:current.gaitPhase,gaitSpan:old.gaitSpan*duration/(old.end-old.start)}];clock+=duration;}
+   const candidates=[old.fromKey,old.toKey].map(key=>({key,duration:distance(current,points[key])/Math.max(.01,distance(old.from,old.to))*(old.end-old.start)}));
+   if(old.kind==='walk'&&canWalk)for(const key of walkingKeys)if(canWalk(current,points[key]))candidates.push({key,duration:distance(current,points[key])/speed*1000});
+   const best=candidates.map(c=>({...c,path:shortest(c.key,goal)})).filter(c=>c.path).sort((a,b)=>a.path.cost+a.duration-b.path.cost-b.duration)[0];if(!best)return;
+   begin=best.key;const duration=best.duration;
+   if(duration>.001){prefix=[{...old,from:{x:current.x,y:current.y,floor:current.floor},to:points[begin],toKey:begin,fromKey:old.fromKey===begin?old.toKey:old.fromKey,start:time,end:time+duration,gaitStart:current.gaitPhase,gaitSpan:old.kind==='walk'?distance(current,points[begin])/stride*8:old.gaitSpan*duration/(old.end-old.start)}];clock+=duration;}
   }
   const path=shortest(begin,goal);if(!path)return;
   // Replanning changes the destination, not the foot that is currently down.

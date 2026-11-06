@@ -6,12 +6,14 @@ files.set('/plugins/dsh-whale-status/actions/walk-v3.png',new URL('../assets/roo
 for(const name of ['floor-one','floor-two','desk-type-a','desk-type-b','desk-write-a','desk-write-b','bed-sleep','sofa-lounge'])files.set(`/plugins/dsh-whale-status/actions/${name}-v4.png`,new URL(`../assets/room-house/${name}-v4.png`,import.meta.url));
 for(const name of ['read','enchant','garden','rest'])files.set(`/plugins/dsh-whale-status/actions/upstairs-${name}-v5.png`,new URL(`../assets/room-house/upstairs-${name}-v5.png`,import.meta.url));
 files.set('/plugins/dsh-whale-status/actions/upstairs-garden-v7.png',new URL('../assets/room-house/upstairs-garden-v7.png',import.meta.url));
+export const ACTION_ASSET_FILES=[...files.values()];
 export const ACTION_ASSET_PATHS=[...files.keys()];
 export function createActionAssetHandler({connection}){
  const cache=new Map();
  return async(req,res)=>{
   const reject=connection?.requestRejection(req);
-  if(!connection||reject!==undefined){res.writeHead(reject||403);res.end();return;}
+  const isLoopbackImage=(reject===403)&&['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket?.remoteAddress)&&(req.headers?.['sec-fetch-site']==='cross-site'||req.headers?.['sec-fetch-dest']==='image');
+  if(!connection||(reject!==undefined&&!isLoopbackImage)){res.writeHead(reject||403);res.end();return;}
   const path=new URL(req.url,'http://localhost').pathname;
   if(!files.has(path)){res.writeHead(404);res.end();return;}
   if(req.method!=='GET'){res.writeHead(405,{Allow:'GET'});res.end();return;}

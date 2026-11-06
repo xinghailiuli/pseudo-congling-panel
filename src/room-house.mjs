@@ -1,8 +1,8 @@
 // The house is visual scenery. Saved room objects keep their IDs and controls.
 export function createRoomHouse(room,doc,{onLamp,onCurtain}={}) {
  const el=(tag,attrs={},text)=>{const n=doc.createElementNS('http://www.w3.org/2000/svg',tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);if(text!==undefined)n.textContent=text;return n;};
- const svg=el('svg',{viewBox:'0 660 1100 710',class:'room-scene block-room',role:'group','aria-label':'大肥鱼的双层小屋，一楼起居与生产，二楼休息与魔法','data-room-size':'14x10','data-room-floors':'2'});
- svg.append(el('title',{},'大肥鱼的双层小屋 · 橡木与白桦木'));
+ const svg=el('svg',{viewBox:'0 660 1100 710',class:'room-scene block-room',role:'group','aria-label':'琉璃的小鲸鱼双层小屋，一楼起居与生产，二楼休息与魔法','data-room-size':'14x10','data-room-floors':'2'});
+ svg.append(el('title',{},'琉璃的小鲸鱼双层小屋 · 橡木与白桦木'));
  const point=(x,y,z=0)=>[450+(x-y)*38,157+(x+y)*15-z*32];
  const polygon=(g,ps,fill,attrs={})=>{const n=el('polygon',{points:ps.map(p=>point(...p).join(',')).join(' '),fill,...attrs});g.append(n);return n;};
  const line=(g,a,b,color='#785027',width=1,attrs={})=>{const p=point(...a),q=point(...b);g.append(el('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:color,'stroke-width':width,...attrs}));};

@@ -1,44 +1,24 @@
 {
   "name": "dsh-whale-status",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "private": true,
-  "description": "琉璃陪伴中心：完整状态面板、MC 风格双层小屋、大肥鱼动作交互及可选记忆/日记/QQ 服务适配。",
+  "description": "琉璃陪伴中心：原生 DSH 记忆、长夜、梦境、日记与 QQ 管理。",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
-    "./package.json": "./package.json",
-    "./companion-client": "./src/companion-client.mjs"
+    "./package.json": "./package.json"
   },
   "files": [
-    "lib/index.js",
-    "lib/client.js",
-    "lib/panel-built.html",
-    "lib/client.room-art-v7.js",
-    "lib/client.room-art-v12.js",
-    "lib/client.room-life-v11.js",
-    "lib/client.room-life-v19.js",
-    "lib/client.wardrobe-*-v1.js",
-    "lib/client.wardrobe-*-v19.js",
+    "lib",
     "src",
-    "assets/room-pet",
-    "assets/room-actions",
-    "assets/room-house",
-    "assets/SOURCES.md",
     "cordis.patch.yml",
-    "README.md",
-    "LICENSE",
-    "THIRD_PARTY_NOTICES.md",
-    "docs",
-    "CHANGELOG.md"
+    "assets"
   ],
   "scripts": {
     "build": "node build.mjs",
-    "test": "node --test test/*.test.mjs test-client.mjs",
-    "prepack": "node build.mjs",
-    "preview": "node test/fixture-server.mjs",
-    "preview:motion": "node test/motion-server.mjs"
+    "test": "node --test test/*.test.mjs test-client.mjs"
   },
   "dsh": {
     "bundle": {
@@ -52,10 +32,5 @@
       ]
     }
   },
-  "displayName": "伪从绫开始的面板 1.11 优化版",
-  "license": "SEE LICENSE IN LICENSE",
-  "engines": {
-    "node": ">=24",
-    "dsh": ">=0.2.0-rc.2 <0.3.0-0"
-  }
+  "displayName": "伪从绫开始的面板 1.2 · 太空视窗与全家具交互重构版"
 }

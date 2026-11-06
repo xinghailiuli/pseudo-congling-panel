@@ -1,0 +1,12 @@
+{
+  "mode": "image_gen transparent identity-preserving sprite-sheet edit",
+  "reference": "../room-pet/idle/idle_001.webp",
+  "generatedImage": "exec-b43cad75-8fce-44f1-ab50-3a8dbf5cbd96.png",
+  "prompt": "walk-v3-prompt.txt",
+  "shipped": "walk-v3.png",
+  "size": [1774, 887],
+  "layout": "four columns, two rows; right-facing complete character",
+  "registration": "SVG viewBox adjusts row ground baselines. Original image pixels unchanged.",
+  "playback": "eight distance-linked phases, original idle clip on a stationary pause; whole sprite mirrored for leftward screen travel",
+  "sourceLimit": "Installed original is 2D frame artwork and has no walk clip or skeletal model. Original native assets retained unchanged."
+}

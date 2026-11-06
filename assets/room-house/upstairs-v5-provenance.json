@@ -1,0 +1,40 @@
+{
+  "tool": "built-in image_gen",
+  "base": "floor-two-v4.png",
+  "characterReference": "../room-pet/idle/idle_001.webp",
+  "policy": "Generated PNG bytes copied unchanged; SVG contact crops used at runtime. Garden initial draft rejected because water landed on walkway.",
+  "records": [
+    {
+      "mode": "read",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-392b289f-a5d9-49d6-8801-473ef05b338e.png",
+      "destination": "assets/room-house/upstairs-read-v5.png",
+      "sha256": "4bfc7123985ecea85656f30059cd324c150fdc5f2cb31749b86374d3f7bd0809",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "mode": "enchant",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-669dae14-1540-43da-b04a-dd16c71070ff.png",
+      "destination": "assets/room-house/upstairs-enchant-v5.png",
+      "sha256": "5aecb4824c718cba3d5c152ea62cdb60b07aa7881f4da8f10705c60bcd5eb02c",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "mode": "rest",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-8b1962e7-1854-402d-94aa-ecbff4b869b8.png",
+      "destination": "assets/room-house/upstairs-rest-v5.png",
+      "sha256": "3d22486c52f5282b370f24c28912af4622f327fba88c51e7bb7a1c7b17eed00c",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "mode": "garden",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-f57f1537-629d-4c48-a6de-751f8bfc7b8a.png",
+      "destination": "assets/room-house/upstairs-garden-v5.png",
+      "sha256": "24576e1d1b39ebccd4b48623df78f14d383c85c826fce740ca3cf64f0f965cf5",
+      "width": 1536,
+      "height": 1024
+    }
+  ]
+}

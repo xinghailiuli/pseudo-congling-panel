@@ -1,9 +1,15 @@
 import { HttpError, check } from './errors.mjs';
+import { hash } from './memory.mjs';
+export const factBody = value => String(value || '').replace(/\r\n/g,'\n').replace(/^---\n[\s\S]*?\n---\n/,'').split('\n## 来源证据')[0].trim();
 // All note bodies remain in the existing Basic Memory project. Companion state
 // holds identifiers and relationship/retention metadata, never a second vault.
 export class BasicMemory {
-  constructor(call,{project='personal'}={}){this.call=call;this.project=project;}
+  constructor(call,{project='personal'}={}){this.call=call;this.project=project;this.activeCalls=0;this.waiting=[];}
   async invoke(name,args){
+    if(this.activeCalls>=2)await new Promise(resolve=>this.waiting.push(resolve));else this.activeCalls++;
+    try{return await this.invokeNow(name,args);}finally{const next=this.waiting.shift();if(next)next();else this.activeCalls--;}
+  }
+  async invokeNow(name,args){
     const raw=await this.call(`mcp__basic_memory__${name}`,{...args,project:this.project});
     check(raw&&!raw.isError,'MEMORY_UNAVAILABLE','Basic Memory 当前不可用',503);
     let value=raw.structuredContent??raw.value??raw;if(value&&Object.hasOwn(value,'result'))value=value.result;
@@ -20,8 +26,15 @@ export class BasicMemory {
     try{const result=await this.invoke('write_note',{title:`liuli-${record.id}`,directory,content,tags:['liuli-companion'],output_format:'json'});check(typeof result.permalink==='string','MEMORY_FORMAT','Basic Memory 未返回笔记标识',502);return result.permalink;}
     catch(error){try{const existing=await this.invoke('read_note',{identifier,include_content:true,include_frontmatter:true,output_format:'json'});const body=v=>String(v||'').replace(/\r\n/g,'\n').replace(/^---\n[\s\S]*?\n---\n/,'').trim(),meta=existing.frontmatter;const matches=meta?String(meta.liuli_id)===record.id&&String(meta.scope)===record.scope&&String(meta.subject)===record.subject&&String(meta.source_id)===record.sourceId:existing.content?.trim()===content.trim();if(matches&&body(existing.content)===body(content))return existing.permalink||identifier;}catch{}throw new HttpError(502,'UPSTREAM_UNKNOWN','记忆写入结果未确认，已保留任务，请核对 Basic Memory 中的对应笔记');}
   }
-  async read(ref){const r=await this.invoke('read_note',{identifier:ref,include_content:true,include_frontmatter:true,output_format:'json'});check(typeof r.content==='string','MEMORY_FORMAT','笔记内容不可读取',502);return r.content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/,'').split('\n## 来源证据')[0].trim();}
+  async read(ref){const r=await this.invoke('read_note',{identifier:ref,include_content:true,include_frontmatter:true,output_format:'json'});check(typeof r.content==='string','MEMORY_FORMAT','笔记内容不可读取',502);return factBody(r.content);}
+  async verify(record){
+    const note=await this.invoke('read_note',{identifier:record.sourceRef,include_content:true,include_frontmatter:true,output_format:'json'});
+    const meta=note.frontmatter,body=factBody(note.content);
+    check(meta&&String(meta.liuli_id)===record.id&&String(meta.scope)===record.scope&&String(meta.subject)===record.subject&&String(meta.source_id)===record.sourceId,'MEMORY_FORMAT','记忆读回归属不匹配',502);
+    check(hash(body.normalize('NFKC').toLowerCase().replace(/[\p{P}\s]/gu,''))===record.digest,'MEMORY_FORMAT','记忆读回内容不匹配',502);
+    return {contentHash:hash(body)};
+  }
   async search(query,page=1){return this.invoke('search_notes',{query,page,page_size:50,output_format:'json'});}
   async list(page=1){return this.invoke('list_directory',{dir_name:'/',depth:5,page,page_size:100,output_format:'json'});}
-  async hydrate(records){return Promise.all(records.map(async r=>({...r,content:r.sourceRef?await this.read(r.sourceRef):r.content||''})));}
+  async hydrate(records){const result=new Array(records.length);let index=0;const worker=async()=>{while(index<records.length){const i=index++,r=records[i];result[i]={...r,content:r.sourceRef?await this.read(r.sourceRef):r.content||''};}};await Promise.all([worker(),worker()]);return result;}
 }

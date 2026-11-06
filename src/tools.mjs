@@ -7,7 +7,7 @@ export const LOCAL_TOOLS=[
  {name:'weather',label:'天气查询',group:'生活',readOnly:true,dependency:'mcp__web-search-safe__web_search'},
  {name:'web_summary',label:'网页摘要',group:'网页',readOnly:true,dependency:'mcp__web-search-safe__web_fetch'},
 ];
-export const SAFE_TESTS=new Set(['mcp__snowluma__qq_status','mcp__snowluma-host__snowluma_status','mcp__web-search-safe__web_search','mcp__web-search-safe__web_fetch','mcp__minecraft__mc_status']);
+export const SAFE_TESTS=new Set(['mcp__snowluma__qq_status','mcp__snowluma-host__snowluma_status','mcp__web-search-safe__web_search','mcp__web-search-safe__web_fetch']);
 export class ToolCatalog {
  constructor({list,call,model}){this.getList=list;this.call=call;this.model=model;}
  async list(){const registered=await this.getList();return [...LOCAL_TOOLS.map(x=>({...x,available:!x.dependency||registered.some(t=>t.name===x.dependency)})),...registered.map(t=>({name:t.name,label:t.description||t.name,group:t.name.split('__')[1]||'DSH',readOnly:SAFE_TESTS.has(t.name),available:true,testable:SAFE_TESTS.has(t.name)}))];}

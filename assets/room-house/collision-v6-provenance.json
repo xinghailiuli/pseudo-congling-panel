@@ -1,0 +1,11 @@
+{
+  "mode": "built-in imagegen",
+  "prompts": "collision-v6-prompts.json",
+  "files": {
+    "floor-one-v6.png": "exec-2d305f0b-bde9-4597-bba3-3a10cf5fda6e.png",
+    "floor-two-v6.png": "exec-0cb684df-1eb4-40c1-9d69-b84714e7b312.png",
+    "stairs-v6.png": "exec-5f1c69ab-a1ee-4845-8bb9-0672b44a3bb1.png"
+  },
+  "sourceDirectory": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd",
+  "note": "Generated corrections are used only in calibrated local floor clips. Original floors, contact poses and authentic resident animation frames are retained. Rejected read cutout is not installed. This is a 2D illustrated renderer, not a 3D skeletal rig."
+}

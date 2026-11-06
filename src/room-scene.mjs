@@ -2,18 +2,18 @@ import {roomActivity,roomWalkPoint} from './room-life.mjs';
 import {createRoomHouse} from './room-house.mjs';
 import {createArtBlockRoom} from './room-art.mjs';
 
-export function createBlockRoom(room,{document:doc=document,onLamp,onCurtain,petAssets,actionAssets={},animation={},night={},jobs=[],preview='auto',onActivity,onFloor,onFurniture}={}){
- const illustrated=createArtBlockRoom(room,{document:doc,onLamp,onCurtain,petAssets,actionAssets,animation,night,jobs,preview,onActivity,onFloor,onFurniture});if(illustrated)return illustrated;
+export function createBlockRoom(room,{document:doc=document,onLamp,onCurtain,petAssets,actionAssets={},animation={},night={},jobs=[],preview='auto',onActivity,onFloor,onFurniture,onDiagnostic}={}){
+ const illustrated=createArtBlockRoom(room,{document:doc,onLamp,onCurtain,petAssets,actionAssets,animation,night,jobs,preview,onActivity,onFloor,onFurniture,onDiagnostic});if(illustrated)return illustrated;
  const {svg,el,point,floors,drawings,staticKeyboard,blanket,anchors}=createRoomHouse(room,doc,{onLamp,onCurtain});
  let visual={night,jobs,preview},elapsed=0,lastMode,lastSource,patStart=null,patPending=false,origin=null,floor='1';
  const requestFrame=animation.requestFrame||globalThis.requestAnimationFrame?.bind(globalThis),reduced=animation.reducedMotion??globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches??false;
  const clips=petAssets||{},pictures=[],sheets=[],poses={},props={};
- const resident=el('g',{'data-room-resident':'dafeiyu',class:'room-resident',role:'button',tabindex:'0','aria-label':'摸摸大肥鱼'});
+ const resident=el('g',{'data-room-resident':'dafeiyu',class:'room-resident',role:'button',tabindex:'0','aria-label':'摸摸小鲸鱼'});
  const sprite=(g,x,y,w=198,clipName='idle')=>{const n=el('image',{x:x-w*219.5/412,y:y-w*344/412,width:w,height:w*344/412,preserveAspectRatio:'xMidYMax meet',class:'room-resident-sprite'});pictures.push({n,clipName,mode:'walk',standing:true});g.append(n);return n;};
  const setFloor=value=>{if(!['all','1','2'].includes(String(value)))return;floor=String(value);svg.setAttribute('viewBox',floor==='all'?'0 0 1100 1230':floor==='2'?'15 0 1050 560':'15 660 1050 560');for(const[level,g]of Object.entries(floors)){g.setAttribute('display',floor==='all'||floor===level?'inline':'none');g.setAttribute('aria-hidden',String(floor!=='all'&&floor!==level));}svg.setAttribute('data-room-floor',floor);onFloor?.(floor);};
  svg.setRoomFloor=setFloor;
  if(clips.idle?.frames?.length){
-  svg.append(resident);resident.append(el('title',{},'大肥鱼 · 点点她的头'));
+  svg.append(resident);resident.append(el('title',{},'琉璃的小鲸鱼 · 点点她的头'));
   for(const mode of['walk','sleep','write','type','lounge']){poses[mode]=el('g',{'data-room-pose':mode,'data-resident-floor':mode==='sleep'?'2':'1',transform:mode==='sleep'?'translate(0,0)':'translate(0,660)'});resident.append(poses[mode]);}
   const sheet=(g,kind,x,y,width,height)=>{const a=actionAssets[kind];if(!a)return null;const viewport=el('svg',{x,y,width,height,viewBox:a.frames[0].join(' '),overflow:'hidden','data-complete-action':kind});viewport.append(el('image',{href:a.url,x:0,y:0,width:a.width,height:a.height,preserveAspectRatio:'none'}));g.append(viewport);sheets.push({viewport,asset:a,kind});return viewport;};
   poses.walk.append(el('ellipse',{cx:0,cy:0,rx:19,ry:5.5,fill:'#66513b',opacity:'.18'}));
@@ -47,6 +47,8 @@ export function createBlockRoom(room,{document:doc=document,onLamp,onCurtain,pet
  };
  svg.setRoomActivity=patch=>{visual={...visual,...patch};if(Object.hasOwn(patch,'preview')&&floor!=='all'){const mode=roomActivity(room,visual.night,visual.jobs,visual.preview,elapsed).mode;setFloor(mode==='sleep'?'2':'1');}paint(elapsed);};
  const pet=()=>{if(patStart!==null||patPending||!clips.head_pat?.frames?.length)return;patPending=true;paint(elapsed);};resident.addEventListener('click',pet);resident.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pet();}});
- const tick=time=>{if(!resident.isConnected)return;if(origin===null)origin=time;elapsed=time-origin;paint(elapsed);requestFrame(tick);};
- setFloor('1');paint(0);if(requestFrame&&!reduced&&clips.idle?.frames?.length)requestFrame(tick);return svg;
+ let paused=false,rafPending=false;
+ const tick=time=>{rafPending=false;if(paused||!resident.isConnected){origin=null;return;}if(origin===null)origin=time-elapsed;elapsed=time-origin;paint(elapsed);rafPending=true;requestFrame(tick);};
+ svg.setRoomPaused=value=>{const was=paused;paused=Boolean(value);if(was&&!paused&&!rafPending&&resident.isConnected&&requestFrame&&!reduced&&clips.idle?.frames?.length){origin=null;rafPending=true;requestFrame(tick);}};
+ setFloor('1');paint(0);if(requestFrame&&!reduced&&clips.idle?.frames?.length){rafPending=true;requestFrame(tick);}return svg;
 }

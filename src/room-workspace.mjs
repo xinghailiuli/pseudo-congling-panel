@@ -1,5 +1,5 @@
 // Furniture owns its presentation; data continues to live in the existing services.
-export function createRoomWorkspace({document:doc,request,store={},onClose}={}) {
+export function createRoomWorkspace({document:doc,request,store={},customViews={},onClose}={}) {
  const drafts=store.drafts??=new Map(),filters=store.filters??={},selected=store.selected??={},tabs=store.tabs??={};
  const el=(tag,text,cls)=>{const n=doc.createElement(tag);if(text!=null)n.textContent=String(text);if(cls)n.className=cls;return n;};
  const add=(n,...children)=>{for(const c of children.flat(Infinity))if(c!=null)n.append(c);return n;};
@@ -13,9 +13,22 @@ export function createRoomWorkspace({document:doc,request,store={},onClose}={}) 
  const json=value=>el('pre',JSON.stringify(value??{},null,2),'ws-json');
  const dialog=el('dialog',null,'room-workspace');dialog.setAttribute('aria-modal','true');
  doc.body.append(dialog);
- let kind='',view='',mode='',epoch=0,opened=false,disposed=false,trigger=null,writeBusy=false,body,status,nav;
- const names={computer:'琉璃的电脑',enchant:'附魔台上的日记',bed:'床边的长夜'};
- const pages={computer:[['memory','记忆档案','▤'],['persona','人格档案','◇']],enchant:[['read','翻阅日记','▧'],['write','写一页','✎'],['generate','请她写一篇','✧']],bed:[['night','今夜','☾'],['dreams','梦的收藏','✦']]};
+ let kind='',view='',mode='',epoch=0,opened=false,disposed=false,trigger=null,writeBusy=false,clockTimer=null,body,status,nav;
+ const names={computer:'琉璃的电脑',comms:'全息通讯视窗',workbench:'工坊与舱室中枢',enchant:'附魔台上的日记',bed:'床边的长夜'};
+ const meta={
+  computer:['◈','LIULI OS // MEMORY · PERSONA · RELATIONS','●  LIULI NEURAL ARCHIVE'],
+  comms:['◉','ORBITAL COMMS // TELEMETRY · QQ · PROACTIVE','◉  COMMS LINK SYNCHRONIZED'],
+  workbench:['⌘','HABITAT BAY // TOOLS · CABIN · SYSTEM','⌘  WORKSHOP CORE READY'],
+  enchant:['✧','HOLO JOURNAL // 留给自己的日常','✦  每一页都是陪伴'],
+  bed:['☾','STARLIGHT BERTH // GOOD NIGHT · DREAMS','☾  愿今夜安稳']
+ };
+ const pages={
+  computer:[['memory','记忆档案','▤'],['persona','人格档案','◇'],...(customViews.relations?[['relations','关系与画像','♧']]:[])],
+  comms:[['overview','近况遥测','◉'],['qq','QQ 与空间','◎'],['proactive','主动联系','↗'],['expression','表达与感知','≋']],
+  workbench:[['tools','能力工具箱','⌘'],['decor','舱室与物品','⌂'],['system','系统与备份','⚙'],['about','航行铭牌','·']],
+  enchant:[['read','翻阅日记','▧'],['write','写一页','✎'],['generate','请她写一篇','✧']],
+  bed:[['night','今夜','☾'],['dreams','梦的收藏','✦']]
+ };
  const alive=token=>opened&&!disposed&&token===epoch;
  const announce=(message,error=false)=>{if(!opened)return;status.textContent=message;status.className='ws-notice'+(error?' is-error':'');};
  const button=(label,fn,cls='ws-button',aria)=>{const b=el('button',label,cls);b.type='button';if(aria)b.setAttribute('aria-label',aria);b.addEventListener('click',async event=>{event.preventDefault();if(b.disabled)return;const token=epoch;b.disabled=true;try{await fn();}catch(e){if(alive(token))announce(e.message||String(e),true);}finally{b.disabled=false;}});return b;};
@@ -124,23 +137,39 @@ export function createRoomWorkspace({document:doc,request,store={},onClose}={}) 
   }else panel=section('睡眠足迹',(d.timeline||[]).length?box('ws-night-timeline',[...d.timeline].reverse().map(r=>box('ws-night-event',tag(r.type==='sleep'?'入睡':r.type==='wake'?'醒来':r.type),small(localTime(r.at))))):small('之后的入睡与醒来，会留在这里。'));
   return box('ws-bedside',hero,box('ws-gauges',gauge('精力',d.energy),gauge('心情',d.mood)),controls,panel);
  }
- async function draw(){
-  if(!opened||disposed)return;const token=++epoch;drawNav();body.setAttribute('aria-busy','true');body.replaceChildren(box('ws-loading',el('span','◌'),text('正在打开…')));
-  try{const result=await ({computer,enchant:diary,bed}[kind])(token);if(!alive(token))return;body.replaceChildren(result);}
-  catch(e){if(alive(token))body.replaceChildren(box('ws-failure',el('h2','暂时没有打开'),text(e.message||String(e)),button('重新读取',draw)));}
+ async function draw(force=false){
+  if(!opened||disposed)return;const token=++epoch;drawNav();body.setAttribute('aria-busy','true');
+  const custom=customViews[view],warmNodes=!force?custom?.warm?.():null;
+  if(warmNodes)body.replaceChildren(...warmNodes);
+  else body.replaceChildren(box('ws-loading',el('span','◌'),text('正在打开…')));
+  try{
+   if(custom){
+    const result=await custom({token,alive,announce,force,refresh:draw,openFurniture:(k,v)=>open(k,trigger,v)});
+    if(!alive(token))return;
+    const nodes=Array.isArray(result)?result:[result];
+    if(!warmNodes||!['INPUT','TEXTAREA','SELECT'].includes(doc.activeElement?.tagName))body.replaceChildren(...nodes);
+   }else{
+    const result=await ({computer,enchant:diary,bed}[kind])(token);if(!alive(token))return;body.replaceChildren(result);
+   }
+  }
+  catch(e){if(alive(token))body.replaceChildren(box('ws-failure',el('h2','暂时没有打开'),text(e.message||String(e)),button('重新读取',()=>draw(true))));}
   finally{if(alive(token))body.setAttribute('aria-busy','false');}
  }
- async function open(next,source){
-  if(!pages[next]||disposed)return;kind=next;view=tabs[kind]||pages[kind][0][0];mode='';trigger=source||doc.activeElement;opened=true;
+ async function open(next,source,initialView){
+  if(!pages[next]||disposed)return;const wasOpen=opened;kind=next;view=initialView||tabs[kind]||pages[kind][0][0];if(initialView)tabs[kind]=initialView;mode='';if(!wasOpen||source)trigger=source||doc.activeElement;opened=true;
+  const info=meta[kind]||['◈','ORBITAL CONSOLE','●  ONLINE'];
   dialog.className='room-workspace ws-'+kind;dialog.setAttribute('data-workspace',kind);dialog.setAttribute('aria-label',names[kind]);
   const closeButton=button('回到小屋',close,'ws-close');
-  const top=box('ws-topbar',box('ws-title',el('span',kind==='computer'?'◈':kind==='enchant'?'✧':'☾','ws-title-icon'),box('',el('strong',names[kind]),small(kind==='computer'?'LIULI OS · PERSONAL SPACE':kind==='enchant'?'留给自己的日常':'GOOD NIGHT · SWEET DREAMS'))),row(button('刷新',draw,'ws-refresh'),closeButton));
+  const top=box('ws-topbar',box('ws-title',el('span',info[0],'ws-title-icon'),box('',el('strong',names[kind]),small(info[1]))),row(button('刷新',()=>draw(true),'ws-refresh'),closeButton));
   nav=el('nav',null,'ws-apps');nav.setAttribute('aria-label','家具功能');body=box('ws-body');status=box('ws-notice');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
-  const clock=new Date().toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit',hour12:false});
-  dialog.replaceChildren(box('ws-device',top,box('ws-desktop',nav,body),status,box('ws-chin',el('span',kind==='computer'?'●  LIULI':kind==='enchant'?'✦  每一页都是陪伴':'☾  愿今夜安稳'),el('time',clock))));
+  const formatClock=()=>new Date().toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit',hour12:false});
+  const clockNode=el('time',formatClock());
+  if(clockTimer!=null)doc.defaultView?.clearInterval?.(clockTimer);
+  clockTimer=doc.defaultView?.setInterval?.(()=>{if(opened)clockNode.textContent=formatClock();},15000)??null;
+  dialog.replaceChildren(box('ws-device',top,box('ws-desktop',nav,body),status,box('ws-chin',el('span',info[2]),clockNode)));
   if(!dialog.open)dialog.showModal();closeButton.focus();await draw();
  }
- function close(){if(!opened)return;opened=false;++epoch;dialog.close();if(trigger?.isConnected)trigger.focus();onClose?.();}
+ function close(){if(clockTimer!=null){doc.defaultView?.clearInterval?.(clockTimer);clockTimer=null;}if(!opened)return;opened=false;++epoch;dialog.close();if(trigger?.isConnected)trigger.focus();onClose?.();}
  dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
  dialog.addEventListener('keydown',event=>{
   if(event.key!=='Tab')return;
@@ -148,5 +177,5 @@ export function createRoomWorkspace({document:doc,request,store={},onClose}={}) 
   const first=controls[0],last=controls.at(-1);
   if(first&&((event.shiftKey&&doc.activeElement===first)||(!event.shiftKey&&doc.activeElement===last))){event.preventDefault();(event.shiftKey?last:first).focus();}
  });
- return {element:dialog,open,close,refresh:draw,isOpen:()=>opened,destroy(){close();disposed=true;dialog.remove();}};
+ return {element:dialog,open,close,refresh:draw,announce,current:()=>({kind,view}),isOpen:()=>opened,destroy(){close();disposed=true;dialog.remove();}};
 }

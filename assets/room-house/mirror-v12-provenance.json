@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-31T14:24:32.263Z",
+  "tool": "image_gen.imagegen",
+  "kind": "generated wall-art patch",
+  "sourceFloor": "assets/room-house/floor-two-v7.png",
+  "sourceFloorSha256": "e8cf805ed4e10e7081dee8c8ab966677e1d8de4990440f0733d52e033526f6cb",
+  "approvedConcept": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-ff311297-4ebd-49e8-9fab-a9f51c094b32.png",
+  "generatedSource": "C:/Users/Administrator/.codex/generated_images/01a18db4-56aa-7a70-9dc8-ca9ec9b19fcd/exec-f8ddb850-8050-4ee5-94ba-ef8480d8cc3c.png",
+  "brief": "Replace the upstairs painting between enchanting and wheat garden with a dimensional futuristic navy and silver mirror, cyan edge lights and a small wardrobe cue. Preserve the surrounding oak house.",
+  "runtimeClip": [
+    685,
+    171,
+    121,
+    169
+  ],
+  "runtimeNote": "Only this wall region is composited over the original floor; source floors, furniture inventory and other scenery are unchanged.",
+  "output": "floor-two-mirror-v12.png",
+  "outputSha256": "e95d58bb0a51535bc6687b5dbe980155301e2f33b566623923bcf424bdd5cff2"
+}

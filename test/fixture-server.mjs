@@ -1,6 +1,5 @@
-import {fixtureAssetReply,fixtureAssetBridge} from './fixture-assets.mjs';
 // Isolated UI acceptance harness. Never imports production config or data.
-import {createServer} from 'node:http';import {readFile,mkdtemp} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';
+import {createServer} from 'node:http';import {readFile,mkdtemp} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';import vm from 'node:vm';
 import {CompanionStore} from '../src/store.mjs';import {CompanionService} from '../src/service.mjs';import {createHandler} from '../src/routes.mjs';import {attachFrameBridge} from '../src/frame-bridge.mjs';
 const root=await mkdtemp(join(tmpdir(),'liuli-ui-fixture-')),store=await CompanionStore.open(root),notes=new Map(),diary=[];
 await store.update(null,s=>{s.room.items=['床','书桌','台灯','窗','沙发','冰箱','电视','绿萝','旧相册','日记本','记事本','床头柜','书架','椅子','电脑','茶几','挂画','挂钟','盆栽'].map((name,i)=>({id:'fixture-room-'+i,name,state:'隔离验收物品'}));});
@@ -12,6 +11,119 @@ const {createActionAssetHandler}=await import('../src/action-assets.mjs');
 const artwork=createActionAssetHandler({connection:{requestRejection:()=>undefined}});
 const handler=createHandler({connection:{requestRejection(req){return /^127\.0\.0\.1:18406$/.test(req.headers.host)?undefined:403;}},service,runtimeToken:'fixture'});
 const assetManifest=JSON.parse(await readFile(new URL('../assets/room-pet/manifest.json',import.meta.url),'utf8'));const assetFrames=new Set(Object.values(assetManifest.clips).flatMap(c=>c.frames));
-const server=createServer(async(req,res)=>{try{if(await fixtureAssetReply(req,res))return;if(req.url.startsWith('/plugins/dsh-whale-status/actions/'))return artwork(req,res);if(req.url.startsWith('/plugins/dsh-whale-status/pet/frame?')){const frame=new URL(req.url,'http://localhost').searchParams.get('frame');if(!assetFrames.has(frame)){res.writeHead(404);res.end();return;}res.writeHead(200,{'Content-Type':'image/webp','Cache-Control':'public, max-age=86400'});res.end(await readFile(new URL('../assets/room-pet/'+frame,import.meta.url)));return;}if(req.url.startsWith('/api/'))return handler(req,res);if(req.url==='/'){const html=(await readFile(new URL('../lib/panel-built.html',import.meta.url),'utf8')).replaceAll('__LIULI_ASSET_ORIGIN__','http://127.0.0.1:18406');const script=`${attachFrameBridge.toString().replace('export ','')}\nconst frame=document.querySelector('iframe');attachFrameBridge(window,()=>frame.contentWindow,new Set(${JSON.stringify(Object.keys(service.handlers))}));${fixtureAssetBridge.toString()}\nfixtureAssetBridge(frame);frame.srcdoc=${JSON.stringify(html).replace(/<\/script/gi,'<\\/script')};`;res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'});res.end(`<!doctype html><html><body style="margin:0;background:#17252c"><div style="height:28px;color:#eee;font:12px sans-serif;text-align:center;padding-top:8px">隔离验收 · 不连接真实 QQ、不读取生产数据</div><iframe title="琉璃陪伴中心隔离验收" sandbox="allow-scripts" style="width:100%;height:calc(100vh - 28px);border:0"></iframe><script>${script}</script></body></html>`);}else{res.writeHead(404);res.end();}}catch(e){res.writeHead(500);res.end(e.message);}});
+const chunkCache=new Map();
+async function getChunkPayload(filename){
+  if(chunkCache.has(filename))return chunkCache.get(filename);
+  const code=await readFile(new URL('../lib/'+filename,import.meta.url),'utf8');
+  let loaded=null;
+  vm.runInNewContext(code,{window:{__ModuleLoader__:{load(def){loaded=def.factory();}}}});
+  chunkCache.set(filename,loaded);
+  return loaded;
+}
+const server=createServer(async(req,res)=>{try{
+  if(req.url.startsWith('/plugins/dsh-whale-status/actions/'))return artwork(req,res);
+  if(req.url.startsWith('/plugins/dsh-dafeiyu/frame?')){
+    const frame=new URL(req.url,'http://localhost').searchParams.get('frame');
+    if(!assetFrames.has(frame)){res.writeHead(404);res.end();return;}
+    res.writeHead(200,{'Content-Type':'image/webp','Cache-Control':'public, max-age=86400'});
+    res.end(await readFile(new URL('../assets/room-pet/'+frame,import.meta.url)));
+    return;
+  }
+  if(req.url.startsWith('/fixture-chunk/')){
+    const name=req.url.slice('/fixture-chunk/'.length);
+    try{
+      const payload=await getChunkPayload(name);
+      res.writeHead(200,{'Content-Type':'application/json'});
+      res.end(JSON.stringify(payload));
+      return;
+    }catch{res.writeHead(404);res.end();return;}
+  }
+  if(req.url.startsWith('/api/'))return handler(req,res);
+  if(req.url==='/'){
+    const html=await readFile(new URL('../lib/panel-built.html',import.meta.url),'utf8');
+    const script=`${attachFrameBridge.toString().replace('export ','')}
+const frame=document.querySelector('iframe');
+attachFrameBridge(window,()=>frame.contentWindow,new Set(${JSON.stringify(Object.keys(service.handlers))}));
+frame.srcdoc=${JSON.stringify(html).replace(/<\/script/gi,'<\\/script')};
+
+let roomRuntime=null;
+const roomRuntimeKey='liuli-companion:room-runtime:v1';
+const wardrobeKey='liuli-companion:wardrobe:v1';
+try{roomRuntime=JSON.parse(localStorage.getItem(roomRuntimeKey)||'null');}catch{}
+
+const wardrobeLoads=new Map();
+async function fetchChunk(name){
+  if(!wardrobeLoads.has(name)){
+    wardrobeLoads.set(name,fetch('/fixture-chunk/'+name).then(r=>r.json()));
+  }
+  return wardrobeLoads.get(name);
+}
+
+const sendRoomAssets=async()=>{
+  frame.contentWindow?.postMessage({channel:'liuli-companion',type:'room-runtime',value:roomRuntime},'*');
+  try{
+    const assets=await fetchChunk('client.room-art-v12.js');
+    frame.contentWindow?.postMessage({channel:'liuli-companion',type:'room-assets',assets},'*');
+  }catch(e){}
+};
+
+frame.addEventListener('load',sendRoomAssets);
+
+window.addEventListener('message',async event=>{
+  const target=frame.contentWindow;
+  const d=event.data;
+  if(!target||event.source!==target||d?.channel!=='liuli-companion')return;
+  if(d.type==='room-assets-request'){sendRoomAssets();return;}
+  if(d.type==='room-life-request'){
+    try{
+      const assets=await fetchChunk('client.room-life-v20.js');
+      target.postMessage({channel:'liuli-companion',type:'room-life-assets',assets},'*');
+    }catch(e){}
+    return;
+  }
+  if(d.type==='room-runtime-request'){
+    target.postMessage({channel:'liuli-companion',type:'room-runtime',value:roomRuntime},'*');
+    return;
+  }
+  if(d.type==='room-runtime-save'){
+    if(d.value?.version===1&&Number.isFinite(d.value.savedAt)){
+      try{
+        const json=JSON.stringify(d.value);
+        if(json.length<131072){
+          roomRuntime=JSON.parse(json);
+          localStorage.setItem(roomRuntimeKey,json);
+        }
+      }catch{}
+    }
+    return;
+  }
+  if(d.type==='wardrobe-selected'){
+    try{localStorage.setItem(wardrobeKey,d.id);}catch{}
+    return;
+  }
+  if(d.type==='wardrobe-request'&&typeof d.requestId==='string'){
+    let id=d.id;
+    if(id===undefined){
+      try{id=localStorage.getItem(wardrobeKey);}catch{}
+      id=id||'original';
+    }
+    if(id==='original'){
+      target.postMessage({channel:'liuli-companion',type:'wardrobe-assets',id:'original',requestId:d.requestId,assets:null},'*');
+      return;
+    }
+    try{
+      const assets=await fetchChunk('client.wardrobe-'+id+'-v20.js');
+      target.postMessage({channel:'liuli-companion',type:'wardrobe-assets',id,requestId:d.requestId,assets},'*');
+    }catch(e){
+      target.postMessage({channel:'liuli-companion',type:'wardrobe-error',requestId:d.requestId},'*');
+    }
+    return;
+  }
+});
+`;
+    res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'});
+    res.end(`<!doctype html><html><body style="margin:0;background:#17252c"><div style="height:28px;color:#eee;font:12px sans-serif;text-align:center;padding-top:8px">隔离验收 · 不连接真实 QQ、不读取生产数据</div><iframe title="琉璃陪伴中心隔离验收" sandbox="allow-scripts" style="width:100%;height:calc(100vh - 28px);border:0"></iframe><script>${script}</script></body></html>`);
+  }else{res.writeHead(404);res.end();}
+}catch(e){res.writeHead(500);res.end(e.message);}});
 server.listen(18406,'127.0.0.1',()=>console.log('Fixture UI listening at http://127.0.0.1:18406'));
 process.on('SIGINT',async()=>{server.close();await store.close();process.exit();});

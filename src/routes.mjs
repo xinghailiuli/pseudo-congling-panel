@@ -21,8 +21,8 @@ export function createHandler({connection,service,runtimeToken}){
    const body=await jsonBody(req);
    if(pathname==='/api/liuli/command')send(res,200,await service.dispatch(body.action,body.body||{},body.revision,body.requestId));
    else{
-    const allowed={ingest:'ingest',beforeWake:'beforeWake',context:'context',delivered:'delivered'};check(Object.hasOwn(allowed,body.action),'INVALID_ACTION','未知运行时操作');
-    send(res,200,{data:await service[allowed[body.action]](body.body||{}),revision:service.state().revision});
+    const allowed={ingest:'ingest',beforeWake:'beforeWake',context:'context',delivered:'delivered',memorySearch:'memorySearch',memoryRead:'memoryRead',memoryExpand:'memoryExpand'};check(Object.hasOwn(allowed,body.action),'INVALID_ACTION','未知运行时操作');
+    send(res,200,{data:await service[allowed[body.action]](body.body||{}),revision:service.revision()});
    }
   }catch(error){send(res,error instanceof HttpError?error.status:500,{error:publicError(error)});}
  };

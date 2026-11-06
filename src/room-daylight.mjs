@@ -35,7 +35,8 @@ export function createRoomDaylight({document:doc,defs,parent,owner=parent,source
  const water=el('path',{d:'M805,263 l20,-17 h14 l8,-9 h17 l-6,7 h-15 l-6,11 h-9 l-8,12 Z'});root.append(far,near,water);
  const clouds=el('g',{fill:'#f5f2e7'});clouds.append(el('path',{d:'M760,215 h9 v-4 h13 v4 h9 v4 h-31 Z M895,193 h8 v-4 h14 v4 h10 v4 h-32 Z'}));root.append(clouds);
  const lightFilter=el('filter',{id:id+'-light','color-interpolation-filters':'sRGB'}),matrix=el('feColorMatrix',{type:'matrix'});lightFilter.append(matrix);defs.append(lightFilter);
- const picture=el('image',{...(source?{href:source}:{}),x:0,y:0,width:1536,height:1024,preserveAspectRatio:'none',filter:`url(#${id}-light)`,display:source?'inline':'none'}),tint=el('rect',{x:740,y:155,width:245,height:115,fill:`url(#${id}-sky)`});
+ const isBrowser=Boolean(doc.defaultView),initialHref=(isBrowser&&typeof source==='string'&&source.startsWith('/plugins/'))?undefined:source;
+ const picture=el('image',{...(initialHref?{href:initialHref}:{}),x:0,y:0,width:1536,height:1024,preserveAspectRatio:'none',filter:`url(#${id}-light)`,display:initialHref?'inline':'none'}),tint=el('rect',{x:740,y:155,width:245,height:115,fill:`url(#${id}-sky)`});
  root.append(picture,tint,sun,moon,stars);
  let last='',timer=null,stopped=false;
  function update(timestamp=now()){
@@ -43,9 +44,11 @@ export function createRoomDaylight({document:doc,defs,parent,owner=parent,source
   const s=roomDaylight(timestamp);root.setAttribute('data-daylight-phase',s.phase);root.setAttribute('data-local-hour',s.hour.toFixed(2));top.setAttribute('stop-color',s.top);bottom.setAttribute('stop-color',s.horizon);far.setAttribute('fill',s.land);near.setAttribute('fill',s.near);water.setAttribute('fill',s.water);stars.setAttribute('opacity',s.stars);sun.setAttribute('opacity',s.sun);moon.setAttribute('opacity',s.moon);clouds.setAttribute('opacity',s.brightness*.55);
   const b=s.brightness;matrix.setAttribute('values',`${.04+.96*b} 0 0 0 0 0 ${.09+.91*b} 0 0 0 0 0 ${.19+.81*b} 0 0 0 0 0 1 0`);tint.setAttribute('opacity',source?(1-b)*.35:0);
  }
- function destroy(){stopped=true;if(timer!=null)cancel?.(timer);timer=null;doc.removeEventListener?.('visibilitychange',visible);}
- function queue(){if(stopped||doc.hidden||!schedule)return;timer=schedule(()=>{const old=timer;timer=null;cancel?.(old);if(owner.isConnected===false){destroy();return;}update();queue();},30000);}
- function visible(){if(timer!=null)cancel?.(timer);timer=null;if(!doc.hidden&&!stopped){update();queue();}}
+ function pause(){if(timer!=null)cancel?.(timer);timer=null;}
+ function resume(){if(!stopped&&!doc.hidden){update();if(timer==null)queue();}}
+ function destroy(){stopped=true;pause();doc.removeEventListener?.('visibilitychange',visible);}
+ function queue(){if(stopped||doc.hidden||!schedule)return;timer=schedule(()=>{const old=timer;timer=null;cancel?.(old);if(owner.isConnected===false)return;update();queue();},30000);}
+ function visible(){pause();if(!doc.hidden&&!stopped&&owner.isConnected!==false){update();queue();}}
  update();doc.addEventListener?.('visibilitychange',visible);queue();
- return {element:root,picture,update,destroy};
+ return {element:root,picture,update,pause,resume,destroy};
 }

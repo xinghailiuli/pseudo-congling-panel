@@ -8,6 +8,18 @@ const room=()=>({lamp:true,curtain:true,items:names.map((name,i)=>({id:String(i)
 class Element{constructor(tag){this.tagName=tag;this.attributes={};this.children=[];this.events={};}setAttribute(k,v){this.attributes[k]=String(v);}append(...n){this.children.push(...n);}addEventListener(k,fn){this.events[k]=fn;}}
 const document={createElementNS(_,tag){return new Element(tag);}},nodes=n=>[n,...n.children.flatMap(nodes)];
 const make=(data=room(),extra={})=>createBlockRoom(data,{document,actionAssets:assets,petAssets:{idle:{frames:['idle0','idle1'],frameMs:40},head_pat:{frames:['pat0','pat1'],frameMs:40}},animation:{reducedMotion:true},...extra});
+test('draw failure exports the last good runtime without advancing or saving a partial exit',async()=>{
+ const geometry=JSON.parse(await readFile(new URL('../assets/room-life-v11/geometry.json',import.meta.url),'utf8'));
+ const payload={version:11,revision:20,geometry,atlases:Object.fromEntries(Object.keys(geometry).map(k=>[k,'data:image/png;base64,AAAA'])),greenhouse:'data:image/png;base64,AAAA'};
+ let tick,fail=false;const svg=make(room(),{preview:'type',onActivity(){if(fail){fail=false;throw Error('injected draw failure');}},animation:{reducedMotion:false,loadRoomImage:async()=>true,requestFrame:f=>tick=f}});
+ nodes(svg).find(n=>n.attributes['data-room-resident']).isConnected=true;await svg.setRoomLifeAssets(payload);tick(0);tick(2000);
+ const before=structuredClone(svg.getRoomRuntime());fail=true;svg.setRoomActivity({preview:'garden'});assert(svg.attributes['data-room-render-error']);tick(5000);
+ const saved=svg.getRoomRuntime();assert.equal(saved.preview,before.preview);assert.deepEqual(saved.state,before.state);saved.state.elapsed=-1;assert.equal(svg.getRoomRuntime().state.elapsed,before.state.elapsed);
+});
+test('integrated roaming reaches a stationary flat-floor idle event and resumes its destination',async()=>{
+ const geometry=JSON.parse(await readFile(new URL('../assets/room-life-v11/geometry.json',import.meta.url)));geometry.idleChair=JSON.parse(await readFile(new URL('../assets/room-motion-v20/idleChair-geometry.json',import.meta.url))).original;
+ const payload={version:11,revision:20,geometry,atlases:Object.fromEntries(Object.keys(geometry).map(k=>[k,'data:image/png;base64,AAAA'])),greenhouse:'data:image/png;base64,AAAA'};let tick;const svg=make(room(),{preview:'walk',animation:{reducedMotion:false,random:()=>0,loadRoomImage:async()=>true,requestFrame:f=>tick=f}});nodes(svg).find(n=>n.attributes['data-room-resident']).isConnected=true;await svg.setRoomLifeAssets(payload);let event=false;for(let t=0;t<100000;t+=50){tick(t);if(svg.getRoomRuntime().idle?.event)event=true;}assert(event,'random idle must be reachable through the actual room clock');assert.equal(svg.attributes['data-room-activity'],'walk');
+});
 test('reopening an upstairs room restores resident and advances sleep instead of resetting to ground floor',async()=>{
  const geometry=JSON.parse(await readFile(new URL('../assets/room-life-v11/geometry.json',import.meta.url),'utf8'));
  const lifeAssets={version:11,revision:17,geometry,atlases:Object.fromEntries(Object.keys(geometry).map(k=>[k,'data:image/png;base64,AAAA'])),greenhouse:'data:image/png;base64,AAAA'};
@@ -33,7 +45,7 @@ test('two simultaneous room views never share SVG mask identities',()=>{
 
 test('furniture feature hotspots navigate on click or keyboard without changing resident activity',()=>{
  const selected=[],r=room(),before=structuredClone(r),svg=make(r,{preview:'type',onFurniture:id=>selected.push(id)});
- for(const [id,level]of [['computer','1'],['bed','2'],['mirror','2'],['enchant','2']]){
+ for(const [id,level]of [['comms','1'],['workbench','1'],['computer','1'],['bed','2'],['mirror','2'],['enchant','2']]){
   svg.setRoomFloor(level);const hotspot=nodes(svg).find(n=>n.attributes['data-room-furniture']===id);assert.ok(hotspot,id);assert.equal(hotspot.attributes.role,'button');
   if(id==='computer')hotspot.events.click();else hotspot.events.keydown({key:'Enter',preventDefault(){}});
   assert.equal(selected.at(-1),id);assert.equal(svg.attributes['data-room-activity'],'type');

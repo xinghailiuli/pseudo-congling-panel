@@ -2,15 +2,47 @@ window.__ModuleLoader__.load({
   id: 'dsh-whale-status',
   factory: (require) => {
     const React = require('react');
-    let assetOrigin='dsh-app://app';
-    try { const url=new URL(window.location.href);if(['http:','https:','dsh-app:'].includes(url.protocol))assetOrigin=url.protocol+'//'+url.host; } catch {}
-    const panelHtml = __PANEL_HTML__.replaceAll('__LIULI_ASSET_ORIGIN__',()=>assetOrigin);
+    const panelHtml = __PANEL_HTML__;
     let roomAssets,lifeAssets,roomRuntime;
     const roomRuntimeKey='liuli-companion:room-runtime:v1';
     try{roomRuntime=JSON.parse(localStorage.getItem(roomRuntimeKey)||'null');}catch{}
     const wardrobeIds=new Set(__WARDROBE_IDS__),wardrobeLoads=new Map(),wardrobeKey='liuli-companion:wardrobe:v1';
     const allowedActions = new Set(__ALLOWED_ACTIONS__);
+    const loadWhaleChunk = async (chunkName) => {
+      try {
+        const entry = window.__DSH_BOOT__?.entries?.find(e => e.id === 'dsh-whale-status');
+        const rev = entry?.rev || '';
+        const url = `/plugins/dsh-whale-status/${chunkName}${rev ? `?rev=${rev}` : ''}`;
+        const resp = await fetch(url);
+        if (resp.ok) {
+          const code = await resp.text();
+          let loaded = null;
+          const prev = window.__ModuleLoader__.load;
+          window.__ModuleLoader__.load = function(reg) {
+            if (reg.id === 'dsh-whale-status' && reg.chunk === chunkName) {
+              loaded = reg.factory();
+            } else {
+              prev.apply(this, arguments);
+            }
+          };
+          try {
+            (0, eval)(code);
+          } finally {
+            window.__ModuleLoader__.load = prev;
+          }
+          if (loaded) return loaded;
+        }
+      } catch (err) {
+        console.warn('[WHALE HOST] direct chunk fetch exception:', err);
+      }
+      if (typeof require?.async === 'function') {
+        return await require.async('./' + chunkName);
+      }
+      throw new Error(`Cannot load chunk: ${chunkName}`);
+    };
     __FRAME_BRIDGE__
+    __BOOK_STORAGE__
+    const requestBooks=createRoomBookStorage(window.indexedDB);
     const PANEL_ID = 'whale-status';
     function StatusPanel() {
       const frame = React.useRef(null);
@@ -20,6 +52,11 @@ window.__ModuleLoader__.load({
         const receive=async event=>{
           const target=frame.current?.contentWindow,d=event.data;
           if(!target||event.source!==target||d?.channel!=='liuli-companion')return;
+          if(d.type==='room-assets-request'){sendRoomAssets();return;}
+          if(d.type==='book-request'&&typeof d.requestId==='string'&&d.requestId.length<100){
+            try{const value=await requestBooks(d.op,d.value);if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'book-response',requestId:d.requestId,value},'*');}
+            catch(error){if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'book-response',requestId:d.requestId,error:error.message},'*');}return;
+          }
           if(d.type==='room-runtime-request'){target.postMessage({channel:'liuli-companion',type:'room-runtime',value:roomRuntime},'*');return;}
           if(d.type==='room-runtime-save'){
             if(d.value?.version===1&&Number.isFinite(d.value.savedAt)){try{const json=JSON.stringify(d.value);if(json.length<131072){roomRuntime=JSON.parse(json);localStorage.setItem(roomRuntimeKey,json);}}catch{}}return;
@@ -29,9 +66,9 @@ window.__ModuleLoader__.load({
           let id=d.id;if(id===undefined){try{id=localStorage.getItem(wardrobeKey);}catch{}id=wardrobeIds.has(id)?id:'original';}
           if(id!=='original'&&!wardrobeIds.has(id))return;
           try{
-            let assets=null;if(id!=='original'){if(!wardrobeLoads.has(id))wardrobeLoads.set(id,require.async('./client.wardrobe-'+id+'-v19.js'));assets=await wardrobeLoads.get(id);}
+            let assets=null;if(id!=='original'){if(!wardrobeLoads.has(id))wardrobeLoads.set(id,loadWhaleChunk('client.wardrobe-'+id+'-v20.js'));assets=await wardrobeLoads.get(id);}
             if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'wardrobe-assets',id,requestId:d.requestId,assets},'*');
-          }catch{wardrobeLoads.delete(id);if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'wardrobe-error',requestId:d.requestId},'*');}
+          }catch(e){console.error('[WHALE HOST ERROR wardrobe]:', e);wardrobeLoads.delete(id);if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'wardrobe-error',requestId:d.requestId},'*');}
         };
         window.addEventListener('message',receive);return()=>{active=false;window.removeEventListener('message',receive);};
       },[]);
@@ -40,11 +77,35 @@ window.__ModuleLoader__.load({
         const receive=async event=>{
           const target=frame.current?.contentWindow;
           if(!target||event.source!==target||event.data?.channel!=='liuli-companion'||event.data.type!=='room-life-request')return;
-          try{lifeAssets??=require.async('./client.room-life-v19.js');const assets=await lifeAssets;if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'room-life-assets',assets},'*');}catch{lifeAssets=null;}
+          console.log('[WHALE HOST] received room-life-request');
+          try{
+            lifeAssets??=loadWhaleChunk('client.room-life-v20.js');
+            const assets=await lifeAssets;
+            console.log('[WHALE HOST] room-life-assets loaded, keys:', Object.keys(assets || {}));
+            if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'room-life-assets',assets},'*');
+          }catch(e){
+            console.error('[WHALE HOST ERROR room-life]:', e);
+            lifeAssets=null;
+            if(active&&target===frame.current?.contentWindow)target.postMessage({channel:'liuli-companion',type:'room-life-error'},'*');
+          }
         };
         window.addEventListener('message',receive);return()=>{active=false;window.removeEventListener('message',receive);};
       },[]);
-      const sendRoomAssets=async()=>{frame.current?.contentWindow?.postMessage({channel:"liuli-companion",type:"room-runtime",value:roomRuntime},"*");try{roomAssets??=require.async('./client.room-art-v12.js');const assets=await roomAssets;frame.current?.contentWindow?.postMessage({channel:'liuli-companion',type:'room-assets',assets},'*');}catch{roomAssets=null;}};
+      const sendRoomAssets=async()=>{
+        console.log('[WHALE HOST] sendRoomAssets called, hasTarget:', !!frame.current?.contentWindow);
+        frame.current?.contentWindow?.postMessage({channel:"liuli-companion",type:"room-runtime",value:roomRuntime},"*");
+        try{
+          console.log('[WHALE HOST] requesting room-art chunk...');
+          roomAssets??=loadWhaleChunk('client.room-art-v12.js');
+          const assets=await roomAssets;
+          console.log('[WHALE HOST] room-art loaded, keys:', Object.keys(assets || {}));
+          frame.current?.contentWindow?.postMessage({channel:'liuli-companion',type:'room-assets',assets},'*');
+          console.log('[WHALE HOST] room-assets posted successfully');
+        }catch(e){
+          console.error('[WHALE HOST ERROR room-art]:', e);
+          roomAssets=null;
+        }
+      };
       return React.createElement('iframe', {
         ref: frame,
         title: '琉璃陪伴中心',

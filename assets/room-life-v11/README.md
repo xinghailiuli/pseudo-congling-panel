@@ -1,5 +1,5 @@
-# 沙发方向与生活动作校准
+# Room life v11
 
-`sofa-rest.png` 补充与沙发轴向匹配的休息姿态。`geometry.json` 汇总本版本使用的生活图集裁切与轮廓，构建时结合 `room-life-v10/` 和 `room-actions/walk-v3.png` 生成完整懒加载素材块。
+Corrected sofa resting artwork and calm activity timing. The 12-frame sofa-rest.png is used with the original v10 atlases, recorded together in geometry.json. Preserve both room-life-v10 and room-life-v11 directories, and load client.room-life-v11.js with the matching current client.
 
-素材为 AI 辅助制作的角色衍生图，遵循根目录 `THIRD_PARTY_NOTICES.md` 的非商用与署名条件。角色来源：[PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet)。
+The SVG renderer aligns resting bodies to the sofa long axis and holds supported poses while applying a small breathing motion. Original PNG bytes and earlier artwork remain unchanged. Native visual acceptance is reserved to the user. See provenance.json and docs/room-life-evidence/life-v11-verification.json.

@@ -1,8 +1,21 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import {readFile} from 'node:fs/promises';
-test('installer ships current complete chunks and routed assets without intermediate build duplication',async()=>{
- const pkg=JSON.parse(await readFile(new URL('../package.json',import.meta.url))),files=pkg.files;
- for(const f of ['lib/client.js','lib/index.js','lib/client.room-life-v19.js','lib/client.wardrobe-*-v19.js','assets/room-pet','assets/room-actions','assets/room-house','src'])assert.ok(files.includes(f),f);
- assert.ok(!files.includes('lib'),'avoid packaging intermediate embedded duplicates');assert.ok(!files.includes('assets'),'source-only atlases are in the source archive');
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import path from 'node:path';import os from 'node:os';
+import {auditPackage} from '../tools/release/audit-package.mjs';import {stageRuntime} from '../tools/release/stage-runtime.mjs';import {stageSource} from '../tools/release/stage-source.mjs';
+async function clean(root){const resolved=path.resolve(root),temp=path.resolve(os.tmpdir());assert.equal(path.dirname(resolved).toLowerCase(),temp.toLowerCase());assert.match(path.basename(resolved),/^liuli-package-test-[\w-]+$/);await fs.rm(resolved,{recursive:true,force:true});}
+async function fixture(){const root=await fs.mkdtemp(path.join(os.tmpdir(),'liuli-package-test-'));const files={
+ 'package.json':JSON.stringify({type:'module',main:'lib/index.js',exports:{'.':'./lib/index.js','./client':'./lib/client.js'},scripts:{prepack:'node build.mjs'}}),
+ 'client.template.js':"require.async('./client.room-art-v12.js');require.async('./client.wardrobe-'+id+'-v19.js');",
+ 'lib/client.js':"require.async('./client.room-art-v12.js');require.async('./client.wardrobe-'+id+'-v19.js');",
+ 'lib/index.js':"import '../src/host.mjs';",'src/host.mjs':"import './action-assets.mjs';",
+ 'src/action-assets.mjs':"export const ACTION_ASSET_FILES=[new URL('../assets/direct.png',import.meta.url)];",
+ 'lib/client.room-art-v12.js':'current room','lib/client.room-art-v7.js':'old room','lib/client.wardrobe-a-v19.js':'current outfit','lib/client.wardrobe-a-v1.js':'old outfit',
+ 'assets/wardrobe-v1/catalog.json':'[{"id":"a"}]','assets/direct.png':'direct pixels','assets/original.png':'source only pixels',
+ 'assets/room-pet/manifest.json':'{"clips":{"idle":{"frames":["idle.png"]}}}','assets/room-pet/idle.png':'resident pixels','build.mjs':'// rebuild source'};
+ for(const[p,s]of Object.entries(files)){await fs.mkdir(path.dirname(path.join(root,p)),{recursive:true});await fs.writeFile(path.join(root,p),s);}return root;}
+test('audit fails closed for missing current room, outfit, served image, resident frame and server import',async()=>{
+ for(const file of ['lib/client.room-art-v12.js','lib/client.wardrobe-a-v19.js','assets/direct.png','assets/room-pet/idle.png','src/host.mjs']){const root=await fixture();try{assert.equal((await auditPackage(root)).unresolved.length,0);await fs.unlink(path.join(root,file));const audit=await auditPackage(root);assert.ok(audit.unresolved.some(x=>x.file===file),file);}finally{await clean(root);}}
 });
+test('runtime whitelist drops legacy chunks and embedded-only originals while source keeps rebuild inputs',async()=>{
+ const root=await fixture(),runtime=root+'-runtime',source=root+'-source';try{const before=await auditPackage(root);await stageRuntime({sourceRoot:root,outputRoot:runtime,manifest:before});assert.equal((await auditPackage(root)).records.map(x=>x.sha256).join(),before.records.map(x=>x.sha256).join());assert.equal((await auditPackage(runtime)).unresolved.length,0);await assert.rejects(fs.access(path.join(runtime,'lib/client.room-art-v7.js')));await assert.rejects(fs.access(path.join(runtime,'assets/original.png')));assert.equal(await fs.readFile(path.join(runtime,'assets/direct.png'),'utf8'),'direct pixels');assert.equal(JSON.parse(await fs.readFile(path.join(runtime,'package.json'))).scripts.prepack,undefined);await stageSource({sourceRoot:root,outputRoot:source});await assert.rejects(fs.access(path.join(source,'lib/client.js')));assert.equal(await fs.readFile(path.join(source,'assets/original.png'),'utf8'),'source only pixels');await assert.rejects(stageRuntime({sourceRoot:root,outputRoot:runtime,manifest:before}));}finally{for(const p of[root,runtime,source])await clean(p);}
+});
+test('a source edit after the audit prevents staging mixed revisions',async()=>{const root=await fixture(),output=root+'-changed';try{const m=await auditPackage(root);await fs.writeFile(path.join(root,'lib/client.js'),'new revision');await assert.rejects(stageRuntime({sourceRoot:root,outputRoot:output,manifest:m}),/Source changed/);}finally{await clean(root);await clean(output);}});
+test('runtime HTML and CSS assets participate in dependency audit',async()=>{const root=await fixture();try{const p=JSON.parse(await fs.readFile(path.join(root,'package.json')));p.exports['./page']='./page.html';await fs.writeFile(path.join(root,'package.json'),JSON.stringify(p));await fs.writeFile(path.join(root,'page.html'),'<link href="./style.css"><img src="./assets/direct.png">');await fs.writeFile(path.join(root,'style.css'),'body{background:url(./assets/direct.png)}');assert((await auditPackage(root)).runtimeFiles.includes('style.css'));await fs.unlink(path.join(root,'assets/direct.png'));assert((await auditPackage(root)).unresolved.some(x=>x.file==='assets/direct.png'));}finally{await clean(root);}});

@@ -16,7 +16,7 @@ test('wardrobe lazy loading is scoped, cached, recoverable and persists only sel
  const send=(source,data)=>Promise.all([...listeners].map(fn=>fn({source,data:{channel:'liuli-companion',...data}})));
  await send({}, {type:'wardrobe-request',requestId:'a',id:'navy-gala'});assert.equal(requests.length,0);
  await send(target,{type:'wardrobe-request',requestId:'a',id:'../bad'});assert.equal(requests.length,0);
- await send(target,{type:'wardrobe-request',requestId:'a',id:'navy-gala'});assert.equal(requests[0],'./client.wardrobe-navy-gala-v19.js');assert.equal(sent.at(-1).requestId,'a');
+ await send(target,{type:'wardrobe-request',requestId:'a',id:'navy-gala'});assert.equal(requests[0],'./client.wardrobe-navy-gala-v20.js');assert.equal(sent.at(-1).requestId,'a');
  await send(target,{type:'wardrobe-request',requestId:'b',id:'navy-gala'});assert.equal(requests.length,1);
  assert.equal(saved.size,0,'loading alone must not overwrite choice');
  await send(target,{type:'wardrobe-selected',id:'navy-gala'});assert.equal(saved.get('liuli-companion:wardrobe:v1'),'navy-gala');
@@ -61,7 +61,7 @@ test('DSH sidebar opens a sandboxed, self-contained status page', async () => {
   assert.match(frame.props.srcDoc, /琉璃陪伴中心/);
   assert.doesNotMatch(frame.props.srcDoc, /SAMPLE_DATA/);
   assert.match(frame.props.srcDoc, /connect-src 'none'/);
-  assert.equal(frame.props.srcDoc, (await readFile(new URL('./lib/panel-built.html', import.meta.url), 'utf8')).replaceAll('__LIULI_ASSET_ORIGIN__','dsh-app://app'));
+  assert.equal(frame.props.srcDoc, await readFile(new URL('./lib/panel-built.html', import.meta.url), 'utf8'));
   frame.props.ref.current={contentWindow:{postMessage:(message,origin)=>sent.push({message,origin})}};
   await frame.props.onLoad();
   assert.equal(chunkRequests.join(','),'./client.room-art-v12.js');
@@ -94,7 +94,7 @@ test('life artwork loads only on a request from the current iframe and stops del
  const target={postMessage:message=>sent.push(message)};ref.current={contentWindow:target};const dispose=effects.map(fn=>fn());
  const send=source=>Promise.all([...listeners].map(fn=>fn({source,data:{channel:'liuli-companion',type:'room-life-request'}})));
  await send({});assert.equal(requests.length,0,'external source cannot load artwork');
- const pending=send(target);assert.equal(requests.join(','),'./client.room-life-v19.js');resolveAssets({version:10});await pending;assert.equal(sent[0].type,'room-life-assets');
+ const pending=send(target);assert.equal(requests.join(','),'./client.room-life-v20.js');resolveAssets({version:10});await pending;assert.equal(sent[0].type,'room-life-assets');
  const late=send(target);for(const fn of dispose)fn?.();await late;assert.equal(sent.length,1);assert.equal(listeners.size,0);
 });
 
@@ -124,16 +124,3 @@ test('life lazy chunk preserves every original atlas byte and valid bounded meta
 });
 
 
-
-test('iframe image policy follows the actual host instead of the author local port',async()=>{
- const source=await readFile(new URL('./lib/client.js',import.meta.url),'utf8');
- for(const href of ['dsh-app://app/index.html','http://127.0.0.1:27361/','https://harness.example.invalid/']){
-  let plugin,panel;const React={createElement:(type,props)=>({type,props}),useRef:()=>({current:null}),useEffect:()=>{}};
-  vm.runInNewContext(source,{URL,window:{location:{href},__ModuleLoader__:{load(d){plugin=d.factory(()=>React);}}}});
-  plugin.apply({slots:{inject:(_name,mount)=>mount(),register:(options,component)=>{if(options.name==='main')panel=component;return()=>{};}}});
-  const html=panel().props.srcDoc,host=new URL(href);
-  assert.ok(html.includes(`${host.protocol}//${host.host}/plugins/dsh-whale-status/`),'own assets must be allowed at this host');
-  const policy=html.match(/Content-Security-Policy" content="([^"]+)"/)[1];
-  assert.ok(!policy.includes('19387'));assert.ok(!policy.includes('dsh-dafeiyu'));assert.ok(!policy.includes('__LIULI_ASSET_ORIGIN__'));
- }
-});

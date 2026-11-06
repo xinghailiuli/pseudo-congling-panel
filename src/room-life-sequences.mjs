@@ -1,3 +1,4 @@
+import {installRoomLeisureV20} from './room-contact-v20.mjs';
 // Calibrated full-body poses. Coordinates are in the existing 1536x1024 floor art.
 export function createRoomLifeDefinitions(geometry) {
  const defs={},step=(pose,duration=180,move=false)=>({pose,duration,move});
@@ -145,7 +146,23 @@ export function createRoomLifeDefinitions(geometry) {
  }
  if(geometry.transition)installFurnitureTransitions(defs,geometry);
  if(geometry.bedReference)installBedReference(defs,geometry);
+ if(geometry.bedBody)installBedBody(defs,geometry);
+ installRoomLeisureV20(defs,geometry);
  return defs;
+}
+
+function installBedBody(defs,geometry){
+ const d=defs.sleep,g=geometry.bedBody,scale=188/g.referenceHeight,step=(pose,duration=600,move=false)=>({pose,duration,move});
+ const contacts=[[405,780],[405,780],[414,720],[414,720],[410,707],[405,684],[325,625],[325,625],[325,625],[325,625],[325,625],[335,621],[416,714],[414,720],[405,780],[405,780]];
+ for(let i=0;i<16;i++){const f=g.frames[i],feet=[0,1,14,15].includes(i),lying=i>=6&&i<=11,pivot=feet?f.anchor:lying?f.head:f.hip;d.poses['bed-body-'+i]={atlas:'bedBody',cell:i,bedBodyCell:i,at:contacts[i],support:feet?'feet':lying?'bed':'hips',pivot,head:f.head,scale,prop:null,cover:[8,9,10,11].includes(i)?1:i===12?.3:0,articulated:true,compositeQuilt:false,rotation:lying?14:0};}
+ for(const i of [1,2,3,4,5,6,7,13,14])d.poses['bed-body-'+i].cover=.2;
+ d.poses['bed-open']={...d.poses['bed-body-0'],cover:.2};
+ const walk=(from,to,prefix)=>{const count=Math.max(1,Math.ceil(Math.hypot(to[0]-from[0],to[1]-from[1])/7));return Array.from({length:count+1},(_,i)=>{const cell=i%8,f=geometry.walk.frames[cell],id=prefix+i;d.poses[id]={atlas:'walk',cell,at:from.map((v,k)=>v+(to[k]-v)*i/count),support:'feet',prop:null,pivot:[f.crop[0]+f.crop[2]*.48,f.crop[1]+f.crop[3]*.98],head:[f.crop[0]+f.crop[2]*.5,f.crop[1]+f.crop[3]*.22],scale:190/geometry.walk.frames[0].crop[3],flip:to[0]>=from[0]?1:-1,cover:0};return step(id,86,true);});};
+ const origin=d.poses.stand.at,approach=[...walk(origin,[572,790],'body-outside-'),...walk([572,790],[405,780],'body-front-')],leave=[...walk([405,780],[572,790],'body-leave-'),...walk([572,790],origin,'body-home-'),step('stand',120)];
+ const enter=[step('bed-body-0',800),step('bed-body-1',1000),step('bed-open',500),...[14,13,2,3,4,5,6].map(i=>step('bed-body-'+i,i===4||i===5?950:650)),step('bed-body-7',1500),step('bed-body-8',1200)];
+ const exit=[step('bed-body-8',500),step('bed-body-11',900),step('bed-body-12',950),step('bed-body-2',550),step('bed-body-13',650),step('bed-body-14',600),step('bed-body-15',1100),step('bed-body-0',900),...leave];
+ d.entry=[...approach,...enter];d.still='bed-body-8';d.variations=[{name:'枕好枕头，拉好被子安静休息',frames:[step(d.still,60000)]}];
+ for(const id of Object.keys(d.poses)){const a=approach.findIndex(s=>s.pose===id),b=enter.findIndex(s=>s.pose===id);d.exits[id]=id==='stand'?[]:a>=0?[...approach.slice(0,a).reverse(),step('stand',120)]:b>=0?[...enter.slice(b+1),...exit]:[...exit];}
 }
 
 // Reference storyboard: entry and exit are separate drawings. Every pose
