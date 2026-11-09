@@ -9,9 +9,20 @@ export async function auditPackage(root){
  for(const p of ['client.template.js','assets/wardrobe-v1/catalog.json'])add(p,'dynamic dependency declaration');
  for(const p of ['README.md','LICENSE','THIRD_PARTY_NOTICES.md','assets/SOURCES.md','client.template.js','assets/wardrobe-v1/catalog.json'])if(available.has(p))add(p,'documentation or dynamic dependency declaration');
  const scanChunks=async file=>{if(!available.has(file))return;const text=await fs.readFile(path.join(root,file),'utf8');const ids=JSON.parse(await fs.readFile(path.join(root,'assets/wardrobe-v1/catalog.json'),'utf8')).map(x=>x.id);
-  for(const m of text.matchAll(/require\.async\(([^)]*)\)/g)){const expr=m[1].trim(),literal=expr.match(/^['"]\.\/([^'"]+)['"]$/),dynamic=expr.match(/^['"]\.\/([^'"]+)['"]\s*\+\s*id\s*\+\s*['"]([^'"]+)['"]$/);if(literal)add('lib/'+literal[1],file+' lazy import');else if(dynamic)for(const id of ids)add('lib/'+dynamic[1]+id+dynamic[2],file+' outfit '+id);else unresolved.push({file,reason:'unrecognized lazy import '+expr});}
+  for(const m of text.matchAll(/require\.async\(([^)]*)\)/g)){const expr=m[1].trim(),literal=expr.match(/^['"]\.\/([^'"]+)['"]$/),dynamic=expr.match(/^['"]\.\/([^'"]+)['"]\s*\+\s*id\s*\+\s*['"]([^'"]+)['"]$/);if(literal)add('lib/'+literal[1],file+' lazy import');else if(dynamic)for(const id of ids)add('lib/'+dynamic[1]+id+dynamic[2],file+' outfit '+id);else if(expr==="'.' + chunkName"||expr==="'./' + chunkName"){for(const f of (available.has('lib/room-asset-manifest.json')?['client.island-map-v1.js']:['client.room-art-v12.js','client.room-life-v20.js','client.island-map-v1.js']))if(available.has('lib/'+f))add('lib/'+f,file+' dynamic chunk');if(!available.has('lib/room-asset-manifest.json'))for(const id of ids)if(available.has('lib/client.wardrobe-'+id+'-v20.js'))add('lib/client.wardrobe-'+id+'-v20.js',file+' outfit '+id);}else unresolved.push({file,reason:'unrecognized lazy import '+expr});}
  };
  await scanChunks('client.template.js');await scanChunks('lib/client.js');
+ if(available.has('lib/room-module-manifest.json')){
+  add('lib/room-module-manifest.json','versioned optional UI modules');
+  const manifest=JSON.parse(await fs.readFile(path.join(root,'lib/room-module-manifest.json'),'utf8'));
+  for(const record of Object.values(manifest))add('lib/'+record.chunk,'optional UI module manifest');
+ }
+ if(available.has('lib/room-asset-manifest.json')){
+  add('lib/room-asset-manifest.json','versioned image metadata');
+  const manifest=JSON.parse(await fs.readFile(path.join(root,'lib/room-asset-manifest.json'),'utf8'));
+  for(const record of Object.values(manifest.modules))add('lib/'+record.chunk,'image metadata module');
+  for(const record of manifest.images)add(record.file,'immutable image route');
+ }
  // The asset handler exports the same URL map used to serve requests. There
  // is no second guessed list of backend image dependencies.
  if(available.has('src/action-assets.mjs')){try{const m=await import(pathToFileURL(path.join(root,'src/action-assets.mjs')).href+'?audit='+Date.now());if(!Array.isArray(m.ACTION_ASSET_FILES))throw Error('handler must export ACTION_ASSET_FILES');for(const url of m.ACTION_ASSET_FILES)add(path.relative(root,fileURLToPath(url)),'backend action image route');}catch(e){unresolved.push({file:'src/action-assets.mjs',reason:e.message});}}

@@ -1,3 +1,13 @@
+import {isRoomImageUrl} from '../src/room-image-source.mjs';
+import {createRoomSession} from '../src/runtime/room-session.mjs';
+import {mountRoomUi as mountRoomReaderPanel} from '../src/ui/room-reader-panel.mjs';
+import {createRoomUiContext} from '../src/ui/room-context.mjs';
+import {mountRoomUi as mountRoomHud} from '../src/ui/room-hud.mjs';
+import {mountRoomUi as mountRoomActionTray} from '../src/ui/room-action-tray.mjs';
+import {mountRoomUi as mountRoomDressingPanel} from '../src/ui/room-dressing-panel.mjs';
+import {mountRoomUi as mountRoomFurniturePanel} from '../src/ui/room-furniture-panel.mjs';
+import {createRoomDressing} from '../src/room-dressing.mjs';
+const createDressingAssetClient=()=>({load:async()=>({assets:{},favorites:[]}),setFavorites(){}});
 import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import {webcrypto} from 'node:crypto';import vm from 'node:vm';
 import {createRoomWorkspace} from '../src/room-workspace.mjs';
 import {createRoomBookReader} from '../src/room-book-reader.mjs';
@@ -30,7 +40,7 @@ async function fixture(){
   '/diary/export':{text:'# 日记'}
  };
  const parent={postMessage:r=>requests.push(r)};
- vm.runInNewContext(await readFile(new URL('../panel.js',import.meta.url),'utf8'),{document,parent,Node:Element,crypto:webcrypto,structuredClone,DAFEIYU_CLIPS:{},ROOM_ACTIONS:{house:{repairs:{1:{},2:{}},actions:{garden:{frames:[]}}}},WARDROBE_CATALOG:[],createRoomWorkspace,createRoomBookReader,createRoomRestoreGate,window:{addEventListener(t,fn){if(t==='message')listeners.push(fn);}},setTimeout(fn,delay){timers.set(++tid,{fn,delay});return tid;},clearTimeout(id){timers.delete(id);},createBlockRoom(r,options){const scene=document.createElement('svg');scene.options=options;scene.roomActions=[];scene.setRoomOutfit=()=>true;scene.setRoomFloor=f=>{scene.floor=f;options.onFloor(f,{detail:false});};scene.setRoomDetail=x=>scene.detail=x;scene.setRoomActivity=p=>{if(p.preview!==undefined){scene.preview=p.preview;options.onActivity({preview:p.preview,label:'活动',source:'preview'});}};scene.setRoomFloor('1');scenes.push(scene);return scene;}});
+ vm.runInNewContext(await readFile(new URL('../panel.js',import.meta.url),'utf8'),{isRoomImageUrl,createRoomSession,mountRoomReaderPanel,createRoomUiContext,mountRoomHud,mountRoomActionTray,mountRoomDressingPanel,mountRoomFurniturePanel,createRoomDressing,createDressingAssetClient,document,parent,Node:Element,crypto:webcrypto,structuredClone,DAFEIYU_CLIPS:{},ROOM_ACTIONS:{house:{repairs:{1:{},2:{}},actions:{garden:{frames:[]}}}},WARDROBE_CATALOG:[],createRoomWorkspace,createRoomBookReader,createRoomRestoreGate,window:{addEventListener(t,fn){if(t==='message')listeners.push(fn);}},setTimeout(fn,delay){timers.set(++tid,{fn,delay});return tid;},clearTimeout(id){timers.delete(id);},createBlockRoom(r,options){const scene=document.createElement('svg');scene.options=options;scene.roomActions=[];scene.setRoomOutfit=()=>true;scene.setRoomFloor=f=>{scene.floor=f;options.onFloor(f,{detail:false});};scene.setRoomDetail=x=>scene.detail=x;scene.setRoomActivity=p=>{if(p.preview!==undefined){scene.preview=p.preview;options.onActivity({preview:p.preview,label:'活动',source:'preview'});}};scene.setRoomFloor('1');scenes.push(scene);return scene;}});
  const reply=(r,value=data[r.action],revision=20,error)=>{responded.add(r.id);listeners.forEach(fn=>fn({source:parent,data:{channel:'liuli-companion',type:'response',id:r.id,payload:error?{error:{message:error}}:{data:value,revision}}}));};
  const drain=async(except=[])=>{for(let i=0;i<15;i++){for(const r of requests.filter(r=>r.type==='request'&&!responded.has(r.id)&&Object.hasOwn(data,r.action)&&!except.includes(r.action)))reply(r);await settle();}};
  const all=()=>descendants(document.body),button=label=>all().find(e=>e.tagName==='BUTTON'&&(e.textContent===label||e.getAttribute('aria-label')===label));
@@ -69,8 +79,16 @@ test('workspace writes never upgrade an older room inventory snapshot',async()=>
  await f.click('工坊台 · 工具与系统');await f.click('舱室与物品');
  const name=f.all().find(e=>e.name==='name');name.value='书桌';void f.button('放进房间').fire('click');await settle();assert.equal(f.requests.find(r=>r.action==='/room/save').revision,20);
 });
+
+test('cold room read failure offers retry without creating or saving a default room',async()=>{
+ const f=await fixture();await f.drain(['/room']);
+ const req=f.requests.find(r=>r.action==='/room');f.reply(req,undefined,20,'离线测试：读取失败');await f.drain();
+ assert.equal(f.scenes.length,0);assert.ok(f.button('重新连接'));
+ assert.equal(f.requests.some(r=>r.type==='room-runtime-save'),false);
+ await f.click('重新连接');assert.equal(f.scenes.length,1);
+});
 test('mirror stays reachable and late furniture reads cannot recreate a closed modal',async()=>{
- const f=await fixture();await f.enter();const opening=f.scenes[0].options.onFurniture('enchant');await settle();const req=f.requests.find(r=>r.action==='/diary/list');assert.ok(f.button('回到小屋'));await f.click('回到小屋');f.reply(req);await opening;assert.equal(f.all().find(e=>e.tagName==='DIALOG').open,false);await f.click('全息镜 · 换装');assert.equal(f.all().find(e=>e.className==='room-mirror-wardrobe').hidden,false);await f.click('收起换装');assert.equal(f.all().find(e=>e.className==='room-mirror-wardrobe').hidden,true);
+ const f=await fixture();await f.enter();const opening=f.scenes[0].options.onFurniture('enchant');await settle();const req=f.requests.find(r=>r.action==='/diary/list');assert.ok(f.button('回到小屋'));await f.click('回到小屋');f.reply(req);await opening;assert.equal(f.all().find(e=>e.tagName==='DIALOG').open,false);await f.click('全息镜 · 换装');assert.equal(f.all().find(e=>e.classList.contains('room-mirror-wardrobe')).hidden,false);await f.click('收起换装');assert.equal(f.all().find(e=>e.classList.contains('room-mirror-wardrobe')).hidden,true);
 });
 
 test('opening furniture releases the trigger before slow reads so Escape can restore focus',async()=>{
@@ -79,8 +97,11 @@ test('opening furniture releases the trigger before slow reads so Escape can res
  const request=f.requests.find(r=>r.action==='/memory/list');f.reply(request);await opening;assert.equal(dialog.open,false);
 });
 
-test('mirror retains one independent preview below the choices and never changes the room activity',async()=>{
- const f=await fixture();await f.enter();await f.click('敲键盘');const main=f.scenes[0];await f.click('全息镜 · 换装');assert.equal(f.scenes.length,2);const preview=f.scenes[1];await f.click('沙发');assert.equal(preview.preview,'lounge');assert.equal(main.preview,'type');
- const choices=f.all().find(e=>e.className==='wardrobe-choices'),view=f.all().find(e=>e.className==='wardrobe-preview');assert.ok(f.all().indexOf(view)>f.all().indexOf(choices));
- await f.click('收起换装');await f.click('全息镜 · 换装');assert.equal(f.scenes.length,2);assert.equal(preview.preview,'lounge');assert.equal(main.preview,'type');assert.equal(f.requests.some(r=>r.revision!==undefined),false);
+test('mirror keeps only the live room and a static fitting surface without changing activity',async()=>{
+ const f=await fixture();await f.enter();await f.click('敲键盘');const main=f.scenes[0];await f.click('全息镜 · 换装');
+ assert.equal(f.scenes.length,1);assert.equal(main.preview,'type');
+ assert.ok(f.all().some(e=>e.classList.contains('dressing-avatar')));
+ assert.equal(f.all().some(e=>e.classList.contains('wardrobe-preview')),false);
+ assert.equal(f.all().some(e=>e.classList.contains('wardrobe-preview-controls')),false);
+ await f.click('收起换装');await f.click('全息镜 · 换装');assert.equal(f.scenes.length,1);assert.equal(main.preview,'type');assert.equal(f.requests.some(r=>r.revision!==undefined),false);
 });

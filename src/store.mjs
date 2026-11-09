@@ -1,3 +1,4 @@
+import {defaultRoom} from './room-defaults.mjs';
 import { mkdir, open, readFile, rename, unlink, copyFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
@@ -9,7 +10,7 @@ export function initialState(now = Date.now()) {
     schemaVersion: 1, companionId: 'liuli', revision: 0, createdAt: now, updatedAt: now,
     config: defaultConfig(),
     night: { energy: 80, mood: 60, initialized: true, updatedAt: now, sleeping: false, startedAt: null, wokeAt: now, attempts: 0, seen: [], timeline: [], dreamCycles: [], unread: {} },
-    room: { lamp: false, curtain: true, description: '海风吹过窗边，书桌与床铺静静等着她。', items: [], interactions: [] },
+    room: defaultRoom(),
     memories: [], subjects: {}, merges: [], profiles: {}, affinity: {}, settlements: [], dreams: [],
     diaryMeta: {}, avatars: [], avatarCurrent: null, personaHistory: [], jobs: [], events: [], receipts: {}, sessions: {}, checkpoints: {},
   };

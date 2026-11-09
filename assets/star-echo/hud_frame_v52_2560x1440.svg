@@ -1,0 +1,272 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+  <defs>
+    <!-- Refined, Lighter Star-Sea Cyan Glow (Restrained bloom per Req 8) -->
+    <filter id="v52NeonGlow" x="-12%" y="-12%" width="124%" height="124%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="b1"/>
+      <feComponentTransfer in="b1" result="b1d">
+        <feFuncA type="linear" slope="0.72"/>
+      </feComponentTransfer>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="7.5" result="b2"/>
+      <feComponentTransfer in="b2" result="b2d">
+        <feFuncA type="linear" slope="0.42"/>
+      </feComponentTransfer>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="b3"/>
+      <feComponentTransfer in="b3" result="b3d">
+        <feFuncA type="linear" slope="0.20"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="b3d"/>
+        <feMergeNode in="b2d"/>
+        <feMergeNode in="b1d"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Restrained Subtle Glow for Subtitle Plaque & Light Ribbons (Req 2) -->
+    <filter id="v52SubtleGlow" x="-15%" y="-25%" width="130%" height="150%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.0" result="sb1"/>
+      <feComponentTransfer in="sb1" result="sb1d">
+        <feFuncA type="linear" slope="0.58"/>
+      </feComponentTransfer>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6.0" result="sb2"/>
+      <feComponentTransfer in="sb2" result="sb2d">
+        <feFuncA type="linear" slope="0.28"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="sb2d"/>
+        <feMergeNode in="sb1d"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="v52SoftAura" x="-30%" y="-20%" width="160%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+      </feMerge>
+    </filter>
+
+    <filter id="v52StarGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="2.2" result="s1"/>
+      <feGaussianBlur stdDeviation="5.5" result="s2"/>
+      <feMerge>
+        <feMergeNode in="s2"/>
+        <feMergeNode in="s1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="v52WhaleGlow" x="-25%" y="-30%" width="150%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6.5" result="wa1"/>
+      <feFlood flood-color="#38d8ff" flood-opacity="0.34" result="wf1"/>
+      <feComposite in="wf1" in2="wa1" operator="in" result="wg1"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="15" result="wa2"/>
+      <feFlood flood-color="#2563eb" flood-opacity="0.28" result="wf2"/>
+      <feComposite in="wf2" in2="wa2" operator="in" result="wg2"/>
+      <feMerge>
+        <feMergeNode in="wg2"/>
+        <feMergeNode in="wg1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Soft Deep-Space Attenuation Veil to Weaken Large Left Blue Nebula Glare (Req 3) -->
+    <radialGradient id="v52LeftNebulaCalm" cx="28%" cy="46%" r="58%">
+      <stop offset="0%" stop-color="#020817" stop-opacity="0.56"/>
+      <stop offset="52%" stop-color="#030c20" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#030c20" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Frame Gradients -->
+    <linearGradient id="v52MainStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#96f7ff"/>
+      <stop offset="28%" stop-color="#22e2fb"/>
+      <stop offset="72%" stop-color="#0ec0f8"/>
+      <stop offset="100%" stop-color="#96f7ff"/>
+    </linearGradient>
+
+    <linearGradient id="v52PlaqueFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#082044" stop-opacity="0.90"/>
+      <stop offset="100%" stop-color="#030e22" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Top Left & Right Wave Ribbon Gradients (Seamless Wake into Star-Whale) -->
+    <linearGradient id="v52WaveRibbonL1" x1="0%" y1="80%" x2="100%" y2="20%">
+      <stop offset="0%" stop-color="#0066ff" stop-opacity="0.06"/>
+      <stop offset="22%" stop-color="#14a8ff" stop-opacity="0.88"/>
+      <stop offset="56%" stop-color="#38e8ff" stop-opacity="0.92"/>
+      <stop offset="86%" stop-color="#7ef8ff" stop-opacity="0.82"/>
+      <stop offset="100%" stop-color="#38e8ff" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <linearGradient id="v52WaveRibbonViolet" x1="0%" y1="90%" x2="100%" y2="10%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.04"/>
+      <stop offset="28%" stop-color="#c084fc" stop-opacity="0.72"/>
+      <stop offset="58%" stop-color="#60a5fa" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <linearGradient id="v52WaveRibbonR1" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.06"/>
+      <stop offset="24%" stop-color="#8cfbff" stop-opacity="0.72"/>
+      <stop offset="68%" stop-color="#1cb5ff" stop-opacity="0.58"/>
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.03"/>
+    </linearGradient>
+
+    <!-- Star-Whale Gradients -->
+    <linearGradient id="v52WhaleBackGrad" x1="0%" y1="85%" x2="100%" y2="15%">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="40%" stop-color="#0284c7"/>
+      <stop offset="76%" stop-color="#00b8f8"/>
+      <stop offset="100%" stop-color="#76f4ff"/>
+    </linearGradient>
+
+    <linearGradient id="v52WhaleBellyGrad" x1="15%" y1="90%" x2="95%" y2="20%">
+      <stop offset="0%" stop-color="#38e2fa"/>
+      <stop offset="55%" stop-color="#a2f8ff"/>
+      <stop offset="100%" stop-color="#f2feff"/>
+    </linearGradient>
+
+    <linearGradient id="v52WhaleFinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#98f9ff"/>
+      <stop offset="55%" stop-color="#00c2f8"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+
+    <!-- Very Subtle Soft Fusion Aura Next to Left Nav Pod (Weakened per Req 3) -->
+    <linearGradient id="v52PodBridgeAura" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00dcff" stop-opacity="0.20"/>
+      <stop offset="45%" stop-color="#0284c7" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#00e5ff" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Calm overly bright cyan nebula behind Left Nav Pod (Req 3: 左侧大块蓝色装饰弱化) -->
+  <ellipse cx="145" cy="540" rx="220" ry="440" fill="url(#v52LeftNebulaCalm)"/>
+
+  <!-- =======================================================================
+       1. TOP LEFT & RIGHT LIGHTER, AIRIER FLOWING RIBBONS (Req 2.4 & Req 8)
+       ======================================================================= -->
+  <g filter="url(#v52SubtleGlow)">
+    <!-- Upper Iridescent Violet-Blue Arc Flowing into Whale Wake (Matches Ref) -->
+    <path d="M 84 180 C 165 56, 298 14, 440 32 C 572 48, 682 106, 828 122"
+          fill="none" stroke="url(#v52WaveRibbonViolet)" stroke-width="5.2" stroke-linecap="round" opacity="0.72"/>
+    <path d="M 84 180 C 165 56, 298 14, 440 32 C 572 48, 682 106, 828 122"
+          fill="none" stroke="#e9d5ff" stroke-width="1.3" stroke-linecap="round" opacity="0.58"/>
+
+    <!-- Primary Electric Blue-Cyan S-Wave Stream Merging Directly into Whale Belly Wake -->
+    <path d="M 96 224 C 186 92, 336 44, 480 62 C 608 78, 706 138, 862 146"
+          fill="none" stroke="url(#v52WaveRibbonL1)" stroke-width="8.5" stroke-linecap="round" opacity="0.72"/>
+    <path d="M 96 224 C 186 92, 336 44, 480 62 C 608 78, 706 138, 862 146"
+          fill="none" stroke="#bdfcff" stroke-width="2.0" stroke-linecap="round" opacity="0.84"/>
+
+    <!-- Right Extending Star-Orbit Wave Ribbons -->
+    <path d="M 1500 66 C 1574 34, 1664 28, 1754 64 C 1834 96, 1922 100, 2034 68"
+          fill="none" stroke="url(#v52WaveRibbonR1)" stroke-width="5.4" stroke-linecap="round" opacity="0.48"/>
+    <path d="M 1500 66 C 1574 34, 1664 28, 1754 64 C 1834 96, 1922 100, 2034 68"
+          fill="none" stroke="#a5faff" stroke-width="1.4" stroke-linecap="round" opacity="0.62"/>
+
+    <path d="M 1536 90 C 1630 72, 1718 94, 1818 72 C 1912 48, 1994 40, 2098 76"
+          fill="none" stroke="url(#v52WaveRibbonR1)" stroke-width="3.2" stroke-linecap="round" opacity="0.38"/>
+  </g>
+
+  <!-- Delicate Star Sparkles along Top Header (subtler scale & glow) -->
+  <g filter="url(#v52StarGlow)" fill="#ffffff" opacity="0.80">
+    <polygon points="502,67 504.2,73 510,75.2 504.2,77.4 502,83.4 499.8,77.4 494,75.2 499.8,73"/>
+    <circle cx="538" cy="62" r="1.9"/>
+    <polygon points="694,57 696.2,63 702,65.2 696.2,67.4 694,73.4 691.8,67.4 686,65.2 691.8,63"/>
+    <polygon points="1598,86 1600.2,92 1606,94.2 1600.2,96.4 1598,102.4 1595.8,96.4 1590,94.2 1595.8,92"/>
+    <polygon points="1726,24 1728.4,31 1735,33.4 1728.4,35.8 1726,42.8 1723.6,35.8 1717,33.4 1723.6,31"/>
+    <circle cx="1856" cy="48" r="2.0"/>
+    <polygon points="2508,108 2512,119 2523,123 2512,127 2508,138 2504,127 2493,123 2504,119"/>
+  </g>
+
+  <!-- (Old flat vector whale removed; replaced below by painted celestial Star-Whale matching reference) -->
+
+  <!-- =======================================================================
+       3. SUBTLE ENERGY FUSION NEXT TO LEFT NAV POD (Weakened per Req 3)
+       ======================================================================= -->
+  <rect x="234" y="340" width="32" height="572" rx="16" fill="url(#v52PodBridgeAura)" filter="url(#v52SoftAura)"/>
+
+  <!-- =======================================================================
+       4. MAIN STAGE TECH BORDER + RIGHT SIDEBAR CONTOUR (Req 1, 3, 4, 8)
+       Lighter stroke weight & restrained neon brightness
+       ======================================================================= -->
+  <g filter="url(#v52NeonGlow)">
+    <!-- Outer Neon Stage Frame (aligned to shortened Left Nav Pod & slimmer Right Sidebar) -->
+    <path d="M 352 268
+             H 392 L 504 156
+             H 662
+             L 696 122
+             H 1024
+             M 1536 122
+             H 1868
+             L 1902 156
+             H 1976
+             L 2082 262
+             V 1104
+             L 1976 1212
+             H 1868
+             L 1836 1234
+             H 672
+             L 640 1212
+             H 402
+             L 274 926 L 266 918"
+          fill="none" stroke="url(#v52MainStroke)" stroke-width="3.5" stroke-opacity="0.96" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Subtle Starlight Accents Bridging Main Stage & Right Standalone Frosted Cards -->
+  <g filter="url(#v52StarGlow)" fill="#ffffff" opacity="0.82">
+    <polygon points="2104,226 2106.4,232 2112.4,234.4 2106.4,236.8 2104,242.8 2101.6,236.8 2095.6,234.4 2101.6,232"/>
+    <circle cx="2106" cy="696" r="1.8" opacity="0.72"/>
+  </g>
+
+  <!-- Crisp Inner Fine Chamfer Line (lighter & more delicate) -->
+  <path d="M 352 278
+           H 398 L 510 166
+           H 668
+           L 702 132
+           H 1024
+           M 1536 132
+           H 1862
+           L 1896 166
+           H 1970
+           L 2070 268
+           V 1098
+           L 1970 1202
+           H 1862
+           L 1830 1224
+           H 678
+           L 646 1202
+           H 408
+           L 284 926 L 276 918"
+        fill="none" stroke="#bdfcff" stroke-width="1.3" stroke-opacity="0.64" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Refined Chamfer Corner Specular Highlights (Req 8: 转角高光保留，但避免过粗) -->
+  <g filter="url(#v52SubtleGlow)" stroke="#effeff" stroke-opacity="0.88" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Top-left chamfer highlight -->
+    <path d="M 542 156 H 504 L 440 220" stroke-width="2.5"/>
+    <!-- Top-right chamfer highlight -->
+    <path d="M 1938 156 H 1976 L 2050 230" stroke-width="2.5"/>
+    <!-- Bottom-left chamfer highlight -->
+    <path d="M 356 1110 L 402 1212 H 446" stroke-width="2.5"/>
+    <!-- Bottom-right chamfer highlight -->
+    <path d="M 2050 1138 L 1976 1212 H 1930" stroke-width="2.5"/>
+    <!-- Center bottom glow bar -->
+    <line x1="1192" y1="1234" x2="1368" y2="1234" stroke="#bdfcff" stroke-width="2.5"/>
+    <!-- Top step tech accents -->
+    <rect x="720" y="125" width="46" height="3.4" rx="1.7" fill="#a5faff" opacity="0.80" stroke="none"/>
+    <rect x="1792" y="125" width="46" height="3.4" rx="1.7" fill="#a5faff" opacity="0.80" stroke="none"/>
+  </g>
+
+  <!-- =======================================================================
+       4.5. TOP CELESTIAL STARRY BLUE WHALE (1:1 Restored from Reference Crop)
+       ======================================================================= -->
+  <image href="__TITLE_WHALE_V52_DATA_URL__"
+         x="468" y="-16" width="654" height="218"
+         preserveAspectRatio="xMidYMid meet"
+         filter="url(#v52WhaleGlow)"/>
+
+  <!-- Approved subtitle: clear type with a fine diamond rule. -->
+  <g stroke="#8edfff" stroke-opacity=".65" fill="none"><path d="M1160 112 H1286 M1334 112 H1460" stroke-width="1"/><path d="m1310 108 4 4-4 4-4-4Z" fill="#a4eaff"/></g>
+</svg>

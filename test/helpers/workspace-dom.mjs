@@ -12,5 +12,5 @@ export class Element {
  reportValidity(){return true;} scrollIntoView(){} get isConnected(){return this===this.ownerDocument.body||!!this.parentNode?.isConnected;}
 }
 export const descendants=root=>[root,...root.children.flatMap(x=>typeof x==='object'?descendants(x):[])];
-export function createDocument(){const elements=new Map(),doc={hidden:false,createElement:tag=>new Element(tag,doc),createTextNode:text=>String(text),getElementById(id){if(!elements.has(id)){const e=new Element('div',doc);elements.set(id,e);doc.body.append(e);}return elements.get(id);}};doc.body=new Element('body',doc);return doc;}
+export function createDocument(){const elements=new Map(),doc={hidden:false,createElement:tag=>new Element(tag,doc),createElementNS:(_,tag)=>new Element(tag,doc),createTextNode:text=>String(text),getElementById(id){if(!elements.has(id)){const e=new Element('div',doc);elements.set(id,e);doc.body.append(e);}return elements.get(id);}};doc.body=new Element('body',doc);return doc;}
 export const settle=async()=>{for(let i=0;i<25;i++)await Promise.resolve();};

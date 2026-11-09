@@ -8,6 +8,18 @@ const room=()=>({lamp:true,curtain:true,items:names.map((name,i)=>({id:String(i)
 class Element{constructor(tag){this.tagName=tag;this.attributes={};this.children=[];this.events={};}setAttribute(k,v){this.attributes[k]=String(v);}append(...n){this.children.push(...n);}addEventListener(k,fn){this.events[k]=fn;}}
 const document={createElementNS(_,tag){return new Element(tag);}},nodes=n=>[n,...n.children.flatMap(nodes)];
 const make=(data=room(),extra={})=>createBlockRoom(data,{document,actionAssets:assets,petAssets:{idle:{frames:['idle0','idle1'],frameMs:40},head_pat:{frames:['pat0','pat1'],frameMs:40}},animation:{reducedMotion:true},...extra});
+
+test('rapid pause/resume and visibility changes keep exactly one illustrated animation loop',()=>{
+ const queued=[],listeners=new Map(),doc={...document,hidden:false,addEventListener:(type,fn)=>listeners.set(type,fn),removeEventListener:(type)=>listeners.delete(type)};
+ const svg=make(room(),{document:doc,animation:{reducedMotion:false,requestFrame:fn=>queued.push(fn)}});
+ nodes(svg).find(n=>n.attributes['data-room-resident']).isConnected=true;
+ for(let i=0;i<25;i++){svg.setRoomPaused(true);svg.setRoomPaused(false);}
+ assert.equal(queued.length,1,'resuming before the pending frame must not create another loop');
+ queued.shift()(0);assert.equal(queued.length,1);
+ doc.hidden=true;queued.shift()(20);assert.equal(queued.length,0,'hidden room must stop scheduling work');
+ doc.hidden=false;listeners.get('visibilitychange')();listeners.get('visibilitychange')();assert.equal(queued.length,1);
+ svg.disposeRoomAmbient();queued.shift()(40);assert.equal(queued.length,0);
+});
 test('draw failure exports the last good runtime without advancing or saving a partial exit',async()=>{
  const geometry=JSON.parse(await readFile(new URL('../assets/room-life-v11/geometry.json',import.meta.url),'utf8'));
  const payload={version:11,revision:20,geometry,atlases:Object.fromEntries(Object.keys(geometry).map(k=>[k,'data:image/png;base64,AAAA'])),greenhouse:'data:image/png;base64,AAAA'};

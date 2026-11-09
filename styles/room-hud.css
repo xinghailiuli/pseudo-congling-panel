@@ -1,0 +1,853 @@
+/* ==========================================================================
+   Star Echo (星海回响) Sci-Fi HUD Theme · 琉璃赛博全息陪伴中心 (像素级对齐铺满版)
+   ========================================================================== */
+
+body.star-echo-theme {
+  background: #01040d !important;
+  color: #e0f2fe;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  overflow: hidden !important;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+body.star-echo-theme .app {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #01040d !important;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+body.star-echo-theme main {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: calc(100vh * (16 / 9));
+  max-height: calc(100vw * (9 / 16));
+  aspect-ratio: 16 / 9;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  background: #01040d url('__STAR_ECHO_FRAME_BG__') no-repeat center center !important;
+  background-size: 100% 100% !important;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+}
+
+body.star-echo-theme #content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  overflow: hidden;
+}
+
+/* Floating sci-fi pill notice toast */
+body.star-echo-theme #notice {
+  position: absolute;
+  top: 68px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(3, 14, 33, 0.92);
+  border: 1px solid rgba(56, 189, 248, 0.6);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 12px rgba(56, 189, 248, 0.3);
+  border-radius: 20px;
+  color: #e0f2fe;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 20px;
+  z-index: 100;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  max-width: 75%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.star-echo-theme #notice:empty {
+  display: none !important;
+}
+
+body.star-echo-theme #notice.error {
+  border-color: rgba(244, 63, 94, 0.7);
+  background: rgba(54, 23, 36, 0.92);
+  color: #fecdd3;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 12px rgba(244, 63, 94, 0.3);
+}
+
+body.star-echo-theme footer {
+  display: none !important;
+}
+
+/* --- Top Header HUD Overlays --- */
+.star-echo-hud-bar {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+  z-index: 30;
+  display: block;
+  padding: 0;
+  margin: 0 !important;
+}
+
+/* Top centered brand banner (baked into HUD background PNG, hidden to avoid double text overlap) */
+.star-echo-brand {
+  display: none !important;
+}
+
+/* Fullscreen Sci-Fi Flowlines & High-Tech Decorative Vector Layer */
+.star-echo-flowlines-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 22;
+}
+
+.head-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.star-echo-weather-pill {
+  position: absolute;
+  left: 81.25%;
+  top: 2.50%;
+  right: auto;
+  width: 15.859375%;
+  height: 4.444444%;
+  background: linear-gradient(180deg, rgba(3, 14, 34, 0.94) 0%, rgba(2, 9, 23, 0.98) 100%) !important;
+  border: 1.5px solid rgba(0, 180, 230, 0.55) !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 0 16px rgba(0, 168, 232, 0.28), inset 0 0 10px rgba(0, 180, 230, 0.12) !important;
+  backdrop-filter: blur(14px) !important;
+  box-sizing: border-box !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  font-size: clamp(10px, 0.92vw, 15px);
+  font-family: 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+  color: #dff8ff;
+  pointer-events: auto;
+  z-index: 45;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
+}
+.star-echo-weather-pill:hover {
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.7));
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.45), inset 0 0 12px rgba(0, 180, 255, 0.2) !important;
+}
+.star-echo-weather-pill .weather-clock {
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+.star-echo-weather-pill .sync-status-dot {
+  color: #38bdf8;
+  font-size: 9px;
+}
+
+.star-echo-status-pill {
+  position: absolute;
+  left: 14.84375%;
+  top: 91.111111%;
+  bottom: auto;
+  width: 20.703125%;
+  height: 7.361111%;
+  background: linear-gradient(180deg, rgba(8, 28, 62, 0.78) 0%, rgba(4, 16, 38, 0.92) 100%) !important;
+  border: 1.5px solid rgba(80, 220, 255, 0.65) !important;
+  border-radius: 9999px !important;
+  box-shadow: inset 0 1.5px 0 rgba(165, 243, 252, 0.5), 0 0 16px rgba(0, 180, 230, 0.28), 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(14px) !important;
+  box-sizing: border-box !important;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 1.6%;
+  font-size: clamp(9.5px, 0.88vw, 14px);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+  color: #e0f2fe;
+  pointer-events: auto;
+  z-index: 45;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
+}
+.star-echo-status-pill:hover {
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.75));
+  box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, 0.6), 0 0 20px rgba(0, 210, 255, 0.5) !important;
+}
+
+.star-echo-heart-pill {
+  position: absolute;
+  left: 64.453125%;
+  top: 91.111111%;
+  bottom: auto;
+  width: 20.703125%;
+  height: 7.361111%;
+  background: linear-gradient(180deg, rgba(8, 28, 62, 0.78) 0%, rgba(4, 16, 38, 0.92) 100%) !important;
+  border: 1.5px solid rgba(80, 220, 255, 0.65) !important;
+  border-radius: 9999px !important;
+  box-shadow: inset 0 1.5px 0 rgba(165, 243, 252, 0.5), 0 0 16px rgba(0, 180, 230, 0.28), 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(14px) !important;
+  box-sizing: border-box !important;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 1.6%;
+  font-size: clamp(9.5px, 0.88vw, 14px);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+  color: #dff8ff;
+  pointer-events: auto;
+  z-index: 45;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
+}
+.star-echo-heart-pill:hover {
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.75));
+  box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, 0.6), 0 0 20px rgba(0, 210, 255, 0.5) !important;
+}
+
+.hud-pill-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  width: 100%;
+  line-height: 1.15;
+  overflow: hidden;
+}
+
+.hud-ecg-wave {
+  width: clamp(48px, 4.2vw, 72px);
+  height: clamp(13px, 1.1vw, 18px);
+  margin-left: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.85));
+}
+
+.pill-star-sparkle {
+  color: rgba(103, 232, 249, 0.65);
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+.hud-pill-bar-track {
+  width: 100%;
+  height: clamp(12px, 0.95vw, 16px);
+  background: rgba(2, 10, 28, 0.92);
+  border: 1.2px solid rgba(56, 189, 248, 0.45);
+  border-radius: 999px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 168, 232, 0.2);
+  position: relative;
+}
+
+.hud-pill-bar-track.heart-track-wrap {
+  overflow: visible !important;
+}
+
+.hud-pill-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+.status-bar-fill {
+  background: repeating-linear-gradient(90deg, #00d2ff 0px, #00d2ff 24px, rgba(0, 210, 255, 0.15) 24px, rgba(0, 210, 255, 0.15) 28px);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.45);
+  position: relative;
+}
+
+.heart-bar-fill {
+  background: linear-gradient(90deg, #00d2ff 0%, #00b4d8 42%, #7928ca 72%, #d946ef 88%, #ff66b2 100%);
+  box-shadow: 0 0 14px rgba(217, 70, 239, 0.75), inset 0 1.5px 2px rgba(255, 255, 255, 0.6);
+  position: relative;
+}
+
+.heart-end-gem {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(16px, 1.25vw, 20px);
+  height: clamp(16px, 1.25vw, 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 8px #ff70a6) drop-shadow(0 0 16px rgba(244, 114, 182, 0.9));
+  pointer-events: none;
+}
+.gem-heart-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.unintegrated-notice-badge {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px dashed rgba(248, 113, 113, 0.5);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.unintegrated-tag {
+  color: #f87171;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.unintegrated-desc {
+  color: #cbd5e1;
+  font-size: 10.5px;
+  line-height: 1.4;
+}
+
+/* --- Shell Layout --- */
+.star-echo-cabin-shell {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  overflow: hidden;
+}
+
+.star-echo-stage-row {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  overflow: hidden;
+}
+
+/* Crisp SVG Neon Border Overlay from hud_frame_2560x1440.svg */
+.star-echo-stage-frame-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--v52-border-art, url('__STAR_ECHO_SVG_BORDER__')) no-repeat center center / 100% 100%;
+  pointer-events: none !important;
+  z-index: 18;
+  opacity: 0.85;
+  filter: brightness(0.95);
+}
+
+/* --- Left Capsule Navigation Bar (2560x1440: x=138..250, y=310..1010) --- */
+.star-echo-left-dock {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.star-echo-capsule-sidebar {
+  position: absolute;
+  left: 5.390625%;
+  top: 21.527778%;
+  bottom: auto;
+  width: 4.375%;
+  height: 48.611111%;
+  transform: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 1.6% 0;
+  background: linear-gradient(180deg, rgba(3, 14, 34, 0.94) 0%, rgba(2, 9, 23, 0.98) 100%) !important;
+  border: 1.5px solid rgba(0, 180, 230, 0.55) !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 0 16px rgba(0, 168, 232, 0.28), inset 0 0 10px rgba(0, 180, 230, 0.12) !important;
+  backdrop-filter: blur(16px) !important;
+  box-sizing: border-box !important;
+  pointer-events: auto;
+  z-index: 45;
+}
+
+.capsule-btn {
+  position: relative;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  width: 82%;
+  aspect-ratio: 1 / 1;
+  max-width: 76px;
+  max-height: 76px;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  color: #ffffff !important;
+  transition: background 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease !important;
+  outline: none !important;
+  user-select: none;
+  box-sizing: border-box !important;
+}
+
+.capsule-btn:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 35%;
+  width: 30%;
+  height: 1px;
+  background: rgba(56, 189, 248, 0.28);
+  pointer-events: none;
+}
+
+.capsule-btn svg.hud-vector-icon {
+  width: 66%;
+  height: 66%;
+  stroke: #ffffff;
+  fill: none;
+  stroke-width: 2.0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 10px rgba(0, 180, 230, 0.55));
+  pointer-events: none;
+  transition: filter 0.2s ease, stroke 0.2s ease;
+}
+
+.bottom-pill-btn svg.hud-vector-icon {
+  width: 64%;
+  height: 64%;
+  stroke: #ffffff;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
+  pointer-events: none;
+  transition: filter 0.2s ease, stroke 0.2s ease;
+}
+
+.capsule-btn:hover {
+  background: rgba(0, 180, 230, 0.16) !important;
+  border: none !important;
+  box-shadow: 0 0 14px rgba(0, 180, 230, 0.5) !important;
+}
+
+.capsule-btn:hover svg.hud-vector-icon {
+  stroke: #ffffff !important;
+  filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.95));
+}
+
+.capsule-btn.active {
+  background: radial-gradient(circle at 45% 45%, #00d2ff 0%, #0099cc 65%, #0077a8 100%) !important;
+  border: 1.5px solid rgba(165, 243, 252, 0.85) !important;
+  box-shadow: 0 0 18px rgba(0, 180, 230, 0.85), inset 0 0 6px rgba(255, 255, 255, 0.45) !important;
+  color: #ffffff !important;
+}
+
+.capsule-btn.active svg.hud-vector-icon {
+  width: 66% !important;
+  height: 66% !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.2 !important;
+  filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 12px rgba(0, 229, 255, 0.9)) !important;
+}
+
+/* Secondary Floating Drawer (Glassmorphic) */
+.star-echo-floating-drawer {
+  position: absolute;
+  left: 78px;
+  top: 140px;
+  width: 260px;
+  max-height: 80%;
+  background: rgba(6, 20, 45, 0.94);
+  border: 1.5px solid rgba(56, 189, 248, 0.55);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.35);
+  backdrop-filter: blur(16px);
+  z-index: 50;
+  pointer-events: auto;
+  transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1), transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.star-echo-floating-drawer.hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.star-echo-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+  padding-bottom: 8px;
+}
+
+.drawer-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.drawer-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ecfeff;
+}
+
+.drawer-subtitle {
+  font-size: 10px;
+  color: #38bdf8;
+  letter-spacing: 1px;
+}
+
+.star-echo-drawer-close {
+  background: transparent !important;
+  border: none !important;
+  color: #94a3b8 !important;
+  font-size: 14px !important;
+  cursor: pointer;
+  padding: 2px 6px !important;
+}
+
+.star-echo-drawer-close:hover {
+  color: #ffffff !important;
+}
+
+.star-echo-drawer-body {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.cyber-drawer-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(12, 34, 68, 0.75);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cyber-drawer-card:hover {
+  background: rgba(56, 189, 248, 0.22);
+  border-color: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+}
+
+.cyber-drawer-card.active {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.4), rgba(2, 132, 199, 0.6));
+  border-color: #38bdf8;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+}
+
+.drawer-card-icon {
+  font-size: 18px;
+}
+
+.drawer-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.drawer-card-name {
+  font-size: 12px;
+  color: #f0fdf4;
+}
+
+.drawer-card-desc {
+  font-size: 10.5px;
+  color: #94a3b8;
+}
+
+/* --- Scheme C Central Stage (2560x1440: L=380, T=126, W=1800, H=1125 -> 1.60:1) --- */
+.star-echo-center-stage {
+  position: absolute;
+  left: 14.84375%;
+  top: 8.75%;
+  width: 70.3125%;
+  height: 78.125%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  overflow: visible;
+  background: transparent !important;
+  pointer-events: auto;
+  clip-path: polygon(
+    3.5556% 0%,
+    25.0000% 0%,
+    26.4444% 1.9556%,
+    73.5556% 1.9556%,
+    75.0000% 0%,
+    96.4444% 0%,
+    100% 5.6889%,
+    100% 94.3111%,
+    96.4444% 100%,
+    81.1111% 100%,
+    79.3333% 102.2222%,
+    20.6667% 102.2222%,
+    18.8889% 100%,
+    3.5556% 100%,
+    0% 94.3111%,
+    0% 5.6889%
+  );
+}
+
+/* Single-floor (1F / 2F) 1.125x uniform scale (optimized whitespace & ambient glow) */
+.star-echo-center-stage .block-room,
+.star-echo-center-stage svg.room-scene,
+.star-echo-center-stage svg.room-art,
+body.star-echo-theme .block-room {
+  position: relative;
+  z-index: 2;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  width: 98% !important;
+  height: 104.5% !important;
+  max-width: none !important;
+  max-height: none !important;
+  transform: translateY(-0.5%);
+  filter: drop-shadow(0 0 26px rgba(245, 158, 11, 0.18));
+  overflow: visible !important;
+}
+
+/* Two-Floor Overview (all) & Detail modes: uniform centered fit inside fixed 1.60:1 stage border */
+.star-echo-center-stage[data-stage-floor="all"] svg.room-scene,
+.star-echo-center-stage svg.room-scene[data-room-floor="all"],
+.star-echo-center-stage[data-stage-detail="true"] svg.room-scene,
+.star-echo-center-stage svg.room-scene[data-room-detail="true"] {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  transform: none !important;
+}
+
+/* Lightweight Decorative Compensation in 'all' Mode Side Margins */
+.star-echo-all-mode-wings {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none !important;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  background:
+    radial-gradient(circle at 14% 48%, rgba(56, 189, 248, 0.11) 0%, rgba(15, 23, 42, 0) 36%),
+    radial-gradient(circle at 86% 48%, rgba(56, 189, 248, 0.11) 0%, rgba(15, 23, 42, 0) 36%),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+}
+
+.star-echo-center-stage[data-stage-floor="all"] .star-echo-all-mode-wings,
+.star-echo-center-stage:has(svg.room-scene[data-room-floor="all"]) .star-echo-all-mode-wings {
+  opacity: 1;
+}
+
+.all-mode-wing {
+  width: 26%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4.5% 2.6%;
+}
+
+.all-mode-wing.wing-right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.wing-floor-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(5, 18, 42, 0.48);
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.07);
+  max-width: 92%;
+}
+
+.wing-floor-tag {
+  font-size: clamp(9px, 0.72vw, 11.5px);
+  font-weight: 700;
+  color: rgba(125, 211, 252, 0.85);
+  letter-spacing: 1px;
+}
+
+.wing-floor-title {
+  font-size: clamp(10px, 0.82vw, 13px);
+  font-weight: 600;
+  color: rgba(224, 242, 254, 0.88);
+}
+
+.wing-floor-sub {
+  font-size: clamp(8.5px, 0.68vw, 11px);
+  color: rgba(148, 163, 184, 0.82);
+  line-height: 1.35;
+}
+
+/* Hide SVG background rect & starfield to reveal clean HUD stage underneath */
+body.star-echo-theme .room-cosmic-backdrop,
+body.star-echo-theme [data-backdrop-floor],
+body.star-echo-theme svg rect[width="1536"],
+body.star-echo-theme svg rect[fill*="cosmic-sky-grad"] {
+  display: none !important;
+  opacity: 0 !important;
+  fill: transparent !important;
+  pointer-events: none !important;
+}
+
+/* Hide broken image placeholders in SVG */
+body.star-echo-theme svg image:not([href]),
+body.star-echo-theme svg image[href=""],
+body.star-echo-theme svg image[href="#"],
+body.star-echo-theme image[data-walk-pose="standing"]:not([href]) {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* --- Bottom Dock & 4 Action Pill Hotspots (2560x1440: x=1005..1555, y=1308..1396) --- */
+.star-echo-bottom-dock {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.star-echo-action-pill {
+  position: absolute;
+  left: 39.2578125%;
+  top: 91.111111%;
+  bottom: auto;
+  transform: none;
+  width: 21.484375%;
+  height: 7.361111%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  background: linear-gradient(180deg, rgba(8, 28, 62, 0.78) 0%, rgba(4, 16, 38, 0.92) 100%) !important;
+  border: 1.5px solid rgba(80, 220, 255, 0.65) !important;
+  border-radius: 9999px !important;
+  box-shadow: inset 0 1.5px 0 rgba(165, 243, 252, 0.5), 0 0 16px rgba(0, 180, 230, 0.28), 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(14px) !important;
+  box-sizing: border-box !important;
+  z-index: 35;
+  pointer-events: auto;
+}
+
+.bottom-pill-btn {
+  width: auto;
+  height: 80%;
+  aspect-ratio: 1 / 1;
+  max-width: 56px;
+  max-height: 56px;
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  background: rgba(11, 34, 70, 0.35) !important;
+  border: 1px solid rgba(56, 189, 248, 0.28) !important;
+  box-shadow: inset 0 0 6px rgba(0, 180, 230, 0.12) !important;
+  cursor: pointer;
+  color: #ffffff !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  outline: none !important;
+  user-select: none;
+  box-sizing: border-box !important;
+}
+
+.bottom-pill-btn:hover {
+  background: rgba(14, 45, 95, 0.65) !important;
+  border-color: rgba(103, 232, 249, 0.75) !important;
+  box-shadow: 0 0 14px rgba(0, 180, 230, 0.55), inset 0 0 8px rgba(0, 210, 255, 0.2) !important;
+}
+
+.bottom-pill-btn:hover svg.hud-vector-icon {
+  stroke: #ffffff !important;
+  filter: drop-shadow(0 0 8px rgba(0, 220, 255, 0.95));
+}
+
+.bottom-pill-btn.active {
+  background: #00a8e8 !important;
+  border: none !important;
+  box-shadow: 0 0 16px rgba(0, 168, 232, 0.85), inset 0 0 4px rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+}
+
+.bottom-pill-btn.active svg.hud-vector-icon {
+  stroke: #ffffff !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35)) !important;
+}
+
+.pill-star-divider {
+  color: rgba(103, 232, 249, 0.45);
+  font-size: 11px;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+

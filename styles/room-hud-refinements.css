@@ -1,0 +1,957 @@
+/* ==========================================================================
+   V5.2 HUD Redesign (Image 1 -> Image 2 Visual Target)
+   Unified 2560x1440 design unit `--u`:
+   2560x1440 -> 1px | 1920x1080 -> 0.75px | 1280x720 -> 0.5px
+   ========================================================================== */
+body.star-echo-theme {
+  --u: calc(min(100vw, 177.777778vh) / 2560);
+  --energy-bg: #05132b;
+  --heart-start: #20e6ff;
+  --heart-mid: #6d8dff;
+  --heart-end: #ff75c8;
+  --ecg-color: #3ef0ff;
+  --gem-color: #ff79c6;
+}
+
+/* ---- 1 & 8. Main Stage & Central Cottage (-5.8% size, increased 4-side HUD breathing space) ---- */
+body.star-echo-theme .star-echo-stage-frame-overlay {
+  z-index: 26 !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+body.star-echo-theme .star-echo-center-stage {
+  left: calc(396 * var(--u)) !important;
+  top: calc(148 * var(--u)) !important;
+  width: calc(1590 * var(--u)) !important;
+  height: calc(1060 * var(--u)) !important;
+  clip-path: none !important;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, #000 2.8%, #000 97.2%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, #000 2.6%, #000 98.2%, transparent 100%),
+    linear-gradient(56deg, transparent 0%, transparent 6.5%, #000 11.2%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 2.8%, #000 97.2%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, #000 2.6%, #000 98.2%, transparent 100%),
+    linear-gradient(56deg, transparent 0%, transparent 6.5%, #000 11.2%);
+  mask-composite: intersect;
+  z-index: 14 !important;
+}
+
+body.star-echo-theme .star-echo-center-stage .block-room,
+body.star-echo-theme .star-echo-center-stage svg.room-scene,
+body.star-echo-theme .star-echo-center-stage svg.room-art {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  transform: none !important;
+  filter: drop-shadow(0 0 calc(22 * var(--u)) rgba(245, 158, 11, 0.18));
+  overflow: visible !important;
+}
+
+/* Dual-floor overview (all) & close-up (detail) scaled proportionally (-5.9%) */
+body.star-echo-theme .star-echo-center-stage[data-stage-floor="all"] svg.room-scene,
+body.star-echo-theme .star-echo-center-stage svg.room-scene[data-room-floor="all"],
+body.star-echo-theme .star-echo-center-stage[data-stage-detail="true"] svg.room-scene,
+body.star-echo-theme .star-echo-center-stage svg.room-scene[data-room-detail="true"] {
+  width: calc(1468 * var(--u)) !important;
+  height: calc(964 * var(--u)) !important;
+  transform: translateY(calc(34 * var(--u))) !important;
+}
+
+/* ---- 2. Top Header Zone: -10% Vector Title + Narrower/Shorter Subtitle + Refined Weather Pill ---- */
+body.star-echo-theme .star-echo-brand {
+  display: block !important;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 38;
+}
+
+body.star-echo-theme .star-echo-main-title {
+  position: absolute;
+  left: calc(1134 * var(--u));
+  top: calc(14 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+body.star-echo-theme .echo-title-banner {
+  position: relative;
+  display: block;
+  width: calc(352 * var(--u));
+  height: calc(88 * var(--u));
+  transform: none;
+  line-height: 1;
+  text-shadow: none;
+}
+
+body.star-echo-theme .echo-title-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+body.star-echo-theme .echo-title-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+body.star-echo-theme .star-echo-sub {
+  position: absolute;
+  left: calc(1280 * var(--u));
+  top: calc(135 * var(--u));
+  transform: translate(-50%, -50%);
+  margin: 0 !important;
+  font-size: calc(22.5 * var(--u));
+  font-weight: 600;
+  letter-spacing: calc(8.5 * var(--u));
+  color: #e6faff;
+  text-shadow:
+    0 0 calc(6 * var(--u)) rgba(56, 224, 255, 0.48),
+    0 calc(1 * var(--u)) calc(2 * var(--u)) rgba(0, 8, 24, 0.85);
+  opacity: 0.96;
+  white-space: nowrap;
+}
+
+/* Top-Right Weather & Clock Capsule (refined & lighter) */
+body.star-echo-theme .star-echo-weather-pill {
+  left: calc(2138 * var(--u)) !important;
+  top: calc(22 * var(--u)) !important;
+  width: calc(386 * var(--u)) !important;
+  height: calc(68 * var(--u)) !important;
+  gap: calc(10 * var(--u));
+  padding: 0 calc(20 * var(--u));
+  font-size: calc(22 * var(--u));
+  font-weight: 600;
+  background: linear-gradient(180deg, rgba(6, 22, 48, 0.88) 0%, rgba(3, 12, 28, 0.94) 100%) !important;
+  border: max(1.2px, calc(1.6 * var(--u))) solid rgba(84, 220, 255, 0.58) !important;
+  box-shadow:
+    0 0 calc(12 * var(--u)) rgba(0, 185, 248, 0.22),
+    inset 0 calc(1 * var(--u)) 0 rgba(186, 248, 255, 0.35) !important;
+}
+
+body.star-echo-theme .star-echo-weather-pill .pill-vector-icon {
+  width: calc(26 * var(--u));
+  height: calc(26 * var(--u));
+  display: block;
+  filter: drop-shadow(0 0 calc(6 * var(--u)) rgba(244, 114, 182, 0.65));
+}
+
+body.star-echo-theme .star-echo-weather-pill .weather-star {
+  font-size: calc(15 * var(--u));
+  letter-spacing: calc(2 * var(--u));
+  color: #3ef0ff;
+  text-shadow: 0 0 calc(5 * var(--u)) rgba(0, 228, 255, 0.65);
+}
+
+/* ---- 3. Left Navigation Pod: Shortened, Tighter Icon Spacing, -3.2% Icons, Softer Glow ---- */
+body.star-echo-theme .star-echo-capsule-sidebar {
+  left: calc(58 * var(--u)) !important;
+  top: calc(252 * var(--u)) !important;
+  width: calc(176 * var(--u)) !important;
+  height: calc(752 * var(--u)) !important;
+  padding: calc(26 * var(--u)) 0 !important;
+  justify-content: space-around !important;
+  border-radius: 9999px !important;
+  background: linear-gradient(180deg, rgba(6, 24, 54, 0.88) 0%, rgba(3, 12, 30, 0.95) 100%) !important;
+  border: max(1.6px, calc(2.2 * var(--u))) solid rgba(94, 232, 255, 0.72) !important;
+  box-shadow:
+    0 0 calc(10 * var(--u)) rgba(0, 210, 255, 0.36),
+    0 0 calc(22 * var(--u)) rgba(0, 152, 230, 0.20),
+    inset 0 0 calc(18 * var(--u)) rgba(0, 188, 245, 0.18),
+    inset 0 calc(1.5 * var(--u)) calc(2 * var(--u)) rgba(215, 251, 255, 0.52) !important;
+  backdrop-filter: blur(16px) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+/* Strictly internal recessed glass ring inside the capsule */
+body.star-echo-theme .star-echo-capsule-sidebar::before {
+  content: '' !important;
+  display: block !important;
+  position: absolute;
+  inset: calc(10 * var(--u));
+  border-radius: 9999px;
+  border: max(1px, calc(1.4 * var(--u))) solid rgba(72, 212, 255, 0.36);
+  background: linear-gradient(180deg, rgba(2, 10, 26, 0.58) 0%, rgba(1, 7, 20, 0.74) 100%);
+  box-shadow: inset 0 0 calc(14 * var(--u)) rgba(0, 175, 238, 0.16);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.star-echo-theme .star-echo-capsule-sidebar::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* positionFloatingMenu owns the drawer coordinates, including edge clamping. */
+
+body.star-echo-theme .capsule-btn {
+  z-index: 1;
+  width: calc(114 * var(--u)) !important;
+  height: calc(114 * var(--u)) !important;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  flex: 0 0 auto;
+  border-radius: 50% !important;
+  transform: none !important;
+}
+
+/* Fine cyan divider line + subtle center star dot between tightened pod buttons */
+body.star-echo-theme .capsule-btn:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(-14 * var(--u));
+  transform: translateX(-50%);
+  width: calc(74 * var(--u));
+  height: calc(8 * var(--u));
+  background:
+    radial-gradient(circle, rgba(235, 254, 255, 0.92) 0 calc(1.5 * var(--u)), rgba(88, 238, 255, 0.68) calc(2.8 * var(--u)), transparent calc(4.2 * var(--u))) center / calc(9 * var(--u)) calc(9 * var(--u)) no-repeat,
+    linear-gradient(90deg, transparent 0%, rgba(56, 208, 255, 0.58) 22%, rgba(205, 251, 255, 0.80) 50%, rgba(56, 208, 255, 0.58) 78%, transparent 100%) center / 100% max(1px, calc(1.3 * var(--u))) no-repeat;
+  filter: drop-shadow(0 0 calc(4 * var(--u)) rgba(0, 210, 255, 0.52));
+  pointer-events: none;
+}
+
+/* Icons micro-tuned -3.2% (62u -> 60u, strictly within 2%~4%) */
+body.star-echo-theme .capsule-btn svg.hud-vector-icon,
+body.star-echo-theme .capsule-btn.active svg.hud-vector-icon {
+  width: calc(60 * var(--u)) !important;
+  height: calc(60 * var(--u)) !important;
+}
+
+body.star-echo-theme .capsule-btn svg.hud-vector-icon {
+  stroke-width: 2.05;
+  filter:
+    drop-shadow(0 0 calc(3 * var(--u)) rgba(255, 255, 255, 0.62))
+    drop-shadow(0 0 calc(7 * var(--u)) rgba(0, 204, 255, 0.48));
+}
+
+body.star-echo-theme .capsule-btn.capsule-cabin svg.hud-vector-icon path {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+  stroke-width: 0.75 !important;
+}
+
+body.star-echo-theme .capsule-btn.active {
+  background: radial-gradient(circle at 48% 42%, #5cf4ff 0%, #0cdbf6 50%, #02a8df 88%, #74f5ff 100%) !important;
+  border: max(1.4px, calc(2 * var(--u))) solid rgba(224, 254, 255, 0.90) !important;
+  box-shadow:
+    0 0 calc(14 * var(--u)) rgba(16, 228, 255, 0.62),
+    0 0 calc(26 * var(--u)) rgba(0, 180, 245, 0.28),
+    inset 0 0 calc(10 * var(--u)) rgba(255, 255, 255, 0.52) !important;
+}
+
+body.star-echo-theme .capsule-btn:hover:not(.active) {
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.22) 0%, rgba(0, 168, 238, 0.10) 58%, transparent 78%) !important;
+  border: none !important;
+  box-shadow: 0 0 calc(14 * var(--u)) rgba(0, 210, 255, 0.48) !important;
+}
+
+body.star-echo-theme .capsule-btn:hover:not(.active) svg.hud-vector-icon {
+  stroke: #ffffff !important;
+  filter:
+    drop-shadow(0 0 calc(4 * var(--u)) #ffffff)
+    drop-shadow(0 0 calc(10 * var(--u)) rgba(0, 224, 255, 0.85)) !important;
+}
+
+/* ---- 4. Right Info Sidebar: Image-2 Frosted Sapphire Glowing Boxes Integrated Cleanly ---- */
+body.star-echo-theme .star-echo-right-sidebar {
+  position: absolute;
+  left: calc(2126 * var(--u));
+  top: calc(216 * var(--u));
+  width: calc(384 * var(--u));
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: calc(18 * var(--u));
+  z-index: 35;
+  pointer-events: auto;
+}
+
+body.star-echo-theme .right-info-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(26 * var(--u));
+  background:
+    radial-gradient(125% 95% at 50% 0%, rgba(58, 162, 244, 0.34) 0%, rgba(12, 42, 88, 0) 68%),
+    linear-gradient(180deg, rgba(14, 52, 104, 0.82) 0%, rgba(8, 30, 68, 0.89) 54%, rgba(12, 44, 92, 0.85) 100%);
+  border: max(1.5px, calc(2.1 * var(--u))) solid rgba(132, 236, 255, 0.90);
+  box-shadow:
+    0 0 calc(16 * var(--u)) rgba(42, 198, 255, 0.38),
+    0 calc(6 * var(--u)) calc(20 * var(--u)) rgba(2, 8, 24, 0.62),
+    inset 0 0 calc(30 * var(--u)) rgba(64, 204, 255, 0.50),
+    inset 0 0 calc(11 * var(--u)) rgba(156, 240, 255, 0.36),
+    inset 0 calc(1.5 * var(--u)) calc(2.0 * var(--u)) rgba(230, 253, 255, 0.76);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+body.star-echo-theme .right-info-card:hover {
+  border-color: rgba(168, 246, 255, 0.96);
+  box-shadow:
+    0 0 calc(20 * var(--u)) rgba(48, 210, 255, 0.46),
+    0 calc(6 * var(--u)) calc(20 * var(--u)) rgba(2, 8, 24, 0.66),
+    inset 0 0 calc(28 * var(--u)) rgba(72, 210, 255, 0.46),
+    inset 0 calc(1.5 * var(--u)) calc(2.2 * var(--u)) rgba(238, 254, 255, 0.78);
+  transform: translateY(calc(-2 * var(--u)));
+}
+
+body.star-echo-theme .right-card-stars-svg {
+  position: absolute;
+  top: calc(10 * var(--u));
+  right: calc(14 * var(--u));
+  width: calc(50 * var(--u));
+  height: calc(38 * var(--u));
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 0 calc(5 * var(--u)) rgba(190, 248, 255, 0.85));
+}
+
+body.star-echo-theme .right-card-br-sparkle {
+  position: absolute;
+  right: calc(12 * var(--u));
+  bottom: calc(10 * var(--u));
+  width: calc(17 * var(--u));
+  height: calc(17 * var(--u));
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 0 calc(4 * var(--u)) rgba(190, 248, 255, 0.80));
+}
+
+/* Card 1: Top Character Card with Circular Portrait Medallion */
+body.star-echo-theme .right-info-card.profile-card {
+  height: calc(202 * var(--u));
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding: calc(14 * var(--u)) calc(22 * var(--u));
+  gap: calc(20 * var(--u));
+}
+
+body.star-echo-theme .right-avatar-wrap {
+  width: calc(142 * var(--u));
+  height: calc(142 * var(--u));
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  background: radial-gradient(circle at 50% 34%, #469be8 0%, #19549c 60%, #0b2859 100%);
+  border: max(1.5px, calc(2.2 * var(--u))) solid rgba(162, 240, 255, 0.90);
+  box-shadow:
+    0 0 calc(12 * var(--u)) rgba(56, 208, 255, 0.36),
+    inset 0 0 calc(10 * var(--u)) rgba(152, 238, 255, 0.34);
+}
+
+body.star-echo-theme .right-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 7%;
+  transform: scale(1.26);
+  transform-origin: 50% 15%;
+  display: block;
+}
+
+body.star-echo-theme .right-profile-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(8 * var(--u));
+  min-width: 0;
+  z-index: 3;
+}
+
+body.star-echo-theme .right-profile-name {
+  font-size: calc(32 * var(--u));
+  font-weight: 700;
+  color: #f7fdff;
+  letter-spacing: calc(1.2 * var(--u));
+  line-height: 1.15;
+  white-space: nowrap;
+  text-shadow: 0 0 calc(8 * var(--u)) rgba(186, 248, 255, 0.32);
+}
+
+body.star-echo-theme .right-profile-level-row {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+}
+
+body.star-echo-theme .right-level-text {
+  font-size: calc(25 * var(--u));
+  font-weight: 600;
+  color: #dceffc;
+  letter-spacing: calc(0.6 * var(--u));
+  line-height: 1.15;
+}
+
+body.star-echo-theme .right-profile-status-row {
+  display: flex;
+  align-items: center;
+  gap: calc(9 * var(--u));
+  margin-top: calc(1 * var(--u));
+}
+
+body.star-echo-theme .right-online-dot {
+  width: calc(13 * var(--u));
+  height: calc(13 * var(--u));
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #4ade80;
+  box-shadow: 0 0 calc(8 * var(--u)) rgba(74, 222, 128, 0.85);
+}
+
+body.star-echo-theme .right-online-dot[data-sleeping="1"] {
+  background: #60a5fa;
+  box-shadow: 0 0 calc(8 * var(--u)) rgba(96, 165, 250, 0.85);
+}
+
+body.star-echo-theme .right-profile-status {
+  font-size: calc(21 * var(--u));
+  font-weight: 600;
+  color: #cbf7de;
+  letter-spacing: calc(0.6 * var(--u));
+  white-space: nowrap;
+}
+
+body.star-echo-theme .right-online-dot[data-sleeping="1"] + .right-profile-status {
+  color: #cbe8ff;
+}
+
+/* Card 2: Middle Reminders Card (Monochrome Outline Header + Divider + Checkbox Rows) */
+body.star-echo-theme .right-info-card.remind-card {
+  height: calc(238 * var(--u));
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(16 * var(--u)) calc(24 * var(--u));
+  gap: calc(12 * var(--u));
+}
+
+body.star-echo-theme .right-card-header {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+  z-index: 3;
+}
+
+body.star-echo-theme .right-header-outline-svg {
+  width: calc(32 * var(--u));
+  height: calc(32 * var(--u));
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 calc(5 * var(--u)) rgba(164, 240, 255, 0.55));
+}
+
+body.star-echo-theme .right-card-title {
+  font-size: calc(29 * var(--u));
+  font-weight: 700;
+  color: #f3fcff;
+  letter-spacing: calc(1.0 * var(--u));
+  line-height: 1.18;
+}
+
+body.star-echo-theme .right-remind-num {
+  color: #f7fdff;
+  font-weight: 700;
+}
+
+body.star-echo-theme .right-card-divider {
+  width: 100%;
+  height: 1px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, rgba(145, 228, 255, 0.42) 0%, rgba(145, 228, 255, 0.25) 85%, rgba(145, 228, 255, 0.08) 100%);
+}
+
+body.star-echo-theme .right-remind-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+  z-index: 3;
+}
+
+body.star-echo-theme .right-remind-row {
+  display: flex;
+  align-items: center;
+  gap: calc(13 * var(--u));
+  padding: calc(3 * var(--u)) calc(4 * var(--u));
+  border-radius: calc(8 * var(--u));
+  transition: background 0.16s ease;
+}
+
+body.star-echo-theme .right-remind-row + .right-remind-row {
+  border-top: 1px solid rgba(135, 220, 255, 0.16);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding-top: calc(11 * var(--u));
+}
+
+body.star-echo-theme .right-remind-row:hover {
+  background: rgba(72, 214, 255, 0.12);
+}
+
+body.star-echo-theme .right-check-svg {
+  width: calc(28 * var(--u));
+  height: calc(28 * var(--u));
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 calc(4 * var(--u)) rgba(140, 232, 255, 0.38));
+}
+
+body.star-echo-theme .right-check-svg .right-check-tick {
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
+body.star-echo-theme .right-remind-row.checked .right-check-svg .right-check-tick {
+  opacity: 1;
+}
+
+body.star-echo-theme .right-remind-text {
+  font-size: calc(24 * var(--u));
+  font-weight: 500;
+  color: #e6f7ff;
+  letter-spacing: calc(0.6 * var(--u));
+  white-space: nowrap;
+}
+
+/* Card 3: Bottom Recent Activity Card (Calendar Outline + Divider + Feather Inline Row) */
+body.star-echo-theme .right-info-card.recent-card {
+  height: calc(184 * var(--u));
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(16 * var(--u)) calc(24 * var(--u));
+  gap: calc(13 * var(--u));
+}
+
+body.star-echo-theme .right-recent-row {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+  min-width: 0;
+  z-index: 3;
+}
+
+body.star-echo-theme .right-feather-svg {
+  width: calc(30 * var(--u));
+  height: calc(30 * var(--u));
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 calc(6 * var(--u)) rgba(186, 248, 255, 0.72));
+}
+
+body.star-echo-theme .right-recent-inline {
+  font-size: calc(23.5 * var(--u));
+  font-weight: 500;
+  color: #e8f7ff;
+  letter-spacing: calc(0.5 * var(--u));
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.star-echo-theme .right-recent-sub {
+  color: #dff4ff;
+  font-weight: 500;
+}
+
+body.star-echo-theme .right-recent-main {
+  color: #f2fcff;
+  font-weight: 500;
+}
+
+/* ---- 5, 6, 7. Bottom 3 Capsules (-10% height: 140u -> 126u, lighter borders & softer glow) ---- */
+body.star-echo-theme .star-echo-status-pill,
+body.star-echo-theme .star-echo-action-pill,
+body.star-echo-theme .star-echo-heart-pill {
+  top: calc(1258 * var(--u)) !important;
+  height: calc(126 * var(--u)) !important;
+  border: max(1.4px, calc(1.9 * var(--u))) solid rgba(86, 228, 255, 0.70) !important;
+  border-radius: 9999px !important;
+  background: linear-gradient(180deg, rgba(7, 26, 58, 0.86) 0%, rgba(3, 13, 32, 0.95) 100%) !important;
+  box-shadow:
+    0 0 calc(14 * var(--u)) rgba(0, 192, 248, 0.26),
+    0 calc(5 * var(--u)) calc(22 * var(--u)) rgba(0, 0, 0, 0.72),
+    inset 0 calc(1.5 * var(--u)) calc(2 * var(--u)) rgba(195, 251, 255, 0.42),
+    inset 0 0 calc(14 * var(--u)) rgba(0, 172, 236, 0.15) !important;
+  backdrop-filter: blur(16px) !important;
+  box-sizing: border-box !important;
+}
+
+body.star-echo-theme .star-echo-status-pill:hover,
+body.star-echo-theme .star-echo-action-pill:hover,
+body.star-echo-theme .star-echo-heart-pill:hover {
+  filter: drop-shadow(0 0 calc(9 * var(--u)) rgba(56, 218, 255, 0.58)) !important;
+  box-shadow:
+    0 0 calc(20 * var(--u)) rgba(0, 212, 255, 0.42),
+    0 calc(5 * var(--u)) calc(22 * var(--u)) rgba(0, 0, 0, 0.76),
+    inset 0 calc(1.5 * var(--u)) calc(2.5 * var(--u)) rgba(235, 254, 255, 0.58) !important;
+}
+
+/* positionFloatingMenu owns popover coordinates; do not override inline positions. */
+
+/* 5. Bottom-Left Status Capsule: Image-1 Slanted 12-Segment Cyan-Blue-Violet Progress Bar */
+body.star-echo-theme .star-echo-status-pill {
+  left: calc(376 * var(--u)) !important;
+  width: calc(542 * var(--u)) !important;
+  gap: calc(9 * var(--u)) !important;
+  padding: 0 calc(25 * var(--u)) !important;
+  font-size: calc(24.7 * var(--u)) !important;
+  font-weight: 600;
+}
+
+body.star-echo-theme .hud-pill-top-row {
+  display: flex;
+  align-items: center;
+  gap: calc(9 * var(--u));
+  line-height: 1.18;
+  padding: 0 calc(8 * var(--u));
+}
+
+body.star-echo-theme .star-echo-status-pill .status-text {
+  color: #f2fcff;
+  letter-spacing: calc(0.6 * var(--u));
+  text-shadow: 0 0 calc(6 * var(--u)) rgba(56, 224, 255, 0.36);
+}
+
+body.star-echo-theme .star-echo-status-pill .pill-vector-icon,
+body.star-echo-theme .star-echo-heart-pill .heart-icon .pill-vector-icon {
+  width: calc(27 * var(--u));
+  height: calc(27 * var(--u));
+  display: block;
+  flex-shrink: 0;
+}
+
+body.star-echo-theme .status-icon,
+body.star-echo-theme .heart-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+body.star-echo-theme .star-echo-status-pill .status-icon {
+  filter: none !important;
+}
+
+body.star-echo-theme .star-echo-status-pill .status-icon svg {
+  overflow: visible;
+}
+
+body.star-echo-theme .star-echo-status-pill .status-icon svg path {
+  filter: drop-shadow(0 0 calc(5 * var(--u)) rgba(244, 114, 182, 0.62));
+}
+
+body.star-echo-theme .star-echo-heart-pill .heart-icon path {
+  fill: #6ef7ff;
+  stroke: #38e5ff;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 calc(6 * var(--u)) rgba(56, 229, 255, 0.68));
+}
+
+body.star-echo-theme .pill-star-sparkle {
+  font-size: calc(16 * var(--u));
+  margin-left: calc(5 * var(--u));
+  color: #48ecff;
+  filter: drop-shadow(0 0 calc(4 * var(--u)) rgba(0, 229, 255, 0.72));
+}
+
+/* Image-1 Outer Pill Track: Cyan-to-Ice-Blue Gradient Stroke + Dark Navy Recessed Gap */
+body.star-echo-theme .star-echo-status-pill .hud-pill-bar-track {
+  width: 96% !important;
+  margin: 0 auto !important;
+  height: calc(34 * var(--u)) !important;
+  padding: calc(3.6 * var(--u)) !important;
+  background:
+    linear-gradient(180deg, #041129 0%, #061838 100%) padding-box,
+    linear-gradient(90deg, #28f5ff 0%, #78e2ff 48%, #bfe6ff 100%) border-box !important;
+  border: max(1.5px, calc(2.0 * var(--u))) solid transparent !important;
+  border-radius: 9999px !important;
+  box-shadow:
+    calc(-4 * var(--u)) 0 calc(10 * var(--u)) rgba(24, 240, 255, 0.34),
+    0 0 calc(7 * var(--u)) rgba(96, 224, 255, 0.22),
+    inset 0 calc(1.5 * var(--u)) calc(4 * var(--u)) rgba(1, 6, 18, 0.92) !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* Image-1 Inner Fill: 12 Crisp Forward-Slanted Parallelogram Segments (Cyan -> Sky Blue -> Periwinkle -> Orchid Pink) */
+body.star-echo-theme .star-echo-status-pill .status-bar-fill {
+  height: 100% !important;
+  border-radius: 9999px !important;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.20) 0%,
+      rgba(255, 255, 255, 0.00) 46%,
+      rgba(6, 18, 48, 0.12) 100%),
+    linear-gradient(90deg,
+      #05f8ff 0%,
+      #16e8ff 18%,
+      #34c4ff 38%,
+      #5d9dff 56%,
+      #8e7eff 74%,
+      #c673ff 90%,
+      #ee75f8 100%) !important;
+  background-size: 100% 100%, calc(450 * var(--u)) 100% !important;
+  background-repeat: no-repeat !important;
+  -webkit-mask-image: repeating-linear-gradient(
+    126deg,
+    #000000 0px,
+    #000000 calc(26.2 * var(--u)),
+    transparent calc(27.0 * var(--u)),
+    transparent calc(30.0 * var(--u)),
+    #000000 calc(30.8 * var(--u))
+  ) !important;
+  mask-image: repeating-linear-gradient(
+    126deg,
+    #000000 0px,
+    #000000 calc(26.2 * var(--u)),
+    transparent calc(27.0 * var(--u)),
+    transparent calc(30.0 * var(--u)),
+    #000000 calc(30.8 * var(--u))
+  ) !important;
+  box-shadow: none !important;
+  transition: width 0.38s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+body.star-echo-theme .star-echo-status-pill .status-bar-fill::after {
+  display: none !important;
+}
+
+/* 6. Bottom-Center 4 Action Buttons: -8.7% Overall, -8.3% Icons, Tighter Gap & Softer Ring Glow */
+body.star-echo-theme .star-echo-action-pill {
+  left: calc(1006 * var(--u)) !important;
+  width: calc(548 * var(--u)) !important;
+  gap: calc(14 * var(--u)) !important;
+  padding: 0 calc(26 * var(--u)) !important;
+}
+
+body.star-echo-theme .bottom-pill-btn {
+  width: calc(84 * var(--u)) !important;
+  height: calc(84 * var(--u)) !important;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  flex: 0 0 auto;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 50% 38%, rgba(14, 46, 94, 0.68) 0%, rgba(6, 22, 50, 0.86) 100%) !important;
+  border: max(1.3px, calc(1.7 * var(--u))) solid rgba(98, 232, 255, 0.62) !important;
+  box-shadow:
+    0 0 calc(8 * var(--u)) rgba(0, 195, 255, 0.24),
+    inset 0 0 calc(8 * var(--u)) rgba(0, 195, 255, 0.16),
+    inset 0 calc(1 * var(--u)) calc(1.5 * var(--u)) rgba(205, 252, 255, 0.38) !important;
+}
+
+body.star-echo-theme .bottom-pill-btn svg.hud-vector-icon {
+  width: calc(44 * var(--u)) !important;
+  height: calc(44 * var(--u)) !important;
+  stroke-width: 2.05 !important;
+  filter:
+    drop-shadow(0 0 calc(2 * var(--u)) rgba(255, 255, 255, 0.55))
+    drop-shadow(0 0 calc(5 * var(--u)) rgba(56, 212, 255, 0.45)) !important;
+}
+
+body.star-echo-theme .bottom-pill-btn:hover {
+  background: radial-gradient(circle at 50% 40%, rgba(24, 76, 148, 0.82) 0%, rgba(10, 38, 86, 0.92) 100%) !important;
+  border-color: rgba(158, 248, 255, 0.92) !important;
+  box-shadow:
+    0 0 calc(15 * var(--u)) rgba(0, 218, 255, 0.58),
+    inset 0 0 calc(10 * var(--u)) rgba(0, 212, 255, 0.30) !important;
+}
+
+body.star-echo-theme .bottom-pill-btn:hover svg.hud-vector-icon {
+  stroke: #ffffff !important;
+  filter:
+    drop-shadow(0 0 calc(4 * var(--u)) #ffffff)
+    drop-shadow(0 0 calc(9 * var(--u)) rgba(0, 224, 255, 0.88)) !important;
+}
+
+body.star-echo-theme .bottom-pill-btn.active {
+  background: radial-gradient(circle at 50% 45%, #54f4ff 0%, #00b2ec 92%) !important;
+  border-color: #dcfdff !important;
+  box-shadow:
+    0 0 calc(16 * var(--u)) rgba(0, 218, 255, 0.72),
+    inset 0 0 calc(7 * var(--u)) rgba(255, 255, 255, 0.55) !important;
+}
+
+body.star-echo-theme .pill-star-divider {
+  font-size: calc(15 * var(--u));
+  color: rgba(125, 242, 255, 0.55);
+  text-shadow: 0 0 calc(4 * var(--u)) rgba(0, 220, 255, 0.45);
+}
+
+/* 7. Bottom-Right Heart Rate Capsule: -10% Height, Smaller Text, Shorter ECG & Softer Gradient Glow */
+body.star-echo-theme .star-echo-heart-pill {
+  left: calc(1632 * var(--u)) !important;
+  width: calc(580 * var(--u)) !important;
+  gap: calc(10 * var(--u)) !important;
+  padding: 0 calc(26 * var(--u)) !important;
+  font-size: calc(24.7 * var(--u)) !important;
+  font-weight: 600;
+}
+
+body.star-echo-theme .star-echo-heart-pill .hud-pill-bar-track.heart-track-wrap {
+  width: 95% !important;
+  margin: 0 auto !important;
+  height: calc(28 * var(--u)) !important;
+  background: rgba(3, 13, 32, 0.92) !important;
+  border: max(1.3px, calc(1.7 * var(--u))) solid rgba(72, 214, 255, 0.48) !important;
+  border-radius: 999px !important;
+  box-shadow:
+    inset 0 calc(2 * var(--u)) calc(5 * var(--u)) rgba(0, 0, 0, 0.85),
+    0 0 calc(8 * var(--u)) rgba(0, 185, 245, 0.20) !important;
+}
+
+body.star-echo-theme .heart-bar-fill {
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1ef2ff 0%, #5ce1ff 30%, #8b8aff 62%, #ec6cff 84%, #ff79c6 100%) !important;
+  box-shadow:
+    0 0 calc(8 * var(--u)) rgba(92, 225, 255, 0.36),
+    0 0 calc(13 * var(--u)) rgba(255, 121, 198, 0.34),
+    inset 0 calc(2 * var(--u)) calc(3 * var(--u)) rgba(255, 255, 255, 0.50) !important;
+}
+
+body.star-echo-theme .heart-end-gem {
+  right: calc(-17 * var(--u)) !important;
+  width: calc(42 * var(--u)) !important;
+  height: calc(42 * var(--u)) !important;
+  filter:
+    drop-shadow(0 0 calc(5 * var(--u)) rgba(255, 121, 198, 0.78))
+    drop-shadow(0 0 calc(11 * var(--u)) rgba(255, 121, 198, 0.52)) !important;
+}
+
+body.star-echo-theme .gem-heart-svg path {
+  fill: var(--gem-color);
+  stroke: #ffeaf6;
+  stroke-width: 1.4;
+}
+
+body.star-echo-theme .hud-ecg-wave {
+  width: calc(122 * var(--u)) !important;
+  height: calc(32 * var(--u)) !important;
+  filter:
+    drop-shadow(0 0 calc(3.5 * var(--u)) var(--ecg-color))
+    drop-shadow(0 0 calc(8 * var(--u)) rgba(62, 240, 255, 0.48)) !important;
+}
+
+body.star-echo-theme .hud-ecg-wave path {
+  stroke: var(--ecg-color);
+  stroke-width: 2.2;
+}
+
+/* V5.2 approved local components, 2026-11-08. All coordinates share --u. */
+
+body.star-echo-theme .right-info-card{position:relative;flex:none;border:calc(1.5 * var(--u)) solid #80dcf5ba;border-radius:calc(27 * var(--u));overflow:hidden;background:radial-gradient(ellipse at 55% 0%,#3f8bb046,transparent 68%),linear-gradient(145deg,#102d47eb,#081c36f5 58%,#113953e0);box-shadow:0 0 calc(10 * var(--u)) #24c5f72b,inset 0 calc(1 * var(--u)) calc(2 * var(--u)) #d3faff8a,inset 0 0 calc(16 * var(--u)) #2eacda1f,0 calc(6 * var(--u)) calc(18 * var(--u)) #01071260}
+body.star-echo-theme .right-info-card::after{content:"";position:absolute;inset:calc(5 * var(--u));border:calc(.6 * var(--u)) solid #84daef1c;border-radius:calc(22 * var(--u));pointer-events:none}
+body.star-echo-theme .card-stars{position:absolute;right:calc(18 * var(--u));top:calc(13 * var(--u));font-size:calc(13 * var(--u));color:#dbf7ff;text-shadow:0 0 calc(7 * var(--u)) #74dfff;opacity:.85;letter-spacing:calc(3 * var(--u))}
+body.star-echo-theme .card-stars small{font-size:calc(14 * var(--u));vertical-align:super;opacity:.65}
+body.star-echo-theme .profile-card{height:calc(194 * var(--u));display:flex;align-items:center;padding:calc(22 * var(--u));gap:calc(21 * var(--u))}
+body.star-echo-theme .right-avatar-wrap{width:calc(130 * var(--u));height:calc(130 * var(--u));position:relative;flex:none;overflow:hidden;border-radius:50%;border:calc(1.7 * var(--u)) solid #a1dfffcc;background:radial-gradient(circle at 45% 36%,#548dba,#163255 76%);box-shadow:0 0 calc(10 * var(--u)) #59bfff30,inset 0 0 calc(8 * var(--u)) #a8ecff55}
+body.star-echo-theme .right-avatar-img{position:absolute;width:100%;height:auto;left:0;top:calc(-3 * var(--u));display:block}
+body.star-echo-theme .right-profile-meta{display:flex;flex-direction:column;gap:calc(10 * var(--u));min-width:0}
+body.star-echo-theme .right-profile-name{font-size:calc(31 * var(--u));font-weight:600;line-height:1.2;color:#f0fbff;letter-spacing:calc(1 * var(--u))}
+body.star-echo-theme .right-profile-level-row{display:flex;gap:calc(12 * var(--u));align-items:center}
+body.star-echo-theme .right-level-text{font-size:calc(24 * var(--u));font-family:"Segoe UI",sans-serif;color:#9cdff1;letter-spacing:calc(.7 * var(--u))}
+body.star-echo-theme .level-heart{width:calc(18 * var(--u));height:calc(18 * var(--u));fill:#ed9acd;filter:drop-shadow(0 0 calc(3 * var(--u)) #f77bbd55)}
+body.star-echo-theme .right-profile-status-row{display:flex;gap:calc(9 * var(--u));align-items:center;font-size:calc(20 * var(--u));white-space:nowrap;color:#c1e8e5}
+body.star-echo-theme .right-online-dot{width:calc(9 * var(--u));height:calc(9 * var(--u));background:#77ebaf;border-radius:50%;box-shadow:0 0 calc(5 * var(--u)) #58eeb775}
+body.star-echo-theme .remind-card{height:calc(238 * var(--u));padding:calc(29 * var(--u)) calc(27 * var(--u))}
+body.star-echo-theme .right-card-header{display:flex;align-items:center;gap:calc(12 * var(--u));height:calc(36 * var(--u))}
+body.star-echo-theme .right-card-header h3{font-size:calc(28 * var(--u));font-weight:600;letter-spacing:calc(.4 * var(--u));line-height:1.3;margin:0}
+body.star-echo-theme .right-header-icon{width:calc(28 * var(--u));height:calc(28 * var(--u));flex:none;fill:none;stroke:#b8f4ff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 calc(4 * var(--u)) #39cfff60)}
+body.star-echo-theme .bell{stroke:#ffdc7f;fill:#ffd46520;filter:drop-shadow(0 0 calc(4 * var(--u)) #ffb93860)}
+body.star-echo-theme .title-dot{color:#88aabc;font-weight:400}
+body.star-echo-theme .right-remind-num{font-family:"Segoe UI",sans-serif;color:#ffde88;font-weight:600}
+body.star-echo-theme .right-card-divider{height:calc(1 * var(--u));margin:calc(16 * var(--u)) 0;background:linear-gradient(90deg,#92ddf153,#8cd7ec24 80%,transparent)}
+body.star-echo-theme .right-remind-list{display:flex;flex-direction:column;gap:calc(21 * var(--u))}
+body.star-echo-theme .right-remind-row{display:flex;align-items:center;gap:calc(13 * var(--u));font-size:calc(24 * var(--u));color:#d2eaf4;line-height:1.35}
+body.star-echo-theme .row-mark{display:block;flex:none;width:calc(24 * var(--u));height:calc(24 * var(--u));text-align:center;color:#76efff;line-height:1;font-size:calc(24 * var(--u));fill:#28bfd52b;stroke:#7bedff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 calc(4 * var(--u)) #0ceaff60)}
+body.star-echo-theme .recent-card{height:calc(192 * var(--u));padding:calc(26 * var(--u)) calc(27 * var(--u))}
+body.star-echo-theme .recent-card .right-card-divider{margin:calc(14 * var(--u)) 0}
+body.star-echo-theme .right-recent-main{font-size:calc(24 * var(--u));line-height:1.4;color:#d8edf8}
+body.star-echo-theme .right-recent-sub{margin-top:calc(6 * var(--u));font-size:calc(18 * var(--u));line-height:1.3;color:#7fabc1}
+body.star-echo-theme .right-info-card{border-radius:calc(32 * var(--u));border-color:#a0e9ffd6;background:radial-gradient(ellipse at 55% -10%,#53a5d46b,transparent 67%),linear-gradient(145deg,#143d61e8,#081d39f5 62%,#124569df);box-shadow:0 0 calc(7 * var(--u)) #52d7ff60,0 0 calc(16 * var(--u)) #168dc52e,inset 0 calc(1 * var(--u)) calc(2 * var(--u)) #edfdffd4,inset 0 0 calc(18 * var(--u)) #40caff38,0 calc(6 * var(--u)) calc(18 * var(--u)) #01071260}
+body.star-echo-theme .right-info-card::after{border-radius:calc(27 * var(--u));border-color:#8fddf41f}
+body.star-echo-theme .right-level-text{color:#51e7f8}
+body.star-echo-theme .right-profile-status-row{color:#80e6f5;font-size:calc(19 * var(--u))}
+body.star-echo-theme .right-remind-list{margin-top:calc(22 * var(--u))}
+body.star-echo-theme .right-recent-main{margin-top:calc(16 * var(--u))}
+body.star-echo-theme .right-recent-sub{color:#8eb4ca}
+
+body.star-echo-theme .star-echo-sub{left:calc(1310 * var(--u));top:calc(141 * var(--u));font-size:calc(20 * var(--u));letter-spacing:calc(3.1 * var(--u));font-weight:400;color:#d5edff;text-shadow:0 0 calc(6 * var(--u)) #2a9bd488}
+/* The original bitmap is neither stretched nor regenerated. Only its outer backdrop
+   fades into the current sky. At 2K, one reference pixel is two design units. */
+body.star-echo-theme .v52-reference-nav-art{position:absolute;left:calc(44 * var(--u));top:calc(158 * var(--u));width:calc(320 * var(--u));height:calc(768 * var(--u));background:var(--v52-nav-reference, none) 0 0 / calc(354 * var(--u)) calc(834 * var(--u)) no-repeat;pointer-events:none;z-index:30;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 80%,transparent),linear-gradient(180deg,transparent,#000 5%,#000 98%,transparent);mask-composite:intersect}
+body.star-echo-theme .star-echo-capsule-sidebar.v52-reference-nav{left:calc(44 * var(--u))!important;top:calc(158 * var(--u))!important;width:calc(320 * var(--u))!important;height:calc(768 * var(--u))!important;display:block!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;backdrop-filter:none!important;overflow:visible!important;pointer-events:none;z-index:31}
+body.star-echo-theme .v52-reference-nav::before,body.star-echo-theme .v52-reference-nav::after,body.star-echo-theme .v52-reference-nav .hud-vector-icon,body.star-echo-theme .v52-reference-nav .capsule-btn::after{display:none!important}
+body.star-echo-theme .v52-reference-nav .capsule-btn{position:absolute;left:calc(50 * var(--u))!important;top:calc(var(--nav-y) * var(--u))!important;width:calc(108 * var(--u))!important;height:calc(108 * var(--u))!important;border:0!important;padding:0!important;background:none!important;box-shadow:none!important;pointer-events:auto;transition:none;transform:none!important}
+body.star-echo-theme .v52-reference-nav .capsule-btn:nth-of-type(1){--nav-y:156}
+body.star-echo-theme .v52-reference-nav .capsule-btn:nth-of-type(2){--nav-y:272}
+body.star-echo-theme .v52-reference-nav .capsule-btn:nth-of-type(3){--nav-y:380}
+body.star-echo-theme .v52-reference-nav .capsule-btn:nth-of-type(4){--nav-y:486}
+body.star-echo-theme .v52-reference-nav .capsule-btn:nth-of-type(5){--nav-y:596}
+body.star-echo-theme .v52-reference-nav .capsule-btn:focus-visible{outline:calc(1.5 * var(--u)) solid #b7ebff!important;outline-offset:calc(3 * var(--u))}
+body.star-echo-theme .v52-energy-ring{display:none;position:absolute;inset:calc(-2 * var(--u));border-radius:50%;padding:calc(1.8 * var(--u));opacity:.8;background:conic-gradient(from 20deg,#41eafa33 0deg,#54f9ff 38deg,#dae9ff 62deg,#b187ff 92deg,#ec9fd9 112deg,#1adef444 156deg,#16d8ff30 205deg,#5acaff 252deg,#c4fbff 278deg,#4deaff33 321deg);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;pointer-events:none;animation:v52-energy-orbit 9s linear infinite}
+body.star-echo-theme .active .v52-energy-ring{display:block}
+@keyframes v52-energy-orbit{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){body.star-echo-theme .v52-energy-ring{animation:none}}
+/* Clear inherited V5.2 card treatments so only the approved component rules apply. */
+body.star-echo-theme .right-info-card{backdrop-filter:none;-webkit-backdrop-filter:none;font-family:"Microsoft YaHei UI","Microsoft YaHei",sans-serif}
+body.star-echo-theme .right-info-card:hover{transform:none;border-color:#c1f2ff;box-shadow:0 0 calc(10 * var(--u)) #52d7ff70,inset 0 calc(1 * var(--u)) calc(2 * var(--u)) #edfdffd4}
+body.star-echo-theme .right-info-card.profile-card{height:calc(194 * var(--u));padding:calc(22 * var(--u));gap:calc(21 * var(--u))}
+body.star-echo-theme .right-avatar-img{height:auto;transform:none;object-fit:initial;object-position:initial}
+body.star-echo-theme .right-profile-name,body.star-echo-theme .right-level-text{text-shadow:none}
+body.star-echo-theme .right-level-text{font-weight:400;line-height:normal}
+body.star-echo-theme .right-profile-status,body.star-echo-theme .right-online-dot[data-sleeping="1"] + .right-profile-status{font-size:calc(19 * var(--u));color:#80e6f5;font-weight:400;letter-spacing:0}
+body.star-echo-theme .right-online-dot{display:none}
+body.star-echo-theme .right-info-card.remind-card{height:calc(238 * var(--u));padding:calc(29 * var(--u)) calc(27 * var(--u));display:block}
+body.star-echo-theme .right-card-title{font-size:calc(28 * var(--u));font-weight:600;letter-spacing:calc(.4 * var(--u));line-height:1.3;color:#e9f8ff}
+body.star-echo-theme .right-remind-row,body.star-echo-theme .right-remind-row + .right-remind-row{border:0;padding:0}
+body.star-echo-theme .right-remind-text{font-size:calc(24 * var(--u));font-weight:400;letter-spacing:0;color:#d2eaf4}
+body.star-echo-theme .right-info-card.recent-card{height:calc(192 * var(--u));padding:calc(26 * var(--u)) calc(27 * var(--u));display:block}
+body.star-echo-theme .right-recent-main,body.star-echo-theme .right-recent-sub{display:block;font-weight:400}
+body.star-echo-theme .right-recent-main{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* V5.2 final polish: retain every box/anchor; improve hierarchy inside the cards. */
+body.star-echo-theme .right-profile-name{font-size:calc(33 * var(--u));font-weight:650;line-height:1.25}
+body.star-echo-theme .right-profile-meta{gap:calc(12 * var(--u))}
+body.star-echo-theme .right-online-dot{display:block;flex:none;width:calc(9 * var(--u));height:calc(9 * var(--u))}
+body.star-echo-theme .right-profile-status-row{gap:calc(8 * var(--u))}
+body.star-echo-theme .right-card-title{font-size:calc(30 * var(--u));font-weight:650;line-height:1.3}
+body.star-echo-theme .right-remind-list{margin-top:calc(24 * var(--u));gap:calc(23 * var(--u))}
+body.star-echo-theme .right-remind-text{font-size:calc(25 * var(--u));line-height:1.45;color:#e3f1fa}
+body.star-echo-theme .right-recent-main{font-size:calc(25 * var(--u));line-height:1.45;margin-top:calc(20 * var(--u));color:#e3f1fa}
+body.star-echo-theme .right-recent-sub{font-size:calc(20 * var(--u));margin-top:calc(10 * var(--u));line-height:1.35;color:#a9c6d9}
+body.star-echo-theme .v52-energy-ring{padding:calc(2.5 * var(--u));opacity:.95;background:conic-gradient(from 20deg,#3ee9ff20,#56f2ff 45deg,#9673ff 105deg,#ef9fff 140deg,#457bff20 195deg,#4299ff 260deg,#c7a2ff 295deg,#3ee9ff20 360deg);animation-duration:7.5s}
+body.star-echo-theme .v52-reference-nav .capsule-btn.active::before{content:"";position:absolute;left:calc(-18 * var(--u));top:calc(30 * var(--u));width:calc(144 * var(--u));height:calc(48 * var(--u));box-sizing:border-box;border-radius:50%;padding:calc(2 * var(--u));background:conic-gradient(#759aff00,#56e6ff 55deg,#b185ff 115deg,#e7bbff 150deg,#638cff00 190deg,#77c6ff 280deg,#a177ff 325deg,#759aff00);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;transform:rotate(-24deg);animation:v52-orbit-sweep 8s linear infinite;pointer-events:none;opacity:.88}
+@keyframes v52-orbit-sweep{from{transform:rotate(-24deg)}to{transform:rotate(336deg)}}
+@media(prefers-reduced-motion:reduce){body.star-echo-theme .v52-reference-nav .capsule-btn.active::before,body.star-echo-theme .v52-energy-ring{animation:none}}
+body.star-echo-theme .status-bar-fill[data-sync="pending"]{opacity:0}
+body.star-echo-theme .status-bar-fill[data-sync="stale"]{opacity:.65}
+

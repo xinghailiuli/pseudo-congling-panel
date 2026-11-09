@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+    <defs>
+      <filter id="cyanGlowOut" x="-10%" y="-10%" width="120%" height="120%">
+        <feGaussianBlur stdDeviation="8" result="blur1"/>
+        <feGaussianBlur stdDeviation="18" result="blur2"/>
+        <feMerge>
+          <feMergeNode in="blur2"/>
+          <feMergeNode in="blur1"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <filter id="capsuleGlow" x="-10%" y="-20%" width="120%" height="140%">
+        <feGaussianBlur stdDeviation="5" result="b"/>
+        <feMerge>
+          <feMergeNode in="b"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <linearGradient id="cyanStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#7ef9ff"/>
+        <stop offset="50%" stop-color="#33d2ff"/>
+        <stop offset="100%" stop-color="#6cf3ff"/>
+      </linearGradient>
+      <linearGradient id="capsuleFill" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#0b2246" stop-opacity="0.62"/>
+        <stop offset="100%" stop-color="#051129" stop-opacity="0.78"/>
+      </linearGradient>
+      <linearGradient id="capsuleBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#63e6ff" stop-opacity="0.78"/>
+        <stop offset="50%" stop-color="#2a85c8" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#63e6ff" stop-opacity="0.78"/>
+      </linearGradient>
+      <mask id="outsideStageMask">
+        <rect x="0" y="0" width="2560" height="1440" fill="white"/>
+        <polygon points="444,126 830,126 856,148 1704,148 1730,126 2116,126
+    2180,190 2180,1187 2116,1251
+    1840,1251 1808,1276 752,1276 720,1251 444,1251
+    380,1187 380,190" fill="black"/>
+      </mask>
+    </defs>
+
+    <!-- Empty Glass Capsules (Zero Text / Zero Icons / Zero Bars) -->
+    <!-- 1. Left Sidebar Capsule (x: 138..250, y: 310..1010) -->
+    <rect x="138" y="310" width="112" height="700" rx="56" ry="56"
+          fill="url(#capsuleFill)" stroke="url(#capsuleBorder)" stroke-width="2.2" filter="url(#capsuleGlow)"/>
+    <rect x="145" y="317" width="98" height="686" rx="49" ry="49"
+          fill="none" stroke="#8beeff" stroke-opacity="0.22" stroke-width="1"/>
+
+    <!-- 2. Top-Right Weather/Time Capsule (x: 2080..2486, y: 36..100) -->
+    <rect x="2080" y="36" width="406" height="64" rx="32" ry="32"
+          fill="url(#capsuleFill)" stroke="url(#capsuleBorder)" stroke-width="2.2" filter="url(#capsuleGlow)"/>
+
+    <!-- 3. Bottom-Left Status Capsule (x: 380..910, y: 1308..1396) -->
+    <rect x="380" y="1308" width="530" height="88" rx="44" ry="44"
+          fill="url(#capsuleFill)" stroke="url(#capsuleBorder)" stroke-width="2.2" filter="url(#capsuleGlow)"/>
+
+    <!-- 4. Bottom-Center 4-Icon Action Dock Capsule (x: 1005..1555, y: 1308..1396) -->
+    <rect x="1005" y="1308" width="550" height="88" rx="44" ry="44"
+          fill="url(#capsuleFill)" stroke="url(#capsuleBorder)" stroke-width="2.2" filter="url(#capsuleGlow)"/>
+
+    <!-- 5. Bottom-Right Heart-Rate Capsule (x: 1650..2180, y: 1308..1396) -->
+    <rect x="1650" y="1308" width="530" height="88" rx="44" ry="44"
+          fill="url(#capsuleFill)" stroke="url(#capsuleBorder)" stroke-width="2.2" filter="url(#capsuleGlow)"/>
+
+    <!-- Outer Neon Tech Frame (strictly outside stage opening) -->
+    <g mask="url(#outsideStageMask)">
+      <polygon points="
+        436,110 730,110 762,82 1798,82 1830,110 2124,110
+        2198,184 2198,1193 2124,1267
+        1852,1267 1820,1292 740,1292 708,1267 436,1267
+        362,1193 362,184
+      " fill="none" stroke="url(#cyanStroke)" stroke-width="4.5" filter="url(#cyanGlowOut)"/>
+    </g>
+
+    <!-- Inner Crisp Chamfered Border along the 1800x1125 (1.60:1) Stage Boundary (fill="none"!) -->
+    <polygon points="444,126 830,126 856,148 1704,148 1730,126 2116,126
+    2180,190 2180,1187 2116,1251
+    1840,1251 1808,1276 752,1276 720,1251 444,1251
+    380,1187 380,190" fill="none" stroke="#80f8ff" stroke-width="2.8"/>
+
+    <!-- Tech Accent Bars on Frame -->
+    <rect x="782" y="92" width="46" height="6" rx="3" fill="#7cf9ff"/>
+    <rect x="1732" y="92" width="46" height="6" rx="3" fill="#7cf9ff"/>
+    <rect x="520" y="1256" width="52" height="6" rx="3" fill="#7cf9ff"/>
+    <rect x="1590" y="1280" width="64" height="6" rx="3" fill="#7cf9ff"/>
+    <rect x="2186" y="830" width="6" height="58" rx="3" fill="#7cf9ff"/>
+    <rect x="2186" y="902" width="6" height="24" rx="3" fill="#7cf9ff"/>
+  </svg>

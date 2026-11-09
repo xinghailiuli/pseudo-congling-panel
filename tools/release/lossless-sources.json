@@ -1,0 +1,719 @@
+{
+  "images": [
+    {
+      "file": "assets/star-echo/hud_v52_backdrop_2560x1440.png",
+      "sha256": "6b929c374b2bc792e46e5358a4abfa066cd7119555d58afaf6cf81deccf2d415",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/star-echo/left-nav-v52-reference.png",
+      "sha256": "6c23bf0192cd8bae107fad8869290d7cf3c9b944a4874ae28e965f6818f1253a",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-house/floor-one-v6.png",
+      "sha256": "7c87da08ea63d47089dd68c24411921d96d9fae7ff860f0472ad2fd2daf2d39b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-house/floor-two-v7.png",
+      "sha256": "ad9ecbf9c7336d0a646dba8f50f1f7f41bcdaeb1ef5b953ab310c10fda017a1f",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-house/upstairs-garden-v7.png",
+      "sha256": "6291bd5e825644cc71bdff81be160ab7201b09abc09a764a6ca48baf9b4b153a",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/star-echo/dressing-stage-v52.png",
+      "sha256": "9c4eb4a1c351d7cb90b435f5652f930ad39109ee5811a62e317662f9025b9f96",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/navy-gala.png",
+      "sha256": "01e518ee56cd46cc51fde76476ca2f15ff56cec1a697666b6e96284e683eaf46",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/navy-gala-desk.png",
+      "sha256": "241d1c6e57f323a86da5fc2cbbe3a4a951720a12e6fba8c5fe73280591ac57d0",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/navy-gala-walk.png",
+      "sha256": "57a1dc7215423fb4adcacb196829195f43c857b273a771b49b9f084a37407d00",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/navy-gala.png",
+      "sha256": "80bf31c42b18dbc094af5d5c97be77d793def981e672d32af5801d548737c483",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/navy-gala-desk.png",
+      "sha256": "a9f138890f77feb6f9f109a85a1cabc4e232fd0bdd68b74fa6805cfd3c5502fe",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/navy-gala-bed.png",
+      "sha256": "37282f3450f8b634cbd74b44e487ba388afbf826d2b5544558e3043c83dd2827",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/navy-gala-sofaSocial.png",
+      "sha256": "4d4383691d13b402dacab67aa8e107060cdba3e256cf327d6325b6fd439cedb2",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/navy-gala-sofaBody.png",
+      "sha256": "7f6790ab62dee343f8b3069c1731cfff4ce833a75e9f30477752d422f65c821e",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/navy-gala-idleChair.png",
+      "sha256": "d7ede25763d31ba92825c43ae82586294bfaea1f9dce2858ff9db8a3a14be792",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/red-server.png",
+      "sha256": "4ed3fd3473aaf7b6c004e2e8072764219d87b2637119960f2f06d5bebef8c135",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/red-server-desk.png",
+      "sha256": "ac85858ce026fe630dc4a6b28a20cffa18505928327d26c72dc503a1242e7340",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/red-server-walk.png",
+      "sha256": "5df9f70d829490d3ef1d34585b0c929dc3c3139d82e29c3d606cacc6be3c793d",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/red-server.png",
+      "sha256": "1fa78fdedf9ed606fd7416a7c283899d7d642ac5fc1e2b726e26af9608fbc48b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/red-server-desk.png",
+      "sha256": "e9e2136b8ebc0f93118bc00f6f3a9be09b805b97ca996dfef56c734bae7add40",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/red-server-bed.png",
+      "sha256": "533e4d7d2ab53b9d6828ad7bd9d05273d44a290adb34959ee72ca19fa75fb42e",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/red-server-sofaSocial.png",
+      "sha256": "1c182631097fa82cfe8f48ddef5b68de7c64984431ba7335f14a9d5797160615",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/red-server-sofaBody.png",
+      "sha256": "5fd0ba48f5281d6c3d73679f70efe5158a0ab91dab7662a1a0bfd84dd43c5fec",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/red-server-idleChair.png",
+      "sha256": "ab635fdb793479095daedc82f7d0b016341ed46c75edd37f62c5d6fc5dec0ce5",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/voxel-whale.png",
+      "sha256": "da817d5016d54441164068d88ba41323bb12c8f5efd6a34c1a2f5c887365e5fd",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/voxel-whale-desk.png",
+      "sha256": "ab6fc211956088ffe0528e7320bec12c4ad2f59c7abe8ea05a1c75bb33c5f8f8",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/voxel-whale-walk.png",
+      "sha256": "2b407d2f827eab8cf5b488c6b5c7ad6e87ab8636b2a2c5419343e134b5487cf9",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/voxel-whale.png",
+      "sha256": "0fcd91758c87a61e3143bd438d86d245ada2e4c0842045912bf4d3c2fc2c37d0",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/voxel-whale-desk.png",
+      "sha256": "e72ebaf4a01845a6ff281a094f2b3858a0c0a46414a6b40807f57a7346137bcd",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/voxel-whale-bed.png",
+      "sha256": "99cba7872650345f5f88450529ffd325076369610d1d7be441b12f58c467d232",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/voxel-whale-sofaSocial.png",
+      "sha256": "d209ed5eb46cce24dee7083d940d1f8a2a24b8aba6f2cba99879c05112a0e51a",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/voxel-whale-sofaBody.png",
+      "sha256": "665a3f743df050d0f56cb3ac32d7f411c6c13f2d086e20ec3fd867a069777b6b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/voxel-whale-idleChair.png",
+      "sha256": "33bda59719738de53a75cb20d14671ed57ffe337a62c515b7059e60fe31674b2",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/whale-hood.png",
+      "sha256": "314fc98c2e9861c9be8f845c278ef18e0865ee2a629a1431c3d16cf65d60f185",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/whale-hood-desk.png",
+      "sha256": "cb80817eb76d2b64890bd7521bc5a0091959dc3549a7b3a593f59b8f19df947d",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/whale-hood-walk.png",
+      "sha256": "386050ad73f6f418613d9289e97698a29f7d6915e74f91a1c82c37e0b9128b8b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/whale-hood.png",
+      "sha256": "c8e0e7e379acf8b2fad64caf571afd70f95b5614286734f0ecdb6a27cda0a37b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/whale-hood-desk.png",
+      "sha256": "21522e519ebeb98233222ab647ee4d0aedfaa75a322c31714b6c426b3d1b5896",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-hood-bed.png",
+      "sha256": "1db6827d7192d46f39baf66d9b5d85a87748826614a1d8759c62575a3c7fb933",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-hood-sofaSocial.png",
+      "sha256": "af8eed907413921b45e04640bd45a14dc656a645ee4b6e890e4b726e3ce05b3f",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-hood-sofaBody.png",
+      "sha256": "9befb8d34cd462556ec231aa76a3087b1b65d68dfb2e87f4bd768e9c6a74d1f5",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-hood-idleChair.png",
+      "sha256": "893139d7a04f3291a9c173ab3d900f5f01a852dcbd13dcfcf869b6af8f1784c7",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/snow-earmuffs.png",
+      "sha256": "f2d6d0aac601d83b27ed0da992eb6e3306358fdb786e5a6ece4c7a5bc40ecbc6",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/snow-earmuffs-desk.png",
+      "sha256": "ffacfdfe8912300730183ce6dc4ff00efd13f2c11cdaaa790f8eda1987a57044",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/snow-earmuffs-walk.png",
+      "sha256": "39324137e3d1c89627e40a1352955c5f6c0b8e14621e40a282e54f761d604b75",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/snow-earmuffs.png",
+      "sha256": "175672a3371572749e163dc1ecaebed9804de169ecc6081a70fbb4734e413707",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/snow-earmuffs-desk.png",
+      "sha256": "df618f2639cc6086d5f9e4363c099fca5da276e3d71ba7e95bba2521a8b30d37",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/snow-earmuffs-bed.png",
+      "sha256": "07687cf41d307a8dc52f26e3c3f22f46af4ed22f1be72e63f62c52cc3e609709",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/snow-earmuffs-sofaSocial.png",
+      "sha256": "18acb7f94ca06a5644e5b852067eeec806b59626cf41de297f083e885f8c2589",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/snow-earmuffs-sofaBody.png",
+      "sha256": "c615b03e8dd4085617c78825f67979268db010d6fcda0317af93114c902fdca1",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/snow-earmuffs-idleChair.png",
+      "sha256": "9b3846a985447dad2668a7a06e611ea2328b291312575ba90d8f104201f2b8a1",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/cream-hoodie.png",
+      "sha256": "f3d071bad41cc181098d3e3e0e94876395e4b1dafa5a4c2b32671440a806a752",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/cream-hoodie-desk.png",
+      "sha256": "f6e2cec6b9cba62eb394afb4a8e616b2d10d7fbdde46db0c54d8ffbfa8b30427",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/cream-hoodie-walk.png",
+      "sha256": "1f0c37d5f6ecb3282c4df52262845ae1a4d519a6852ddc8faa11beaf4a44a29a",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/cream-hoodie.png",
+      "sha256": "4a2c1f12d6a7f84db332b2e8911f3c1407221713dee3fbb9c675310ffc6f1127",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/cream-hoodie-desk.png",
+      "sha256": "451d4e43c9811707d0eedf04f69c113bbc397faaceb509e0d2c161dbcba9cc51",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/cream-hoodie-bed.png",
+      "sha256": "0823ace44b5bd4b5cc9d71d85046b5419000c40484c4e87004c17a540b6785a1",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/cream-hoodie-sofaSocial.png",
+      "sha256": "fc4687497f8f8b3cc2cf9411a40be82bf5ed3b8affca92056f94cdd4eb4cab94",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/cream-hoodie-sofaBody.png",
+      "sha256": "3f704dfe4969db1113143a82d1da33588c20677f7cdb0c7ccd616aec1773c100",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/cream-hoodie-idleChair.png",
+      "sha256": "35bec0f6498ce6177980b2f12f5b5d11ac606bc3a273c0f15b3297aa8156a79b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/white-beret.png",
+      "sha256": "85d24245b83ccdb3890ebbf64002af79f773337c9f5d01e7577b08a8bffb2e92",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/white-beret-desk.png",
+      "sha256": "5e11a524941aff967e73aea2e5a5f08810dfd0679a017f1bc31a20004cdc7764",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/white-beret-walk.png",
+      "sha256": "96a4e2582d22100d028b16b3aa5ab4db90ce15cc9cad4d09e3e93c12e8fc800d",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/white-beret.png",
+      "sha256": "f571ed18ce90d1785b0ca5d2fcc7ab231b08d5690d36d79dc10af274602350dc",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/white-beret-desk.png",
+      "sha256": "1619fb5b932448fae332b4b8dd1ebff3bec43e6d6f76f1a437bd59f7ff7c3fe8",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/white-beret-bed.png",
+      "sha256": "a1f4ee328857cb62e613ec86afd248de2c5f1676fd20c1d8f86962ab5eb7ba71",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/white-beret-sofaSocial.png",
+      "sha256": "cc30e478a068c3c4b5d3ffac3ac01eb004a437f17a710d8acc86b00a23ea49cf",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/white-beret-sofaBody.png",
+      "sha256": "df46c7d0d5562c5f70e08b6b4666bafb3bfe68a9305c2ab2fd2df814155b9835",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/white-beret-idleChair.png",
+      "sha256": "cb48799dd9c3a5033b4ab5d1f8a73ae9d064fd8b8a14e9fd7a3391f56d499cce",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/whale-maid.png",
+      "sha256": "6785fde63c6f2d7193843fc0506c93a626ce9af896b3faab35202bb4f9f91dad",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/whale-maid-desk.png",
+      "sha256": "9a8859784ab4240122ca0424cc274bcb958bb87720de66800c0d3613ceb94381",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/whale-maid-walk.png",
+      "sha256": "b59f16710c0678b33615a34580926a9c41f9805706007c6df0ba7165c73d313e",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/whale-maid.png",
+      "sha256": "20b23fd0de958159defdf265d44c89b7bdde05717c9dcdd83d4e016b42e04e2d",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/whale-maid-desk.png",
+      "sha256": "91cf22f28bd5d9c03374a62205c40c3ae9bf22782a85cb889d790372b8ec497a",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-maid-bed.png",
+      "sha256": "82a28a65e165477ee67592e5068fca7a4693215c5c8a3c21594e2d1c5cf8c38d",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-maid-sofaSocial.png",
+      "sha256": "7db3c33db4a7bb1b03d25de39cad76bcf7ec5bbf061e0785f2849dd367f8521d",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-maid-sofaBody.png",
+      "sha256": "b2045a289e838e8d93376917519b1073496b9eaaeda3f745e2df3a0c82c5ee06",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-maid-idleChair.png",
+      "sha256": "7559927df4de87b92b9c7fb68a30bd73f9ff86a02d7443d81b0012279e2f77f7",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/whale-sweater.png",
+      "sha256": "077ce7224e8671afedf3f56ed7856365a09719e94559bbfeeb1e69cb79dec193",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/whale-sweater-desk.png",
+      "sha256": "38c6c07ac989729ce4e43d5ff56278a89802afc5d1786f7525fcd11a759078bd",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/whale-sweater-walk.png",
+      "sha256": "1905997e4f4a203fdcafcdc0ea2696587df801207946f2a607af972259bc20a6",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/whale-sweater.png",
+      "sha256": "abae18101a0882ea6d87132c7f04655148ce5be42642796e7ad76858536a2651",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/whale-sweater-desk.png",
+      "sha256": "6f2eb3607a4cd1768d91a83157056e85e1d59c0bbb6139f5ee013b0fa7f91c85",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-sweater-bed.png",
+      "sha256": "77374041d78e584e723932998e0aee159af8e5826e5a2115e63fe57334e48374",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-sweater-sofaSocial.png",
+      "sha256": "3c2e8597c6f4bff618f18cc533d7bb25c60a0c40516778c217106a4301f5df53",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-sweater-sofaBody.png",
+      "sha256": "306f34f00b6762ccf0006afd81385a7301935778393114ad19cd3acfaf1c6bc5",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/whale-sweater-idleChair.png",
+      "sha256": "07a63c62016de429e1aa6fbe97d0b7d131f9adf765149e6526ce904a1e893480",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/doctor.png",
+      "sha256": "e7591acec5dbf1202c5b1fc4ff99e3cc7bd5ea3b920c362e40290d28301bd08b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/doctor-desk.png",
+      "sha256": "7bf891fd2bd464be611c8c11393839cbff607fad77b267f07f42d32b60f7193c",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/doctor-walk.png",
+      "sha256": "50bd97c7d191b0512d9f86bf5ce7f79b0d4d379c6ffa486b32e0b764b361ca8e",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/doctor.png",
+      "sha256": "cbf518186c272c74969e49bce496fa8f6ebc3c2e9f3c8de979ed20b31ec74998",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/doctor-desk.png",
+      "sha256": "2c1b34a7a95625e67fc5c3ed908ffbd49780efe43f54b40240e5969936c0992c",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/doctor-bed.png",
+      "sha256": "156dbab6976ee267e591cb3f4ecf820620bc067c2b55d9f7c57c1b87a6523d47",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/doctor-sofaSocial.png",
+      "sha256": "e64cc34c6e6691a08966cd6619cc25118c8997197ffd2dd41731a9aa498fa64c",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/doctor-sofaBody.png",
+      "sha256": "1f585153b385058c7870da452c8fb68aec418a617323dff6407b9c6b4affbbe5",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/doctor-idleChair.png",
+      "sha256": "b173a7e4baba5f4eafbc51d95517b61bf336d650c055b8d821252aa675695a1f",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/hanfu.png",
+      "sha256": "e8a95e4bfc6df3012afe675bea5ced696afbe59b2b9bd679376a5be3fd2708a3",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/hanfu-desk.png",
+      "sha256": "5e54ada0ca4c705a25c77d8b8590d8a1ad2ee5961325148c95cdef5dd3a222e8",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/hanfu-walk.png",
+      "sha256": "0b157d0a72d8e3c6f404caf10495b2a670eb7445368523578de949923ba18fa1",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/hanfu.png",
+      "sha256": "8f3c5f9a59cf0ff6c4061abe323279c9b8cc2dc3303a93da0e6def3d27c9b12b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/hanfu-desk.png",
+      "sha256": "d1b0618304363fd69a2df3bddb14d103fe723b07ac8aeb7697623bf0273e189d",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/hanfu-bed.png",
+      "sha256": "1e7d26fca32d4e39e9dad67aeeca7db29d20f6b12d1f390857742ee0fb87668c",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/hanfu-sofaSocial.png",
+      "sha256": "58d3022e4acebc27a22b67c90f1c938cef1d5526d39bc98af25bda4868a4085d",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/hanfu-sofaBody.png",
+      "sha256": "9f5686ada7ad1819898709d3d3e1d9ef6809e9774cd2cb635b3e4b9a10ce37d0",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/hanfu-idleChair.png",
+      "sha256": "8811823cd8d7e40dc3d9c3537be1bcc3357cbf4702904701f4a990edf3a15322",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/swordswoman.png",
+      "sha256": "ae463c68b84db782e27fd71b0e4ff806aa4a8689bbce54487beee018238e9755",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/swordswoman-desk.png",
+      "sha256": "2a1b0cdcbf9c8b56e55d39ed310bd499bbda53dea79e80bbe3f9a5ae371489aa",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/swordswoman-walk.png",
+      "sha256": "992459fb54ff152b30d88e839d29fd007c8e971a3e8fd2ae4e0697ff90df568c",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/swordswoman.png",
+      "sha256": "f4d7f262278ea71a1d10d6609e15bba9631e7fe944b3cdb89028f2fc22dca466",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/swordswoman-desk.png",
+      "sha256": "756727861af8cf80a10b59d9ea1938f5afaf5488cd5fd674918746f98e9b1498",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/swordswoman-bed.png",
+      "sha256": "5a06e8d4be003ec6734892fc5e6537349432fbb48dac5177ebe225207d673e9b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/swordswoman-sofaSocial.png",
+      "sha256": "166eedf7bc9fca72b16944c27f920dc6907b0ba79f4777cc80da3f3a7d8a0f43",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/swordswoman-sofaBody.png",
+      "sha256": "781d6b260acab2c46ec466612f57e9ef26b3f15ffa0344c102b59b962b4938ba",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/swordswoman-idleChair.png",
+      "sha256": "8f6d631c993361e8cfd5fa3ee36b699b92cdf3f1405a001dbb0d8607884f4bc0",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v1/sailor.png",
+      "sha256": "458144ce178f7b9f02551405d7cf9dc036dd5497fc86084ce296887054d34c27",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v15/sailor-desk.png",
+      "sha256": "6ddc0db40e8165cace05654179e831408dde473d315c3bc23d1d43d88dbad5ff",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/wardrobe-v16/sailor-walk.png",
+      "sha256": "6dad66a306966ef487c2552d7bd8b90fdc3162f69ca730dddaf149301216e2e4",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/sailor.png",
+      "sha256": "2a845fb2b8888b2673219c16eb32801cf620d140cbc8e879de1a6242b7733f26",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/sailor-desk.png",
+      "sha256": "57e34088b2e2cd3eac6453e38b3bcf1fee1b63645d4c3c295685b89e280fa2fd",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/sailor-bed.png",
+      "sha256": "1f1f0e50c721ed61ed343a4f26e043e93b60f18302dba9ca5c835e9b562e4cc3",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/sailor-sofaSocial.png",
+      "sha256": "df202a5501ce9d5cfbdfd59d5f6bbf2869e3dedc200668d242e9d511b5c238d0",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/sailor-sofaBody.png",
+      "sha256": "e43b7fbc7ab1cab2fdfb43b8f8c189dece859c7e8c1706954d7dbd76ea93039c",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/sailor-idleChair.png",
+      "sha256": "6021e1e824fca115633fa5767d61e9aca02067e2f99de8da212334b6eb3d96e9",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-house/floor-two-mirror-v12.png",
+      "sha256": "e95d58bb0a51535bc6687b5dbe980155301e2f33b566623923bcf424bdd5cff2",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v10/sofa.png",
+      "sha256": "e101289c4b639ad850f9f77d464493ba3a7f2322f44c7f0f87df8c991261babb",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v10/garden.png",
+      "sha256": "e0ec584403f6249e451efd3d505817ad640286306bbf81149e5f14a0bdf776ea",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v10/bed.png",
+      "sha256": "df6607dd690f04c41b422afeb00f0f6834fe19a8d4a3de36245f6e7f07edfaa6",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v10/desk.png",
+      "sha256": "695eaba238370deaf60db9502963a897288d5cd6aacb0dd9ea87cd587ee107e8",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v10/upper.png",
+      "sha256": "2302021f60ea2752adf5ce476acfe06536673dd915b7b3407b7d2c3efdf58652",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-actions/walk-v3.png",
+      "sha256": "7beca2facb9e3b1c93b6b47139336f30209b4f2691f78df6d35136272566c641",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v10/carry.png",
+      "sha256": "2b4ec83f1f7fe1af6bb3ad739b1bb259af9aeac815e220bcb81fea6225824c07",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v10/cover.png",
+      "sha256": "da98a67f739f2e25f2c3706bd0fed2614892641e98a8c7d1e97dbbc1a2aee56a",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v11/sofa-rest.png",
+      "sha256": "efc434a3280099bc353d3da41eaf226703a820c5ba342ccf0fdb715ffe6c16b1",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v10/greenhouse.png",
+      "sha256": "fdee3d88e8969827e05799dfac684824efec91694f41c64aed477680af66cecd",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-life-v16/bedding.png",
+      "sha256": "6698c264db319c4952b77bdb2d86e401e36ab20374e8e536960594b9f2bacfdf",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/original.png",
+      "sha256": "8e220c84ce1396b227e31d86358f31c7735012cec41c5a2f69b5a316fa862fd9",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-transition-v17/mattress.png",
+      "sha256": "845c06f417575db13e67c239c87bd07b52e6af84b2e93d9728cf4f5fe02961bf",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-bed-reference-v19/folded.png",
+      "sha256": "c40a15669eb77670780d67c9c9dd22a6c5fd011948eaa2afb6917bad03302e98",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/original-bed.png",
+      "sha256": "50df8ee2f5f5ef4329519b0d7d4e8faa69cb42dc8059fc941e767dc5e44d2856",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/original-sofaSocial.png",
+      "sha256": "b179bd853fa529070420cfbe1916d58cb264b0fe24f6a1d49750f20f77eec28b",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/original-sofaBody.png",
+      "sha256": "22c91d4be73912d99bb182ff2205537c9e5f100c08ca84771edde80794f5e55a",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/original-idleChair.png",
+      "sha256": "592a4688f213c8359dd0438c7fe4bba780d6df38950a472917e0b15c4a83b4bb",
+      "mime": "image/png"
+    },
+    {
+      "file": "assets/room-motion-v20/chair-cleanplate.png",
+      "sha256": "69b0686e68ae6787285f15f98abd1044b2c053ce0e4b6cc14d2b8d8abc7c245c",
+      "mime": "image/png"
+    }
+  ]
+}

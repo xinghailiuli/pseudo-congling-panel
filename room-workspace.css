@@ -610,3 +610,11 @@
 @media (prefers-reduced-motion: reduce) {
   .room-workspace button { transition: none; }
 }
+
+/* Shared reference language; workspace navigation and data forms retain their structure. */
+body.star-echo-theme .room-workspace .ws-device{border:1.5px solid #78d7ff;border-radius:28px;background:radial-gradient(ellipse at 10% 0,#2c4e7c70,transparent 60%),linear-gradient(135deg,#152b4f,#0e1e39);box-shadow:0 0 12px #44b9ff66,inset 0 0 24px #508ed92b;overflow:hidden}
+body.star-echo-theme .room-workspace .ws-topbar{background:linear-gradient(90deg,#1c3760,#142746);border-bottom:1px solid #568bb16b}
+body.star-echo-theme .room-workspace :is(.ws-app,.ws-button,.ws-close,.ws-refresh){border:1px solid #6195c6;border-radius:18px;background:linear-gradient(#25426d,#142a49);color:#eaf4ff;box-shadow:inset 0 1px 6px #b8d0ff20}
+body.star-echo-theme .room-workspace .ws-app[aria-pressed="true"],body.star-echo-theme .room-workspace .is-primary{background:linear-gradient(#167da3,#135478);border-color:#71d9f5;box-shadow:0 0 12px #2accff33}
+body.star-echo-theme .room-workspace :is(.ws-section,.ws-details,.ws-file){border-color:#6099cf55;border-radius:16px}
+body.star-echo-theme .room-workspace .ws-device::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;background:var(--interaction-frame) center/100% 100% no-repeat;opacity:.75}

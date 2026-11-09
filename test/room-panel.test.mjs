@@ -1,3 +1,13 @@
+import {isRoomImageUrl} from '../src/room-image-source.mjs';
+import {createRoomSession} from '../src/runtime/room-session.mjs';
+import {mountRoomUi as mountRoomReaderPanel} from '../src/ui/room-reader-panel.mjs';
+import {createRoomUiContext} from '../src/ui/room-context.mjs';
+import {mountRoomUi as mountRoomHud} from '../src/ui/room-hud.mjs';
+import {mountRoomUi as mountRoomActionTray} from '../src/ui/room-action-tray.mjs';
+import {mountRoomUi as mountRoomDressingPanel} from '../src/ui/room-dressing-panel.mjs';
+import {mountRoomUi as mountRoomFurniturePanel} from '../src/ui/room-furniture-panel.mjs';
+import {createRoomDressing} from '../src/room-dressing.mjs';
+const createDressingAssetClient=()=>({load:async()=>({assets:{},favorites:[]}),setFavorites(){}});
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -14,11 +24,11 @@ test('room inventory edits retain the inventory response revision when activity 
   let sceneOptions;
   let timerId = 0;
   const parent = { postMessage(message) { requests.push(message); } };
-  const context = {
+  const context = {isRoomImageUrl,createRoomSession,mountRoomReaderPanel,createRoomUiContext,mountRoomHud,mountRoomActionTray,mountRoomDressingPanel,mountRoomFurniturePanel,
     createRoomWorkspace,
     createRoomBookReader,
     createRoomRestoreGate: options => createRoomRestoreGate({ ...options, schedule: () => 0, cancel: () => {} }),
-    document, parent, Node: Element, structuredClone, crypto: webcrypto,
+    createRoomDressing, createDressingAssetClient, document, parent, Node: Element, structuredClone, crypto: webcrypto,
     DAFEIYU_CLIPS: {}, ROOM_ACTIONS: {},
     WARDROBE_CATALOG: JSON.parse(await readFile(new URL('../assets/wardrobe-v1/catalog.json', import.meta.url), 'utf8')),
     window: { addEventListener(type, listener) { listeners[type] = listener; } },

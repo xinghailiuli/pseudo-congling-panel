@@ -1,16 +1,29 @@
+import {isRoomImageUrl} from './room-image-source.mjs';
 import {transitionWindow} from './room-pose-transition.mjs';
 import {createRoomPoseBlend} from './room-pose-blend.mjs';
 import {roomHandStroke} from './room-hand-motion.mjs';
 // Optional wardrobe sprites. The original resident and choreography remain intact.
+// A v20 outfit carries many megabytes of immutable PNG text. Reusing the same
+// atlas must not rescan that text on every decode/scene update; mutable geometry
+// is still checked below on every call, and replacing a URL invalidates its entry.
+const wardrobeValidatedUrls=new WeakMap();
+function validWardrobeAtlas(atlas,count){
+ const url=atlas?.url,g=atlas?.geometry;
+ if(typeof url!=='string'||url.length>12*1024*1024)return false;
+ if(wardrobeValidatedUrls.get(atlas)!==url){
+  if(!isRoomImageUrl(url,['png','webp']))return false;
+  wardrobeValidatedUrls.set(atlas,url);
+ }
+ if(!g||![g.width,g.height].every(n=>Number.isInteger(n)&&n>0&&n<=4096)||g.frames?.length!==count)return false;
+ return g.frames.every(f=>Array.isArray(f.crop)&&f.crop.length===4&&f.crop.every(Number.isFinite)&&f.crop[0]>=0&&f.crop[1]>=0&&f.crop[2]>0&&f.crop[3]>0&&f.crop[0]+f.crop[2]<=g.width&&f.crop[1]+f.crop[3]<=g.height&&Array.isArray(f.outline)&&f.outline.length>=3&&f.outline.length<=4096&&f.outline.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite)));
+}
 export function validateWardrobe(a){
  const ids=['navy-gala','red-server','voxel-whale','whale-hood','snow-earmuffs','cream-hoodie','white-beret','whale-maid','whale-sweater','doctor','hanfu','swordswoman','sailor'];
- if(a?.version!==1||!ids.includes(a.id)||typeof a.url!=='string'||a.url.length>12*1024*1024||!/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(a.url))return false;
- const g=a.geometry;if(!g||![g.width,g.height].every(n=>Number.isInteger(n)&&n>0&&n<=4096)||g.frames?.length!==16)return false;
- for(const [key,count]of [['desk',4],['walk',8],['bed',8],['transition',24],['sleepMotion',16],['deskTransition',8],['bedReference',24],['sleepReference',16],['bedBody',16],['sofaSocial',16],['sofaBody',16],['idleChair',16]])if(a[key]){const d=a[key];if(d.geometry?.frames?.length!==count||!validateWardrobe({...a,desk:undefined,walk:undefined,bed:undefined,transition:undefined,sleepMotion:undefined,deskTransition:undefined,bedReference:undefined,sleepReference:undefined,bedBody:undefined,sofaSocial:undefined,sofaBody:undefined,idleChair:undefined,url:d.url,geometry:{...d.geometry,frames:Array.from({length:16},(_,i)=>d.geometry.frames[i%count])}}))return false;}
+ if(a?.version!==1||!ids.includes(a.id)||!validWardrobeAtlas(a,16))return false;
+ for(const [key,count]of [['desk',4],['walk',8],['bed',8],['transition',24],['sleepMotion',16],['deskTransition',8],['bedReference',24],['sleepReference',16],['bedBody',16],['sofaSocial',16],['sofaBody',16],['idleChair',16]])if(a[key]&&!validWardrobeAtlas(a[key],count))return false;
  for(const key of ['walk','bed','transition','sleepMotion','deskTransition','bedReference','sleepReference','bedBody','sofaSocial','sofaBody','idleChair'])if(a[key]){const g=a[key].geometry,k=key==='walk'?'anchor':['transition','sleepMotion','deskTransition','bedReference','sleepReference','bedBody','sofaSocial','sofaBody','idleChair'].includes(key)?'hip':'head';if(!Number.isFinite(g.referenceHeight)||g.referenceHeight<=0||g.referenceHeight>4096||!g.frames.every(f=>Array.isArray(f[k])&&f[k].length===2&&f[k].every(Number.isFinite)&&f[k][0]>=0&&f[k][0]<=g.width&&f[k][1]>=0&&f[k][1]<=g.height))return false;}
- const valid=(f,g)=>Array.isArray(f.crop)&&f.crop.length===4&&f.crop.every(Number.isFinite)&&f.crop[0]>=0&&f.crop[1]>=0&&f.crop[2]>0&&f.crop[3]>0&&f.crop[0]+f.crop[2]<=g.width&&f.crop[1]+f.crop[3]<=g.height&&Array.isArray(f.outline)&&f.outline.length>=3&&f.outline.length<=4096&&f.outline.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite));
- for(const key of ['transition','sleepMotion','deskTransition','bedReference','sleepReference','bedBody','sofaSocial','sofaBody','idleChair'])if(a[key]){const g=a[key].geometry;if(!g.frames.every(f=>valid(f,g)&&Array.isArray(f.head)&&f.head.length===2&&f.head.every(Number.isFinite)))return false;}
- return g.frames.every(f=>valid(f,g));
+ for(const key of ['transition','sleepMotion','deskTransition','bedReference','sleepReference','bedBody','sofaSocial','sofaBody','idleChair'])if(a[key]){const g=a[key].geometry;if(!g.frames.every(f=>Array.isArray(f.head)&&f.head.length===2&&f.head.every(Number.isFinite)))return false;}
+ return true;
 }
 export function wardrobeVisual(asset,input){
  const pose=wardrobePose(input),desk=asset.desk;
@@ -80,15 +93,24 @@ export function wardrobeMotionPoint(x,y,{cell,time=0,gait=0,moving=false,reduced
 let wardrobeSerial=0;
 const WARDROBE_SUPPLEMENT_KEYS=['desk','walk','bed','transition','sleepMotion','deskTransition','bedReference','sleepReference','bedBody','sofaSocial','sofaBody','idleChair'];
 const wardrobeClipCache=new WeakMap();
+const wardrobePendingDecodes=new WeakMap();
 const wardrobeOutlineClip=frame=>{let s=wardrobeClipCache.get(frame);if(!s){s='clip-path:polygon('+frame.outline.map(([a,b])=>a+'px '+b+'px').join(',')+');';wardrobeClipCache.set(frame,s);}return s;};
 async function decodeSingleWardrobeAtlas(atlas,ImageClass=globalThis.Image){
  const isNative=ImageClass===globalThis.Image&&Boolean(ImageClass);
  if(isNative&&atlas._decoded)return atlas._decodedImage||null;
  const src=atlas.blobUrl||atlas.url;
- const image=new ImageClass();image.src=src;await image.decode();
- if(image.naturalWidth!==atlas.geometry.width||image.naturalHeight!==atlas.geometry.height)throw new Error('invalid atlas size');
- if(isNative){atlas._decoded=true;atlas._decodedImage=image;}
- return image;
+ const pending=isNative&&wardrobePendingDecodes.get(atlas);
+ if(pending?.src===src)return pending.promise;
+ const entry={src,promise:null};
+ entry.promise=(async()=>{
+  const image=new ImageClass();image.src=src;await image.decode();
+  if(image.naturalWidth!==atlas.geometry.width||image.naturalHeight!==atlas.geometry.height)throw new Error('invalid atlas size');
+  // Eviction invalidates this entry, so a late decode cannot retain disposed images.
+  if(isNative&&wardrobePendingDecodes.get(atlas)===entry){atlas._decoded=true;atlas._decodedImage=image;}
+  return image;
+ })();
+ if(isNative)wardrobePendingDecodes.set(atlas,entry);
+ try{return await entry.promise;}finally{if(wardrobePendingDecodes.get(atlas)===entry)wardrobePendingDecodes.delete(atlas);}
 }
 export function decodeBaseWardrobeAsset(asset,ImageClass=globalThis.Image){
  if(!validateWardrobe(asset))return Promise.reject(new Error('invalid outfit'));
@@ -98,21 +120,24 @@ export function decodeWardrobeAssets(asset,ImageClass=globalThis.Image){
  if(!validateWardrobe(asset))return Promise.reject(new Error('invalid outfit'));
  return Promise.all([asset,...WARDROBE_SUPPLEMENT_KEYS.filter(k=>asset[k]).map(k=>asset[k])].map(atlas=>decodeSingleWardrobeAtlas(atlas,ImageClass)));
 }
-export async function decodeWardrobeSupplements(asset,{priorityKeys=[],ImageClass=globalThis.Image,yieldFrame}={}){
+export async function decodeWardrobeSupplements(asset,{priorityKeys=[],priorityOnly=false,ImageClass=globalThis.Image,yieldFrame,shouldContinue=()=>true}={}){
  if(!validateWardrobe(asset))throw new Error('invalid outfit');
  const available=WARDROBE_SUPPLEMENT_KEYS.filter(k=>asset[k]);
- const prio=priorityKeys.filter(k=>available.includes(k));
+ const prio=[...new Set(priorityKeys.filter(k=>available.includes(k)))];
  const rest=available.filter(k=>!prio.includes(k));
  if(prio.length)await Promise.all(prio.map(k=>decodeSingleWardrobeAtlas(asset[k],ImageClass)));
+ if(priorityOnly)return;
  const pause=yieldFrame||(fn=>typeof setTimeout==='function'?setTimeout(fn,12):fn());
  for(let i=0;i<rest.length;i+=2){
   await new Promise(resolve=>pause(resolve));
+  if(!shouldContinue())return;
   await Promise.all(rest.slice(i,i+2).map(k=>decodeSingleWardrobeAtlas(asset[k],ImageClass)));
  }
 }
 export function revokeWardrobeBlobUrls(asset){
  if(!asset)return;
  for(const item of [asset,...WARDROBE_SUPPLEMENT_KEYS.map(k=>asset[k]).filter(Boolean)]){
+  wardrobePendingDecodes.delete(item);
   if(item.blobUrl&&typeof URL?.revokeObjectURL==='function'){try{URL.revokeObjectURL(item.blobUrl);}catch{}}
   delete item.blobUrl;delete item._decoded;delete item._decodedImage;
  }
@@ -124,11 +149,12 @@ export function createRoomWardrobe({document:doc,root}){
  defs.append(picture);viewport.append(defs,mesh,complete);group.append(shadow,viewport);root.append(group);let asset=null,lastCell=-1,lastMotion='',currentHref='';const contactArt=createRoomPoseBlend({document:doc,root});
  const fixedClip=el('clipPath',{id:prefix+'fixed',clipPathUnits:'userSpaceOnUse'}),fixedPath=el('path'),fixed=el('use',{href:'#'+prefix+'source','clip-path':'url(#'+prefix+'fixed)','data-stationary-body':true});fixedClip.append(fixedPath);defs.append(fixedClip);mesh.append(fixed);
  const triangles=[],columns=[0,.05,.1,.15,.2,.25,.38,.58,.8,1],rows=[0,.25,.4,.46,.49,.515,.54,.56,.585,.61,.64,.68,.72,.8,.9,1];
- for(let row=0;row<rows.length-1;row++)for(let col=0;col<columns.length-1;col++){
+ const ensureMesh=()=>{if(triangles.length)return;for(let row=0;row<rows.length-1;row++)for(let col=0;col<columns.length-1;col++){
   const a=[columns[col],rows[row]],b=[columns[col+1],rows[row]],c=[columns[col],rows[row+1]],d=[columns[col+1],rows[row+1]];
   for(const points of [[a,b,c],[b,d,c]]){const id=prefix+'t'+triangles.length,clip=el('clipPath',{id,clipPathUnits:'userSpaceOnUse'}),polygon=el('polygon'),g=el('g'),use=el('use',{href:'#'+prefix+'source','clip-path':'url(#'+id+')'});clip.append(polygon);defs.append(clip);g.append(use);mesh.append(g);triangles.push({points,polygon,g});}
- }
+ }};
  const deform=(frame,motion)=>{
+  ensureMesh();
   const [cx,cy,w,h]=frame.crop;
   picture.setAttribute('x',-cx);picture.setAttribute('y',-cy);
   let stationary='';for(const t of triangles){

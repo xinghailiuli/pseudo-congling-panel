@@ -1,27 +1,37 @@
+import {isRoomImageUrl} from './room-image-source.mjs';
 import {transitionWindow} from './room-pose-transition.mjs';
 import {createRoomPoseBlend} from './room-pose-blend.mjs';
 import {roomHandStroke} from './room-hand-motion.mjs';
 // Complete-body atlas rendering. Pixel data stays unchanged; the alpha outline
 // excludes adjacent cells, and the support pivot stays fixed on its furniture.
+const roomLifeValidatedPngs=new WeakMap();
+function validRoomLifePng(owner,key){
+ const value=owner?.[key];
+ if(typeof value!=='string'||value.length>=8*1024*1024)return false;
+ let checked=roomLifeValidatedPngs.get(owner);
+ if(checked?.get(key)===value)return true;
+ if(!isRoomImageUrl(value,['png','webp']))return false;
+ if(!checked){checked=new Map();roomLifeValidatedPngs.set(owner,checked);}
+ checked.set(key,value);return true;
+}
 export function validateRoomLifeAssets(a){
  const counts={sofa:24,garden:24,bed:24,desk:24,upper:24,carry:16,walk:8,cover:12};
- const png=s=>typeof s==='string'&&s.length<8*1024*1024&&/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(s);
  const vector=(v,n)=>Array.isArray(v)&&v.length===n&&v.every(Number.isFinite);
- if(![10,11].includes(a?.version)||!a.geometry||!a.atlases||!png(a.greenhouse))return false;
+ if(![10,11].includes(a?.version)||!a.geometry||!a.atlases||!validRoomLifePng(a,'greenhouse'))return false;
  if(a.version===11)counts['sofa-rest']=12;
- if(a.geometry['bed-entry']){counts['bed-entry']=8;if(!png(a.bedding))return false;}
- if(a.quilt&&(!png(a.quilt.url)||!vector(a.quilt.crop,4)||![a.quilt.width,a.quilt.height].every(n=>Number.isFinite(n)&&n>0)))return false;
+ if(a.geometry['bed-entry']){counts['bed-entry']=8;if(!validRoomLifePng(a,'bedding'))return false;}
+ if(a.quilt&&(!validRoomLifePng(a.quilt,'url')||!vector(a.quilt.crop,4)||![a.quilt.width,a.quilt.height].every(n=>Number.isFinite(n)&&n>0)))return false;
  if(a.geometry.sleepMotion)counts.sleepMotion=16;
  if(a.geometry.bedBody)counts.bedBody=16;
  for(const key of ['sofaSocial','sofaBody','idleChair'])if(a.geometry[key])counts[key]=16;
  if(a.geometry.bedReference)counts.bedReference=24;
  if(a.geometry.sleepReference)counts.sleepReference=16;
- if(a.foldedQuilt&&!png(a.foldedQuilt))return false;
- if(a.chairCleanplate&&!png(a.chairCleanplate))return false;
- if(a.geometry.transition){counts.transition=24;if(!png(a.mattress))return false;}
+ if(a.foldedQuilt&&!validRoomLifePng(a,'foldedQuilt'))return false;
+ if(a.chairCleanplate&&!validRoomLifePng(a,'chairCleanplate'))return false;
+ if(a.geometry.transition){counts.transition=24;if(!validRoomLifePng(a,'mattress'))return false;}
  let total=a.greenhouse.length;
  for(const [name,count]of Object.entries(counts)){
-  const g=a.geometry[name];if(!png(a.atlases[name])||!g||!Number.isInteger(g.width)||g.width<1||g.width>4096||!Number.isInteger(g.height)||g.height<1||g.height>4096||!Array.isArray(g.frames)||g.frames.length!==count)return false;
+  const g=a.geometry[name];if(!validRoomLifePng(a.atlases,name)||!g||!Number.isInteger(g.width)||g.width<1||g.width>4096||!Number.isInteger(g.height)||g.height<1||g.height>4096||!Array.isArray(g.frames)||g.frames.length!==count)return false;
   if(['transition','sleepMotion','bedReference','sleepReference','bedBody','sofaSocial','sofaBody','idleChair'].includes(name)&&(!Number.isFinite(g.referenceHeight)||g.referenceHeight<=0||!g.frames.every(f=>vector(f.hip,2)&&vector(f.head,2))))return false;
   total+=a.atlases[name].length;
   for(const f of g.frames)if(!vector(f.crop,4)||f.crop[0]<0||f.crop[1]<0||f.crop[2]<=0||f.crop[3]<=0||f.crop[0]+f.crop[2]>g.width||f.crop[1]+f.crop[3]>g.height||!Array.isArray(f.outline)||f.outline.length<3||f.outline.length>4096||!f.outline.every(p=>vector(p,2)&&p[0]>=0&&p[0]<=g.width&&p[1]>=0&&p[1]<=g.height))return false;

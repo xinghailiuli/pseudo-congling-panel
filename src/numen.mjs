@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 
 export const NUMEN_HTTP_URL = 'http://127.0.0.1:39002/status';
-export const NUMEN_CONFIG_PATH = 'E:/hmcl/.minecraft/versions/1.21.1-NeoForge_21.1.264/config/numen/http_bridge.json';
-export const NUMEN_COMPANION_UUID = 'a444a65c-ad96-4db0-b108-42f23e9c1899';
+export const NUMEN_CONFIG_PATH = process.env.LIULI_NUMEN_CONFIG||'';
+export const NUMEN_COMPANION_UUID = process.env.LIULI_NUMEN_COMPANION_UUID||'00000000-0000-0000-0000-000000000001';
 
 let cachedToken = undefined;
 let cachedTokenAt = 0;

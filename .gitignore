@@ -21,3 +21,10 @@ diary.jsonl
 bridge-outbox.json
 .owner.lock
 snapshot-*.json
+
+# Generated clients rebuild from source
+lib/*
+!lib/index.js
+previews/
+*.bak*
+__pycache__/

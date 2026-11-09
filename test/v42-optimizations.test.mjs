@@ -1,3 +1,12 @@
+import {createRoomSession} from '../src/runtime/room-session.mjs';
+import {mountRoomUi as mountRoomReaderPanel} from '../src/ui/room-reader-panel.mjs';
+import {createRoomUiContext} from '../src/ui/room-context.mjs';
+import {mountRoomUi as mountRoomHud} from '../src/ui/room-hud.mjs';
+import {mountRoomUi as mountRoomActionTray} from '../src/ui/room-action-tray.mjs';
+import {mountRoomUi as mountRoomDressingPanel} from '../src/ui/room-dressing-panel.mjs';
+import {mountRoomUi as mountRoomFurniturePanel} from '../src/ui/room-furniture-panel.mjs';
+import {createRoomDressing} from '../src/room-dressing.mjs';
+const createDressingAssetClient=()=>({load:async()=>({assets:{},favorites:[]}),setFavorites(){}});
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -94,7 +103,7 @@ test('cached room shell toggles lamp and curtain back and forth and Escape exits
   let envState = null, sceneOpts = null;
   const parent = { postMessage: r => requests.push(r) };
   vm.runInNewContext(await readFile(new URL('../panel.js', import.meta.url), 'utf8'), {
-    document, parent, Node: Element, crypto: webcrypto, structuredClone,
+    createRoomSession,mountRoomReaderPanel,createRoomUiContext,mountRoomHud,mountRoomActionTray,mountRoomDressingPanel,mountRoomFurniturePanel,createRoomDressing, createDressingAssetClient, document, parent, Node: Element, crypto: webcrypto, structuredClone,
     DAFEIYU_CLIPS: {}, ROOM_ACTIONS: { house: { repairs: { 1: {}, 2: {} }, actions: { garden: { frames: [] } } } },
     WARDROBE_CATALOG: [], createRoomWorkspace, createRoomBookReader,
     createRoomRestoreGate: o => restoreGate({ ...o, schedule: () => 0, cancel: () => {} }),
@@ -191,7 +200,7 @@ test('book reader Escape stops propagation without double restoreFocus and room 
   let nightUpdates = [];
   const parent = { postMessage: r => requests.push(r) };
   vm.runInNewContext(await readFile(new URL('../panel.js', import.meta.url), 'utf8'), {
-    document, parent, Node: Element, crypto: webcrypto, structuredClone,
+    createRoomSession,mountRoomReaderPanel,createRoomUiContext,mountRoomHud,mountRoomActionTray,mountRoomDressingPanel,mountRoomFurniturePanel,createRoomDressing, createDressingAssetClient, document, parent, Node: Element, crypto: webcrypto, structuredClone,
     DAFEIYU_CLIPS: {}, ROOM_ACTIONS: { house: { repairs: { 1: {}, 2: {} }, actions: { garden: { frames: [] } } } },
     WARDROBE_CATALOG: [{ id: 'sailor', name: '蓝白水手服' }],
     validateWardrobe: () => true,
@@ -240,7 +249,8 @@ test('book reader Escape stops propagation without double restoreFocus and room 
 
   // Late __restore__ must NOT overwrite explicit user selection of original
   const restoreReq = requests.find(r => r.type === 'wardrobe-request' && !r.id);
-  const origBtn = all().find(e => e.tagName === 'BUTTON' && e.textContent === '原装');
+  await all().find(e=>e.getAttribute('aria-label')==='装扮衣橱').fire('click');await settle();
+  const origBtn = all().find(e => e.tagName === 'BUTTON' && e.dataset.outfitId === 'original');
   await origBtn.fire('click');
   for (const fn of listeners) {
     await fn({ source: parent, data: { channel: 'liuli-companion', type: 'wardrobe-assets', id: 'sailor', requestId: restoreReq.requestId, assets: { id: 'sailor' } } });

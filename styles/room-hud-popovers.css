@@ -1,0 +1,304 @@
+/* Bottom Popovers */
+.star-echo-bottom-popover {
+  position: absolute;
+  left: 50%;
+  bottom: calc(144 * var(--u));
+  width: calc(480 * var(--u));
+  max-width: calc(100vw - 32px);
+  background: rgba(6, 20, 45, 0.95);
+  border: 1.5px solid rgba(56, 189, 248, 0.55);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.35);
+  backdrop-filter: blur(16px);
+  z-index: 50;
+  pointer-events: auto;
+  transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.star-echo-bottom-popover.hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* Modal Hologram Wardrobe in Star Echo Theme */
+body.star-echo-theme .room-mirror-wardrobe {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: min(calc(1120 * var(--u)), 92vw) !important;
+  max-height: 86vh !important;
+  overflow-y: auto !important;
+  z-index: 60 !important;
+  margin: 0 !important;
+  backdrop-filter: none;
+}
+
+/* Companion & Full Actions Styling */
+.popover-section-quick, .popover-section-all {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.popover-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.popover-all-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.popover-all-actions-list::-webkit-scrollbar {
+  width: 5px;
+}
+.popover-all-actions-list::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.35);
+  border-radius: 3px;
+}
+
+.action-group-box {
+  background: rgba(8, 26, 56, 0.55);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 8px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.action-group-title {
+  font-size: 10.5px;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+}
+
+.action-group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.popover-action-btn {
+  background: rgba(12, 34, 68, 0.8) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  border-radius: 6px !important;
+  color: #e0f2fe !important;
+  font-size: 11px !important;
+  padding: 5px 8px !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.popover-action-btn:hover:not(.disabled) {
+  background: rgba(56, 189, 248, 0.25) !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.35) !important;
+  color: #ffffff !important;
+}
+
+.popover-action-btn.disabled {
+  opacity: 0.45 !important;
+  border-style: dashed !important;
+  cursor: not-allowed !important;
+}
+
+.star-echo-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+  padding-bottom: 6px;
+}
+
+.popover-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e0f2fe;
+}
+
+.star-echo-popover-close {
+  background: transparent !important;
+  border: none !important;
+  color: #94a3b8 !important;
+  cursor: pointer;
+  padding: 2px 6px !important;
+}
+
+.star-echo-popover-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.popover-chat-reply {
+  background: rgba(8, 26, 56, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #bae6fd;
+}
+
+.reply-speaker {
+  color: #38bdf8;
+  margin-right: 4px;
+}
+
+.popover-input-row {
+  display: flex;
+  gap: 6px;
+}
+
+.popover-chat-input {
+  flex: 1;
+  background: rgba(4, 14, 32, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: #ffffff;
+  font-size: 11.5px;
+  outline: none;
+}
+
+.popover-chat-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+
+.popover-chat-send {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.6), rgba(2, 132, 199, 0.8)) !important;
+  border: 1px solid #38bdf8 !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 6px 12px !important;
+  cursor: pointer;
+}
+
+.popover-quick-greetings {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.quick-greet-btn {
+  background: rgba(12, 34, 68, 0.7) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  border-radius: 12px !important;
+  color: #bae6fd !important;
+  font-size: 10.5px !important;
+  padding: 3px 8px !important;
+  cursor: pointer;
+}
+
+.quick-greet-btn:hover {
+  background: rgba(56, 189, 248, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.popover-action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.popover-grid-btn {
+  background: rgba(12, 34, 68, 0.75) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  border-radius: 8px !important;
+  color: #e0f2fe !important;
+  font-size: 11.5px !important;
+  padding: 8px !important;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.popover-grid-btn:hover {
+  background: rgba(56, 189, 248, 0.25) !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4) !important;
+}
+
+.popover-grid-btn.primary {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.5), rgba(2, 132, 199, 0.7)) !important;
+  border-color: #38bdf8 !important;
+}
+
+.popover-remind-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11.5px;
+}
+
+.remind-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: rgba(8, 24, 52, 0.6);
+}
+
+.remind-label {
+  color: #94a3b8;
+}
+
+.remind-val {
+  color: #e0f2fe;
+  font-weight: 500;
+}
+
+.popover-photo-box {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* Hide duplicate status & vitals since they are painted on frame */
+.star-echo-status-widget,
+.star-echo-vitals-widget,
+.star-echo-floating-status,
+.star-echo-legacy-dock {
+  display: none !important;
+}
+
+/* Clean snapshot mode */
+body.star-echo-theme main.hide-ui-for-photo .star-echo-capsule-sidebar,
+body.star-echo-theme main.hide-ui-for-photo .star-echo-right-sidebar,
+body.star-echo-theme main.hide-ui-for-photo .star-echo-brand,
+body.star-echo-theme main.hide-ui-for-photo .star-echo-action-pill,
+body.star-echo-theme main.hide-ui-for-photo .star-echo-floating-drawer,
+body.star-echo-theme main.hide-ui-for-photo .star-echo-bottom-popover,
+body.star-echo-theme main.hide-ui-for-photo .star-echo-weather-pill,
+body.star-echo-theme main.hide-ui-for-photo .star-echo-status-pill,
+body.star-echo-theme main.hide-ui-for-photo .star-echo-heart-pill,
+body.star-echo-theme main.hide-ui-for-photo .holo-hud-bar,
+body.star-echo-theme main.hide-ui-for-photo footer {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+

@@ -1,0 +1,147 @@
+{
+  "status": "LOCKED_SCHEME_C_BASELINE",
+  "lockedAt": "2026-11-07T22:30:29+08:00",
+  "canvas": {
+    "width": 2560,
+    "height": 1440,
+    "aspectRatio": "16:9"
+  },
+  "stageOpening": {
+    "left": 380,
+    "right": 2180,
+    "top": 126,
+    "bottom": 1251,
+    "width": 1800,
+    "height": 1125,
+    "aspectRatio": 1.6,
+    "pct": {
+      "left": "14.84375%",
+      "right": "85.15625%",
+      "top": "8.75%",
+      "bottom": "86.875%",
+      "width": "70.3125%",
+      "height": "78.125%"
+    },
+    "clipPolygon2560": "444,126 830,126 856,148 1704,148 1730,126 2116,126 2180,190 2180,1187 2116,1251 1840,1251 1808,1276 752,1276 720,1251 444,1251 380,1187 380,190"
+  },
+  "cottagePlacement": {
+    "scheme": "C",
+    "scale": 1.125,
+    "sourceCanvas": "1536x1024",
+    "scaledSize": {
+      "width": 1728,
+      "height": 1152
+    },
+    "positionIn2560": {
+      "x": 416,
+      "y": 122
+    },
+    "widthFillPctOfStage": 96,
+    "rules": [
+      "Do not crop any furniture",
+      "Do not stretch character aspect ratio",
+      "Do not replace existing character animation/pathfinding system"
+    ]
+  },
+  "overviewAllMode": {
+    "viewBox": "0 0 1536 2104",
+    "aspectRatio": 0.73,
+    "stageBorderBehavior": "FIXED_1_60_TO_1_NO_DYNAMIC_NARROWING",
+    "alignment": "UNIFORM_SCALE_CENTERED",
+    "sideMarginTreatment": [
+      "Subtle starlight mist",
+      "Faint grid lines",
+      "Low-weight status/floor indicator",
+      "Zero frame twitch or deformation when switching floors (1 / 2 / all)"
+    ]
+  },
+  "capsules2560": {
+    "leftSidebar": {
+      "x": 138,
+      "y": 310,
+      "width": 112,
+      "height": 700,
+      "rx": 56,
+      "pct": {
+        "left": "5.39%",
+        "top": "21.53%",
+        "width": "4.38%",
+        "height": "48.61%"
+      }
+    },
+    "topRightWeatherClock": {
+      "x": 2080,
+      "y": 36,
+      "width": 406,
+      "height": 64,
+      "rx": 32,
+      "pct": {
+        "left": "81.25%",
+        "top": "2.50%",
+        "width": "15.86%",
+        "height": "4.44%"
+      }
+    },
+    "bottomLeftStatus": {
+      "x": 380,
+      "y": 1308,
+      "width": 530,
+      "height": 88,
+      "rx": 44,
+      "pct": {
+        "left": "14.84%",
+        "top": "90.83%",
+        "width": "20.70%",
+        "height": "6.11%"
+      }
+    },
+    "bottomCenterActionDock": {
+      "x": 1005,
+      "y": 1308,
+      "width": 550,
+      "height": 88,
+      "rx": 44,
+      "pct": {
+        "left": "39.26%",
+        "top": "90.83%",
+        "width": "21.48%",
+        "height": "6.11%"
+      }
+    },
+    "bottomRightHeartRate": {
+      "x": 1650,
+      "y": 1308,
+      "width": 530,
+      "height": 88,
+      "rx": 44,
+      "pct": {
+        "left": "64.45%",
+        "top": "90.83%",
+        "width": "20.70%",
+        "height": "6.11%"
+      }
+    }
+  },
+  "assets": {
+    "hud_frame_2560x1440_clean.png": {
+      "path": "C:/Users/Administrator/.gemini/antigravity/brain/8e70ca79-a52a-487d-a520-039bc00a6bc7/hud-assets-v1/hud_frame_2560x1440_clean.png",
+      "bytes": 2515444,
+      "sha256": "941e77e2569a6821f1165b5a686eaeeb02307a6542ad3079d670a9e5b3fb785d"
+    },
+    "starsea_background_2560x1440.png": {
+      "path": "C:/Users/Administrator/.gemini/antigravity/brain/8e70ca79-a52a-487d-a520-039bc00a6bc7/hud-assets-v1/starsea_background_2560x1440.png",
+      "bytes": 4248190,
+      "sha256": "445485d2f783099a198be33d60569a966736f3cf2960e027751855b784e5fafd"
+    },
+    "hud_frame_2560x1440.svg": {
+      "path": "C:/Users/Administrator/.gemini/antigravity/brain/8e70ca79-a52a-487d-a520-039bc00a6bc7/hud-assets-v1/hud_frame_2560x1440.svg",
+      "bytes": 4570,
+      "sha256": "cb0bf1381f73613803f4f010e531fab57efa6aa442e4500e2c4492979d73970c"
+    },
+    "scheme_c_stage_verification_2560x1440.png": {
+      "path": "C:/Users/Administrator/.gemini/antigravity/brain/8e70ca79-a52a-487d-a520-039bc00a6bc7/hud-assets-v1/scheme_c_stage_verification_2560x1440.png",
+      "bytes": 5639605,
+      "sha256": "c0602d31df49e3ca0d9c355f4a05a621ad60fad41b488b2c2558c57661794d98"
+    }
+  }
+}
