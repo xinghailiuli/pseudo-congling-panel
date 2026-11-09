@@ -1,6 +1,8 @@
 # 把鲸鱼小屋重新做了一遍：1.3 完全重制版更新！
 
-《伪从绫开始的面板》1.3 完全重制版来了。这次把上一版之后的小屋界面、换装、生活交互和底层加载一起整理了一遍。
+自 1.3 起，项目由「伪从绫开始的面板」正式更名为「星海回响」。本次以作者 xinghailiuli 的独立作品名称发布，版本名称为「星海回响 1.3 · 完全重制版」。为兼容旧版升级，仓库地址与插件 ID dsh-whale-status 继续沿用，已有数据和设置保持保留。
+
+《星海回响》1.3 完全重制版来了。这次把上一版之后的小屋界面、换装、生活交互和底层加载一起整理了一遍。
 
 最直观的变化是新的「星海回响」界面：发光鲸鱼、蓝紫色环绕导航、分段信息卡和底部状态胶囊。1080p 和 2K 使用同一套比例规则。
 
@@ -32,7 +34,7 @@ https://github.com/xinghailiuli/pseudo-congling-panel/releases/tag/v1.3.0
 角色素材原作者：PC2005-cloud/dsh-pet
 https://github.com/PC2005-cloud/dsh-pet
 
-功能设计参考：LUOSHUI319/astrbot_plugin_congling（从绫开始）
+早期版本历史参考（非本版项目归属）：LUOSHUI319/astrbot_plugin_congling
 https://github.com/LUOSHUI319/astrbot_plugin_congling
 
 代码与素材许可分开，角色及衍生素材禁止商用，展示和转发请保留原作者链接。以上图片是本版实际界面的隔离演示，不含私人聊天数据。

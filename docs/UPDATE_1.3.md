@@ -1,4 +1,6 @@
-# 伪从绫开始的面板 1.3 · 完全重制版
+# 星海回响 1.3 · 完全重制版
+
+自 1.3 起，项目由「伪从绫开始的面板」正式更名为「星海回响」。本次以作者 xinghailiuli 的独立作品名称发布，版本名称为「星海回响 1.3 · 完全重制版」。为兼容旧版升级，仓库地址与插件 ID dsh-whale-status 继续沿用，已有数据和设置保持保留。
 
 本次汇总 **v1.2.0 之后**的更新。安装包版本 `1.3.0`，插件身份仍为 `dsh-whale-status`。
 
@@ -67,4 +69,4 @@
 
 加载、换装及导出已做优化与回归，但具体速度受机器与宿主负载影响，仍有波动，不承诺零卡顿。最终无损发布构建经过自动化、解包和隔离浏览器检查；没有在所有 DSH 版本、机器和全部服装动作组合上逐项完成原生人工验收。详情见 [验证范围](VERIFICATION.md)。
 
-角色来源：[PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet)；功能设计参考：[从绫开始](https://github.com/LUOSHUI319/astrbot_plugin_congling)。程序代码 MIT；角色与衍生素材须保留署名、禁止商用，详见 [素材说明](../THIRD_PARTY_NOTICES.md)。展示图为本版实际界面的隔离演示数据。
+角色来源：[PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet)；早期版本历史参考：[从绫开始](https://github.com/LUOSHUI319/astrbot_plugin_congling)。程序代码 MIT；角色与衍生素材须保留署名、禁止商用，详见 [素材说明](../THIRD_PARTY_NOTICES.md)。展示图为本版实际界面的隔离演示数据。
